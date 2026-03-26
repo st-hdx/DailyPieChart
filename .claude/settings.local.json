@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(/usr/bin/python3 -c \"import struct, zlib, math; print\\(''OK''\\)\")"
+    ]
+  }
+}
