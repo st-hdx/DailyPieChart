@@ -5,8 +5,8 @@ struct PaywallView: View {
     @Environment(\.dismiss) var dismiss
 
     var priceLabel: String {
-        guard let product = store.proProduct else { return "¥370" }
-        return product.price.formatted(.currency(code: "JPY").precision(.fractionLength(0)))
+        guard let product = store.proProduct else { return "" }
+        return product.displayPrice
     }
 
     var body: some View {
@@ -128,13 +128,19 @@ struct PaywallView: View {
         VStack(spacing: 14) {
             // Buy button
             Button {
-                Task { await store.purchase() }
+                Task {
+                    if store.proProduct == nil {
+                        await store.loadProducts()
+                    } else {
+                        await store.purchase()
+                    }
+                }
             } label: {
                 Group {
                     if store.isLoading {
                         ProgressView().tint(.white)
                     } else if store.proProduct == nil {
-                        Label("商品を読み込み中...", systemImage: "arrow.clockwise")
+                        Label("再試行する", systemImage: "arrow.clockwise")
                             .font(.body.weight(.bold))
                     } else {
                         Text("買い切り \(priceLabel) で解放する")
