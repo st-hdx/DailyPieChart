@@ -136,9 +136,10 @@
 			};
 			buildConfigurationList = FE59E0042F72D2470051159F /* Build configuration list for PBXProject "DailyPieChart" */;
 			compatibilityVersion = "Xcode 14.0";
-			developmentRegion = en;
+			developmentRegion = ja;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				ja,
 				en,
 				Base,
 			);

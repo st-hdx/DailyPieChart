@@ -51,9 +51,6 @@
             ReferencedContainer = "container:DailyPieChart.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <StoreKitConfigurationFileReference
-         identifier = "../../DailyPieChart/DailyPieChart.storekit">
-      </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

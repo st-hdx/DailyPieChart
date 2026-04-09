@@ -65,14 +65,14 @@ struct MyScheduleView: View {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     HStack(spacing: 8) {
                         if !timeBlocks.isEmpty {
-                            Text("\(timeBlocks.count)/10")
+                            Text("\(timeBlocks.count)/24")
                                 .font(.caption.weight(.semibold))
-                                .foregroundColor(timeBlocks.count >= 10 ? Theme.accent2 : .secondary)
+                                .foregroundColor(timeBlocks.count >= 24 ? Theme.accent2 : .secondary)
                         }
                         Button { showAddBlockSheet = true } label: {
                             Image(systemName: "plus")
                         }
-                        .disabled(activeIndex == nil || timeBlocks.count >= 10)
+                        .disabled(activeIndex == nil || timeBlocks.count >= 24)
                     }
                 }
             }
@@ -82,8 +82,8 @@ struct MyScheduleView: View {
                 }
             }
             .sheet(item: $editingBlock) { block in
-                if let bi = timeBlocks.firstIndex(where: { $0.id == block.id }),
-                   let si = activeIndex {
+                if let si = activeIndex,
+                   let bi = schedules[si].timeBlocks.firstIndex(where: { $0.id == block.id }) {
                     EditBlockView(existingBlock: schedules[si].timeBlocks[bi], currentTotal: totalHours) { newBlock in
                         schedules[si].timeBlocks[bi] = newBlock
                         saveSchedules()
@@ -330,8 +330,9 @@ struct MyScheduleView: View {
     }
 
     func formatHours(_ hours: Double) -> String {
-        let h = Int(hours)
-        let m = Int((hours - Double(h)) * 60)
+        let totalMinutes = lround(hours * 60)
+        let h = totalMinutes / 60
+        let m = totalMinutes % 60
         if m == 0 { return "\(h)時間" }
         if h == 0 { return "\(m)分" }
         return "\(h)時間\(m)分"

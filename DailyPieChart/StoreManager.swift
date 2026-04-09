@@ -29,9 +29,15 @@ class StoreManager: ObservableObject {
     // MARK: - Load
 
     func loadProducts() async {
+        isLoading = true
+        errorMessage = nil
+        defer { isLoading = false }
         do {
             let fetched = try await Product.products(for: [Self.proProductID])
             proProduct = fetched.first
+            if proProduct == nil {
+                errorMessage = "商品情報が見つかりませんでした"
+            }
         } catch {
             errorMessage = "商品情報の取得に失敗しました"
         }

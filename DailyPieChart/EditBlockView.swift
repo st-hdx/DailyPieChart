@@ -162,8 +162,9 @@ struct EditBlockView: View {
     }
 
     func formatHours(_ hours: Double) -> String {
-        let h = Int(hours)
-        let m = Int((hours - Double(h)) * 60)
+        let totalMinutes = lround(hours * 60)
+        let h = totalMinutes / 60
+        let m = totalMinutes % 60
         if m == 0 { return "\(h)時間" }
         if h == 0 { return "\(m)分" }
         return "\(h)時間\(m)分"
