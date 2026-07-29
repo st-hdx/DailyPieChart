@@ -3,7 +3,14 @@ import SwiftUI
 struct PersonListView: View {
     @EnvironmentObject var store: StoreManager
     @State private var showPaywall = false
-    let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    /// 大きい文字設定では2列だと偉人の名前が省略されるので1列にする。
+    var columns: [GridItem] {
+        dynamicTypeSize.isAccessibilitySize
+            ? [GridItem(.flexible())]
+            : [GridItem(.flexible()), GridItem(.flexible())]
+    }
 
     var body: some View {
         NavigationStack {

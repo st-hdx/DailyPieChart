@@ -161,8 +161,10 @@ struct MyScheduleView: View {
                 Button {
                     if canAddSchedule { showAddScheduleSheet = true } else { showPaywall = true }
                 } label: {
+                    // 円形の小さなコントロールなので、文字サイズ設定に追従させると
+                    // 枠に収まらず楕円に潰れる。ここは固定サイズにする。
                     Image(systemName: canAddSchedule ? "plus" : "lock.fill")
-                        .font(.subheadline.weight(.semibold))
+                        .font(.system(size: 15, weight: .semibold))
                         .foregroundColor(canAddSchedule ? Theme.accent1 : Theme.accent2)
                         .frame(width: 36, height: 36)
                         .background(Theme.card)

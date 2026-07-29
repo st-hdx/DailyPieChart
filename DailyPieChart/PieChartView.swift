@@ -222,6 +222,14 @@ struct ClockChartView: View {
 
 struct PieChartView: View {
     let timeBlocks: [TimeBlock]
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    /// 大きい文字設定では2列だと活動名も時刻も入りきらないので1列にする。
+    private var legendColumns: [GridItem] {
+        dynamicTypeSize.isAccessibilitySize
+            ? [GridItem(.flexible())]
+            : [GridItem(.flexible()), GridItem(.flexible())]
+    }
 
     var timeRanges: [(block: TimeBlock, startHour: Double)] {
         var result: [(TimeBlock, Double)] = []
@@ -237,7 +245,7 @@ struct PieChartView: View {
         VStack(spacing: 16) {
             ClockChartView(timeBlocks: timeBlocks)
 
-            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
+            LazyVGrid(columns: legendColumns, spacing: 8) {
                 ForEach(timeRanges, id: \.block.id) { item in
                     legendItem(block: item.block, startHour: item.startHour)
                 }
@@ -248,11 +256,13 @@ struct PieChartView: View {
 
     private func legendItem(block: TimeBlock, startHour: Double) -> some View {
         let color = blockColors[block.colorIndex % blockColors.count]
-        return HStack(spacing: 6) {
+        // 文字が大きいとテキストが縦に伸びるため、点は中央ではなく1行目に揃える。
+        return HStack(alignment: .firstTextBaseline, spacing: 6) {
             Circle()
                 .fill(color)
                 .frame(width: 8, height: 8)
                 .shadow(color: color.opacity(0.7), radius: 3, x: 0, y: 0)
+                .alignmentGuide(.firstTextBaseline) { $0[.bottom] }
             VStack(alignment: .leading, spacing: 1) {
                 Text(block.name)
                     .font(.caption.weight(.medium))
