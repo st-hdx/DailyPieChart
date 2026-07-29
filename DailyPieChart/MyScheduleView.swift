@@ -1,9 +1,11 @@
 import SwiftUI
 import WidgetKit
+import StoreKit
 
 struct MyScheduleView: View {
     @Binding var selectedTab: ContentView.Tab
     @EnvironmentObject var store: StoreManager
+    @Environment(\.requestReview) private var requestReview
     @AppStorage(AppGroup.schedulesKey, store: AppGroup.defaults) private var schedulesData: Data = Data()
     @AppStorage(AppGroup.activeScheduleIdKey, store: AppGroup.defaults) private var activeScheduleId: String = ""
 
@@ -122,8 +124,12 @@ struct MyScheduleView: View {
                     }
                 }
             }
-            .onAppear(perform: loadSchedules)
+            .onAppear {
+                loadSchedules()
+                maybeAskForReview()
+            }
             .onChange(of: schedulesData) { _ in loadSchedules() }
+            .onChange(of: isExact24) { _ in maybeAskForReview() }
             .sheet(isPresented: $showPaywall) {
                 PaywallView().environmentObject(store)
             }
@@ -394,6 +400,17 @@ struct MyScheduleView: View {
         schedules = decoded
         if !schedules.contains(where: { $0.id.uuidString == activeScheduleId }) {
             activeScheduleId = schedules.first?.id.uuidString ?? ""
+        }
+    }
+
+    /// 一日が24時間ちょうどで揃った直後に、少し間を置いてから評価を依頼する。
+    /// すぐ出すと合計が揃ったことを確認する前に被さるため。
+    private func maybeAskForReview() {
+        guard isExact24, ReviewPrompt.shouldAsk else { return }
+        ReviewPrompt.markAsked()
+        Task { @MainActor in
+            try? await Task.sleep(nanoseconds: 1_500_000_000)
+            requestReview()
         }
     }
 

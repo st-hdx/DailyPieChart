@@ -5,6 +5,7 @@ struct DailyPieChartApp: App {
     init() {
         // v1.0 は UserDefaults.standard に保存していたので、App Group へ移す。
         AppGroup.migrateFromStandardIfNeeded()
+        ReviewPrompt.registerLaunch()
 
         // タブバーが透過のままだとリストの内容が透けてタブ名と重なるため、
         // テーマの背景色で不透明にする。

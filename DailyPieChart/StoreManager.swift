@@ -1,5 +1,37 @@
 import StoreKit
 
+// MARK: - Review prompt
+
+/// レビュー依頼を出す場面の管理。OS 側でも年3回までに制限されるが、
+/// 「いつ声をかけるか」はこちらで選ぶ必要がある。
+/// 作成作業の途中で割り込まないよう、数回使ってからにしている。
+enum ReviewPrompt {
+    private static let launchCountKey = "reviewLaunchCount"
+    private static let promptedVersionKey = "reviewPromptedVersion"
+    private static let minimumLaunches = 3
+
+    static var currentVersion: String {
+        Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "0"
+    }
+
+    static func registerLaunch() {
+        let count = UserDefaults.standard.integer(forKey: launchCountKey)
+        UserDefaults.standard.set(count + 1, forKey: launchCountKey)
+    }
+
+    /// 一日が24時間ちょうどで完成した＝成功体験の直後だけ声をかける。
+    static var shouldAsk: Bool {
+        UserDefaults.standard.integer(forKey: launchCountKey) >= minimumLaunches
+            && UserDefaults.standard.string(forKey: promptedVersionKey) != currentVersion
+    }
+
+    static func markAsked() {
+        UserDefaults.standard.set(currentVersion, forKey: promptedVersionKey)
+    }
+}
+
+// MARK: - Purchases
+
 @MainActor
 class StoreManager: ObservableObject {
     static let proProductID = "com.dailypiechart.pro"
