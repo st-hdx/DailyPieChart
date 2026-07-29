@@ -11,6 +11,59 @@ private func person(_ slug: String, era: String, blocks: [(String, Double, Int)]
     )
 }
 
+/// 初回起動時にすぐ完成した円グラフを見せるためのテンプレート。
+/// いずれも合計がちょうど 24 時間になるようにしてある。
+struct ScheduleTemplate: Identifiable {
+    let id: String
+    let name: String
+    let timeBlocks: [TimeBlock]
+}
+
+private func template(_ slug: String, blocks: [(String, Double, Int)]) -> ScheduleTemplate {
+    ScheduleTemplate(
+        id: slug,
+        name: L("template.\(slug).name"),
+        timeBlocks: blocks.map { TimeBlock(name: L("activity.\($0.0)"), hours: $0.1, colorIndex: $0.2) }
+    )
+}
+
+let starterTemplates: [ScheduleTemplate] = [
+    template("weekday", blocks: [
+        ("sleep",         7, 0),
+        ("morning_prep",  1, 6),
+        ("commute",       1, 4),
+        ("work",          8, 1),
+        ("lunch_break",   1, 3),
+        ("commute_home",  1, 4),
+        ("dinner",        1, 5),
+        ("free_time",     3, 2),
+        ("bedtime_prep",  1, 7),
+    ]),
+    template("remote", blocks: [
+        ("sleep",           7,   0),
+        ("morning_prep",    1,   6),
+        ("work_morning",    4,   1),
+        ("lunch_break",     1,   3),
+        ("work_afternoon",  4,   1),
+        ("exercise",        1,   2),
+        ("dinner",          1.5, 5),
+        ("free_time",       3.5, 9),
+        ("bedtime_prep",    1,   7),
+    ]),
+    template("student", blocks: [
+        ("sleep",           8, 0),
+        ("morning_prep",    1, 6),
+        ("commute_school",  1, 4),
+        ("classes",         6, 1),
+        ("lunch_break",     1, 3),
+        ("club",            2, 2),
+        ("commute_home",    1, 4),
+        ("dinner",          1, 5),
+        ("study",           2, 8),
+        ("free_time",       1, 9),
+    ]),
+]
+
 let samplePersons: [Person] = [
     person("darwin", era: "1809–1882", blocks: [
         ("sleep",            8,   0),

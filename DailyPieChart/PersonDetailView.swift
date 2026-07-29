@@ -112,6 +112,15 @@ struct PersonDetailView: View {
         .background(Theme.background)
         .navigationTitle(person.name)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                ShareChartButton(
+                    title: person.name,
+                    subtitle: person.era,
+                    timeBlocks: person.timeBlocks
+                )
+            }
+        }
     }
 
     func copySchedule() {

@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct MyScheduleView: View {
+    @Binding var selectedTab: ContentView.Tab
     @EnvironmentObject var store: StoreManager
     @AppStorage("allSchedules") private var schedulesData: Data = Data()
     @AppStorage("activeScheduleId") private var activeScheduleId: String = ""
@@ -15,6 +16,7 @@ struct MyScheduleView: View {
         store.isPro || schedules.count < StoreManager.freeScheduleLimit
     }
     @State private var showAddScheduleSheet = false
+    @State private var showTemplateSheet = false
     @State private var showRenameSheet = false
     @State private var renamingScheduleId: String = ""
     @State private var renameText: String = ""
@@ -27,6 +29,10 @@ struct MyScheduleView: View {
 
     var timeBlocks: [TimeBlock] {
         activeIndex.map { schedules[$0].timeBlocks } ?? []
+    }
+
+    var activeScheduleName: String {
+        activeIndex.map { schedules[$0].name } ?? L("schedule.default_name")
     }
 
     /// 三項演算子のままだと String オーバーロードに解決されうるため、型を明示する。
@@ -68,11 +74,16 @@ struct MyScheduleView: View {
                     }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    HStack(spacing: 8) {
+                    HStack(spacing: 12) {
                         if !timeBlocks.isEmpty {
                             Text("\(timeBlocks.count)/24")
                                 .font(.caption.weight(.semibold))
                                 .foregroundColor(timeBlocks.count >= 24 ? Theme.accent2 : .secondary)
+                            ShareChartButton(
+                                title: activeScheduleName,
+                                subtitle: formatHours(totalHours),
+                                timeBlocks: timeBlocks
+                            )
                         }
                         Button { showAddBlockSheet = true } label: {
                             Image(systemName: "plus")
@@ -97,6 +108,9 @@ struct MyScheduleView: View {
             }
             .sheet(isPresented: $showAddScheduleSheet) {
                 AddScheduleSheet { name in addSchedule(name: name) }
+            }
+            .sheet(isPresented: $showTemplateSheet) {
+                TemplatePickerSheet { template in addSchedule(from: template) }
             }
             .sheet(isPresented: $showRenameSheet) {
                 RenameScheduleSheet(name: $renameText) {
@@ -158,37 +172,79 @@ struct MyScheduleView: View {
         }
     }
 
+    /// 以前は空のスケジュール一覧を見せて手入力を促していたが、
+    /// 1枚も円グラフを完成させずに離脱するユーザーが多いと考えられるため、
+    /// 「すぐ完成した状態から始める」導線を最初に出す。
     private var noSchedulesView: some View {
-        VStack(spacing: 20) {
-            ZStack {
-                Circle()
-                    .fill(LinearGradient(
-                        colors: [Theme.accent1.opacity(0.18), Theme.accent2.opacity(0.18)],
-                        startPoint: .topLeading, endPoint: .bottomTrailing
-                    ))
-                    .frame(width: 100, height: 100)
-                Image(systemName: "calendar.badge.plus")
-                    .font(.system(size: 42))
-                    .foregroundStyle(Theme.accentGradient)
+        ScrollView {
+            VStack(spacing: 24) {
+                ZStack {
+                    Circle()
+                        .fill(LinearGradient(
+                            colors: [Theme.accent1.opacity(0.18), Theme.accent2.opacity(0.18)],
+                            startPoint: .topLeading, endPoint: .bottomTrailing
+                        ))
+                        .frame(width: 100, height: 100)
+                    Image(systemName: "chart.pie.fill")
+                        .font(.system(size: 42))
+                        .foregroundStyle(Theme.accentGradient)
+                }
+                .padding(.top, 32)
+
+                VStack(spacing: 6) {
+                    Text("onboarding.title")
+                        .font(.title3.bold())
+                        .foregroundColor(Theme.textWarm)
+                    Text("onboarding.body")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
+
+                VStack(spacing: 12) {
+                    Button { showTemplateSheet = true } label: {
+                        Label("onboarding.from_template", systemImage: "square.grid.2x2.fill")
+                            .font(.body.weight(.semibold))
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 16)
+                            .background(Theme.accentGradient)
+                            .foregroundColor(.white)
+                            .cornerRadius(16)
+                            .shadow(color: Theme.accent1.opacity(0.35), radius: 10, x: 0, y: 4)
+                    }
+
+                    Button { selectedTab = .persons } label: {
+                        HStack(spacing: 12) {
+                            Image(systemName: "person.3.fill")
+                                .foregroundStyle(Theme.accentGradient)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("onboarding.from_person")
+                                    .font(.subheadline.weight(.semibold))
+                                    .foregroundColor(Theme.textWarm)
+                                Text("onboarding.from_person_hint")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .font(.caption.weight(.semibold))
+                                .foregroundColor(.secondary)
+                        }
+                        .padding()
+                        .background(Theme.card)
+                        .overlay(RoundedRectangle(cornerRadius: 16).strokeBorder(Theme.cardBorder, lineWidth: 1))
+                        .cornerRadius(16)
+                    }
+
+                    Button { showAddScheduleSheet = true } label: {
+                        Text("onboarding.blank")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                            .padding(.vertical, 8)
+                    }
+                }
+                .padding(.horizontal)
             }
-            VStack(spacing: 6) {
-                Text("my_schedule.no_schedules_title")
-                    .font(.headline)
-                    .foregroundColor(Theme.textWarm)
-                Text("my_schedule.no_schedules_body")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-            }
-            Button { if canAddSchedule { showAddScheduleSheet = true } else { showPaywall = true } } label: {
-                Label("my_schedule.create_schedule", systemImage: "plus.circle.fill")
-                    .font(.body.weight(.semibold))
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 12)
-                    .background(Theme.accentGradient)
-                    .foregroundColor(.white)
-                    .cornerRadius(20)
-                    .shadow(color: Theme.accent1.opacity(0.35), radius: 8, x: 0, y: 3)
-            }
+            .padding(.bottom, 32)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Theme.background)
@@ -312,6 +368,13 @@ struct MyScheduleView: View {
         saveSchedules()
     }
 
+    private func addSchedule(from template: ScheduleTemplate) {
+        let s = Schedule(name: template.name, timeBlocks: template.timeBlocks)
+        schedules.append(s)
+        activeScheduleId = s.id.uuidString
+        saveSchedules()
+    }
+
     private func deleteSchedule(id: String) {
         schedules.removeAll { $0.id.uuidString == id }
         if activeScheduleId == id {
@@ -379,6 +442,67 @@ struct AddScheduleSheet: View {
             .padding(.vertical, 24)
             .background(Theme.background.ignoresSafeArea())
             .navigationTitle("add_schedule.title")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("common.cancel") { dismiss() }.foregroundColor(.secondary)
+                }
+            }
+        }
+    }
+}
+
+// MARK: - Template Picker Sheet
+
+struct TemplatePickerSheet: View {
+    var onPick: (ScheduleTemplate) -> Void
+    @Environment(\.dismiss) var dismiss
+
+    var body: some View {
+        NavigationView {
+            ScrollView {
+                VStack(spacing: 14) {
+                    ForEach(starterTemplates) { template in
+                        Button {
+                            onPick(template)
+                            dismiss()
+                        } label: {
+                            HStack(spacing: 16) {
+                                ClockChartView(
+                                    timeBlocks: template.timeBlocks,
+                                    showHourLabels: false,
+                                    showActivityLabels: false
+                                )
+                                .frame(width: 84, height: 84)
+
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(template.name)
+                                        .font(.headline)
+                                        .foregroundColor(Theme.textWarm)
+                                    Text(template.timeBlocks.prefix(4).map(\.name).joined(separator: " · "))
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                        .lineLimit(2)
+                                        .multilineTextAlignment(.leading)
+                                }
+                                Spacer(minLength: 0)
+                                Image(systemName: "chevron.right")
+                                    .font(.caption.weight(.semibold))
+                                    .foregroundColor(.secondary)
+                            }
+                            .padding()
+                            .background(Theme.card)
+                            .overlay(RoundedRectangle(cornerRadius: 16).strokeBorder(Theme.cardBorder, lineWidth: 1))
+                            .cornerRadius(16)
+                            .shadow(color: Theme.cardShadow.opacity(0.10), radius: 8, x: 0, y: 2)
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                    }
+                }
+                .padding()
+            }
+            .background(Theme.background.ignoresSafeArea())
+            .navigationTitle("onboarding.pick_template")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

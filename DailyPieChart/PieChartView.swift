@@ -4,7 +4,12 @@ struct ClockChartView: View {
     let timeBlocks: [TimeBlock]
     var showHourLabels: Bool = true
     var showActivityLabels: Bool = true
+    /// ImageRenderer で書き出す際は onAppear が走らず progress が 0 のままになり
+    /// 真っ白な画像になってしまうため、アニメーションを切れるようにしている。
+    var animated: Bool = true
     @State private var progress: Double = 0
+
+    private var effectiveProgress: Double { animated ? progress : 1 }
 
     var sliceData: [(start: Angle, end: Angle, block: TimeBlock)] {
         let gap = 0.4
@@ -39,9 +44,10 @@ struct ClockChartView: View {
             clockContent(geo: geo)
         }
         .aspectRatio(1, contentMode: .fit)
-        .scaleEffect(progress)
-        .opacity(progress)
+        .scaleEffect(effectiveProgress)
+        .opacity(effectiveProgress)
         .onAppear {
+            guard animated else { return }
             withAnimation(.spring(response: 0.55, dampingFraction: 0.75)) {
                 progress = 1.0
             }

@@ -34,9 +34,6 @@
 "my_schedule.reorder"           = "Reorder";
 "my_schedule.total"             = "Total";
 "my_schedule.activities"        = "Activities";
-"my_schedule.no_schedules_title" = "No schedules yet";
-"my_schedule.no_schedules_body"  = "Create your first schedule to get started";
-"my_schedule.create_schedule"    = "Create a schedule";
 "my_schedule.no_blocks_title"    = "No activities yet";
 "my_schedule.no_blocks_body"     = "Copy one from the Icons tab,\nor tap “+” to add your own";
 
@@ -81,6 +78,25 @@
 
 /* ===== Chart ===== */
 "chart.hour_unit" = "HOUR";
+
+/* ===== Share ===== */
+"share.button"       = "Share";
+"share.preview_title" = "%@ in 24 hours";
+"share.card_tagline" = "Your 24 hours, in one chart.";
+
+/* ===== Onboarding ===== */
+"onboarding.title"        = "How do you want to start?";
+"onboarding.body"         = "You can change everything later";
+"onboarding.from_template" = "Start from a template";
+"onboarding.from_person"   = "Copy a great mind’s routine";
+"onboarding.from_person_hint" = "Pick one from the Icons tab";
+"onboarding.blank"         = "Start from scratch";
+"onboarding.pick_template" = "Choose a template";
+
+/* ===== Starter templates ===== */
+"template.weekday.name" = "Weekday";
+"template.remote.name"  = "Remote work";
+"template.student.name" = "Student";
 
 /* ===== Persons ===== */
 "person.darwin.name"     = "Charles Darwin";
@@ -167,3 +183,14 @@
 "activity.daily_review"         = "Evening review";
 "activity.bedtime_prep"         = "Winding down";
 "activity.bedtime_snack"        = "Supper & bed";
+
+/* テンプレート用 */
+"activity.morning_prep"         = "Getting ready";
+"activity.commute"              = "Commute";
+"activity.commute_home"         = "Commute home";
+"activity.commute_school"       = "Commute";
+"activity.work"                 = "Work";
+"activity.classes"              = "Classes";
+"activity.club"                 = "Clubs & sports";
+"activity.study"                = "Studying";
+"activity.free_time"            = "Free time";

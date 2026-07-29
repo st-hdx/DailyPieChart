@@ -34,9 +34,6 @@
 "my_schedule.reorder"           = "並び替え";
 "my_schedule.total"             = "合計時間";
 "my_schedule.activities"        = "活動一覧";
-"my_schedule.no_schedules_title" = "スケジュールがありません";
-"my_schedule.no_schedules_body"  = "まずスケジュールを作成しましょう";
-"my_schedule.create_schedule"    = "スケジュールを作成";
 "my_schedule.no_blocks_title"    = "活動がありません";
 "my_schedule.no_blocks_body"     = "偉人タブからコピーするか\n「+」ボタンで追加してください";
 
@@ -81,6 +78,25 @@
 
 /* ===== Chart ===== */
 "chart.hour_unit" = "HOUR";
+
+/* ===== Share ===== */
+"share.button"       = "シェア";
+"share.preview_title" = "%@の24時間";
+"share.card_tagline" = "24時間を、円グラフで。";
+
+/* ===== Onboarding ===== */
+"onboarding.title"        = "どんな一日から始める？";
+"onboarding.body"         = "あとからいくらでも編集できます";
+"onboarding.from_template" = "テンプレートから始める";
+"onboarding.from_person"   = "偉人の習慣をコピーする";
+"onboarding.from_person_hint" = "「偉人」タブから選べます";
+"onboarding.blank"         = "ゼロから作る";
+"onboarding.pick_template" = "テンプレートを選ぶ";
+
+/* ===== Starter templates ===== */
+"template.weekday.name" = "平日";
+"template.remote.name"  = "リモートワーク";
+"template.student.name" = "学生";
 
 /* ===== Persons ===== */
 "person.darwin.name"     = "チャールズ・ダーウィン";
@@ -166,3 +182,14 @@
 "activity.daily_review"         = "一日の振り返り";
 "activity.bedtime_prep"         = "就寝準備";
 "activity.bedtime_snack"        = "就寝準備・軽食";
+
+/* テンプレート用 */
+"activity.morning_prep"         = "朝の支度";
+"activity.commute"              = "通勤";
+"activity.commute_home"         = "帰宅";
+"activity.commute_school"       = "通学";
+"activity.work"                 = "仕事";
+"activity.classes"              = "授業";
+"activity.club"                 = "部活・サークル";
+"activity.study"                = "勉強";
+"activity.free_time"            = "自由時間";
