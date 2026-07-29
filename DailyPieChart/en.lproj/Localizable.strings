@@ -78,6 +78,8 @@
 
 /* ===== Chart ===== */
 "chart.hour_unit" = "HOUR";
+"chart.accessibility_label"     = "24-hour chart. %@";
+"chart.accessibility_separator" = ", ";
 
 /* ===== Share ===== */
 "share.button"       = "Share";

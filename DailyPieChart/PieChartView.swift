@@ -44,11 +44,24 @@ struct ClockChartView: View {
         return result
     }
 
+    /// 図形と時刻ラベルの集まりなので、そのままだと VoiceOver が
+    /// 「0」「1」「2」…と数字を個別に読み上げるだけになる。
+    /// 1つの要素にまとめて、内容を文章で読ませる。
+    private var accessibilityDescription: String {
+        let separator = L("chart.accessibility_separator")
+        let items = timeBlocks
+            .map { "\($0.name) \(formatHours($0.hours))" }
+            .joined(separator: separator)
+        return L("chart.accessibility_label", items)
+    }
+
     var body: some View {
         GeometryReader { geo in
             clockContent(geo: geo)
         }
         .aspectRatio(1, contentMode: .fit)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityDescription)
         .scaleEffect(effectiveProgress)
         .opacity(effectiveProgress)
         .onAppear {

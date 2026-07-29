@@ -78,6 +78,8 @@
 
 /* ===== Chart ===== */
 "chart.hour_unit" = "HOUR";
+"chart.accessibility_label"     = "24時間の円グラフ。%@";
+"chart.accessibility_separator" = "、";
 
 /* ===== Share ===== */
 "share.button"       = "シェア";
