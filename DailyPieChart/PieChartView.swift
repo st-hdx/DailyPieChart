@@ -9,6 +9,9 @@ struct ClockChartView: View {
     var animated: Bool = true
     /// 0..<24 で「今」を指す針を出す。ウィジェットで現在地を示すのに使う。
     var nowHour: Double? = nil
+    /// 共有カードのテーマで差し替えるため、スライス以外の色を外から渡せるようにする。
+    var labelColor: Color = Theme.textWarm
+    var ringColor: Color = Theme.ringBg
     @State private var progress: Double = 0
 
     private var effectiveProgress: Double { animated ? progress : 1 }
@@ -78,10 +81,10 @@ struct ClockChartView: View {
                 VStack(spacing: 1) {
                     Text("24")
                         .font(.system(size: s * 0.10, weight: .bold, design: .rounded))
-                        .foregroundColor(Theme.textWarm.opacity(0.72))
+                        .foregroundColor(labelColor.opacity(0.72))
                     Text("chart.hour_unit")
                         .font(.system(size: s * 0.038, weight: .semibold, design: .rounded))
-                        .foregroundColor(Theme.textWarm.opacity(0.42))
+                        .foregroundColor(labelColor.opacity(0.42))
                 }
                 .position(x: cx, y: cy)
             }
@@ -99,7 +102,7 @@ struct ClockChartView: View {
                         startAngle: .degrees(270), endAngle: .degrees(-90), clockwise: true)
             path.closeSubpath()
         }
-        .fill(Theme.ringBg)
+        .fill(ringColor)
     }
 
     private func slicesLayer(cx: CGFloat, cy: CGFloat, outerR: CGFloat, innerR: CGFloat) -> some View {
@@ -130,7 +133,7 @@ struct ClockChartView: View {
                     path.addLine(to: CGPoint(x: cx + outerR * cos(angle),
                                             y: cy + outerR * sin(angle)))
                 }
-                .stroke(Color(red: 0.50, green: 0.40, blue: 0.28).opacity(isMajor ? 0.45 : 0.20),
+                .stroke(labelColor.opacity(isMajor ? 0.40 : 0.18),
                         lineWidth: isMajor ? 1.5 : 0.7)
             }
         }
@@ -146,10 +149,10 @@ struct ClockChartView: View {
                 path.addLine(to: CGPoint(x: cx + tipR * cos(angle),
                                          y: cy + tipR * sin(angle)))
             }
-            .stroke(Theme.textWarm, style: StrokeStyle(lineWidth: 2, lineCap: .round))
+            .stroke(labelColor, style: StrokeStyle(lineWidth: 2, lineCap: .round))
 
             Circle()
-                .fill(Theme.textWarm)
+                .fill(labelColor)
                 .frame(width: 6, height: 6)
                 .position(x: cx + tipR * cos(angle), y: cy + tipR * sin(angle))
         }
@@ -167,7 +170,7 @@ struct ClockChartView: View {
                         weight: isMajor ? .semibold : .regular,
                         design: .rounded
                     ))
-                    .foregroundColor(isMajor ? Theme.textWarm.opacity(0.70) : Theme.textWarm.opacity(0.38))
+                    .foregroundColor(isMajor ? labelColor.opacity(0.70) : labelColor.opacity(0.38))
                     .position(x: cx + labelR * cos(angle),
                               y: cy + labelR * sin(angle))
             }
@@ -197,7 +200,7 @@ struct ClockChartView: View {
             path.addLine(to: CGPoint(x: cx + outerR * 1.32 * cos(angle),
                                      y: cy + outerR * 1.32 * sin(angle)))
         }
-        .stroke(Theme.textWarm.opacity(0.25), lineWidth: 0.8)
+        .stroke(labelColor.opacity(0.25), lineWidth: 0.8)
 
         // ラベル。英語は日本語より長くなるため、ラベル枠が画面外に出ないよう X を内側に寄せる。
         let labelWidth = outerR * 0.85
@@ -207,7 +210,7 @@ struct ClockChartView: View {
 
         Text(name)
             .font(.system(size: max(s * 0.038, 9), weight: .medium))
-            .foregroundColor(Theme.textWarm.opacity(0.80))
+            .foregroundColor(labelColor.opacity(0.80))
             .lineLimit(2)
             .multilineTextAlignment(.center)
             .minimumScaleFactor(0.75)

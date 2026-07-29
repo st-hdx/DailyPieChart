@@ -4,7 +4,9 @@ import StoreKit
 class StoreManager: ObservableObject {
     static let proProductID = "com.dailypiechart.pro"
 
-    static let freePersonLimit    = 3
+    // 無料枠が3人だと一覧の半分がロックで埋まり、体験する前に出し渋りの印象が出る。
+    // 課金理由は偉人の追加ではなく複数スケジュールと共有カードのテーマ側に置く。
+    static let freePersonLimit    = 5
     static let freeScheduleLimit  = 1
 
     @Published var isPro: Bool = false

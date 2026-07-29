@@ -58,13 +58,13 @@
 "edit_block.default_name"     = "活動";
 
 /* ===== Paywall ===== */
-"paywall.subtitle"         = "偉人の習慣をもっと深く学び\n自分だけのスケジュールを作ろう";
-"paywall.feature1.title"    = "全偉人データを閲覧";
-"paywall.feature1.subtitle" = "無料版%1$d人 → 全%2$d人に拡張";
-"paywall.feature2.title"    = "スケジュールを無制限に作成";
-"paywall.feature2.subtitle" = "平日・週末・旅行中など使い分け自由";
-"paywall.feature3.title"    = "今後追加される偉人も利用可能";
-"paywall.feature3.subtitle" = "アップデートで随時追加予定";
+"paywall.subtitle"          = "生活パターンごとに一日を持ち\n自分らしい1枚でシェアしよう";
+"paywall.schedules.title"    = "スケジュールを無制限に作成";
+"paywall.schedules.subtitle" = "平日・週末・旅行中を切り替えて持てる";
+"paywall.themes.title"       = "共有カードのテーマ";
+"paywall.themes.subtitle"    = "ダーク・ペーパー・フォレストを追加";
+"paywall.persons.title"      = "全偉人データを閲覧";
+"paywall.persons.subtitle"   = "無料版%1$d人 → 全%2$d人に拡張";
 "paywall.retry"            = "再試行する";
 "paywall.buy"              = "買い切り %@ で解放する";
 "paywall.restore"          = "購入を復元する";
@@ -83,6 +83,12 @@
 "share.button"       = "シェア";
 "share.preview_title" = "%@の24時間";
 "share.card_tagline" = "24時間を、円グラフで。";
+
+/* ===== Share card themes ===== */
+"cardtheme.cream"    = "クリーム";
+"cardtheme.midnight" = "ミッドナイト";
+"cardtheme.paper"    = "ペーパー";
+"cardtheme.forest"   = "フォレスト";
 
 /* ===== Onboarding ===== */
 "onboarding.title"        = "どんな一日から始める？";

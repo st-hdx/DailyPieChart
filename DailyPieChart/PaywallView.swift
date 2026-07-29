@@ -70,23 +70,25 @@ struct PaywallView: View {
 
     private var featureList: some View {
         VStack(spacing: 12) {
-            featureRow(
-                icon: "person.3.fill",
-                color: Color(red: 0.22, green: 0.42, blue: 0.85),
-                title: L("paywall.feature1.title"),
-                subtitle: L("paywall.feature1.subtitle", StoreManager.freePersonLimit, samplePersons.count)
-            )
+            // 価値の高い順。以前は「偉人データの追加」を先頭に置いていたが、
+            // 支払い理由としては弱いので複数スケジュールとカードのテーマを前に出す。
             featureRow(
                 icon: "calendar.badge.plus",
                 color: Theme.accent1,
-                title: L("paywall.feature2.title"),
-                subtitle: L("paywall.feature2.subtitle")
+                title: L("paywall.schedules.title"),
+                subtitle: L("paywall.schedules.subtitle")
             )
             featureRow(
-                icon: "sparkles",
+                icon: "paintpalette.fill",
                 color: Color(red: 0.60, green: 0.28, blue: 0.70),
-                title: L("paywall.feature3.title"),
-                subtitle: L("paywall.feature3.subtitle")
+                title: L("paywall.themes.title"),
+                subtitle: L("paywall.themes.subtitle")
+            )
+            featureRow(
+                icon: "person.3.fill",
+                color: Color(red: 0.22, green: 0.42, blue: 0.85),
+                title: L("paywall.persons.title"),
+                subtitle: L("paywall.persons.subtitle", StoreManager.freePersonLimit, samplePersons.count)
             )
         }
         .padding(.horizontal)

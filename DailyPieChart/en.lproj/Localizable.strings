@@ -58,13 +58,13 @@
 "edit_block.default_name"     = "Activity";
 
 /* ===== Paywall ===== */
-"paywall.subtitle"         = "Explore how great minds built their days\nand design your own";
-"paywall.feature1.title"    = "Every routine unlocked";
-"paywall.feature1.subtitle" = "%1$d free → all %2$d figures";
-"paywall.feature2.title"    = "Unlimited schedules";
-"paywall.feature2.subtitle" = "Weekday, weekend, travel — keep them all";
-"paywall.feature3.title"    = "Future additions included";
-"paywall.feature3.subtitle" = "New figures added in updates";
+"paywall.subtitle"          = "Keep a day for every pattern of your life\nand share it your way";
+"paywall.schedules.title"    = "Unlimited schedules";
+"paywall.schedules.subtitle" = "Weekday, weekend, travel — switch between them";
+"paywall.themes.title"       = "Share card themes";
+"paywall.themes.subtitle"    = "Adds Midnight, Paper and Forest";
+"paywall.persons.title"      = "Every routine unlocked";
+"paywall.persons.subtitle"   = "%1$d free → all %2$d figures";
 "paywall.retry"            = "Try again";
 "paywall.buy"              = "Unlock forever — %@";
 "paywall.restore"          = "Restore purchase";
@@ -83,6 +83,12 @@
 "share.button"       = "Share";
 "share.preview_title" = "%@ in 24 hours";
 "share.card_tagline" = "Your 24 hours, in one chart.";
+
+/* ===== Share card themes ===== */
+"cardtheme.cream"    = "Cream";
+"cardtheme.midnight" = "Midnight";
+"cardtheme.paper"    = "Paper";
+"cardtheme.forest"   = "Forest";
 
 /* ===== Onboarding ===== */
 "onboarding.title"        = "How do you want to start?";
