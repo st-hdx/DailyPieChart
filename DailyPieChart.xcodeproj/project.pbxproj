@@ -24,6 +24,14 @@
 		FEA1000022F7500000000002 /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA1000012F7500000000001 /* L10n.swift */; };
 		FEA1000082F7500000000008 /* ShareCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA1000072F7500000000007 /* ShareCard.swift */; };
 		FEA1000062F7500000000006 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FEA1000052F7500000000005 /* Localizable.strings */; };
+		FEB1010012F7600000000011 /* DailyPieChartWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEB1000022F7600000000002 /* DailyPieChartWidget.swift */; };
+		FEB1010022F7600000000012 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE59E0202F72D5D30051159F /* Models.swift */; };
+		FEB1010032F7600000000013 /* PieChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE59E0222F72D5D30051159F /* PieChartView.swift */; };
+		FEB1010042F7600000000014 /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA1000012F7500000000001 /* L10n.swift */; };
+		FEB1010052F7600000000015 /* SharedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEB1000062F7600000000006 /* SharedStore.swift */; };
+		FEB1010062F7600000000016 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FEA1000052F7500000000005 /* Localizable.strings */; };
+		FEB1010072F7600000000017 /* SharedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEB1000062F7600000000006 /* SharedStore.swift */; };
+		FEB1010082F7600000000018 /* DailyPieChartWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FEB1000012F7600000000001 /* DailyPieChartWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +55,12 @@
 		FEA1000072F7500000000007 /* ShareCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareCard.swift; sourceTree = "<group>"; };
 		FEA1000032F7500000000003 /* ja */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FEA1000042F7500000000004 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		FEB1000012F7600000000001 /* DailyPieChartWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DailyPieChartWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		FEB1000022F7600000000002 /* DailyPieChartWidget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DailyPieChartWidget.swift; sourceTree = "<group>"; };
+		FEB1000032F7600000000003 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FEB1000042F7600000000004 /* DailyPieChartWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DailyPieChartWidget.entitlements; sourceTree = "<group>"; };
+		FEB1000052F7600000000005 /* DailyPieChart.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DailyPieChart.entitlements; sourceTree = "<group>"; };
+		FEB1000062F7600000000006 /* SharedStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,13 +71,35 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FEB1030022F7600000000032 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FEB1030042F7600000000034 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				FEB1010082F7600000000018 /* DailyPieChartWidgetExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXGroup section */
 		FE59E0002F72D2470051159F = {
 			isa = PBXGroup;
 			children = (
 				FE59E00B2F72D2470051159F /* DailyPieChart */,
+				FEB1020012F7600000000021 /* DailyPieChartWidget */,
 				FE59E00A2F72D2470051159F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -72,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				FE59E0092F72D2470051159F /* DailyPieChart.app */,
+				FEB1000012F7600000000001 /* DailyPieChartWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -90,6 +127,8 @@
 				FE59E01F2F72D5D20051159F /* SampleData.swift */,
 				FEA1000012F7500000000001 /* L10n.swift */,
 				FEA1000072F7500000000007 /* ShareCard.swift */,
+				FEB1000062F7600000000006 /* SharedStore.swift */,
+				FEB1000052F7600000000005 /* DailyPieChart.entitlements */,
 				FE59E00C2F72D2470051159F /* DailyPieChartApp.swift */,
 				FE59E00E2F72D2470051159F /* ContentView.swift */,
 				FEA1000052F7500000000005 /* Localizable.strings */,
@@ -109,6 +148,16 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		FEB1020012F7600000000021 /* DailyPieChartWidget */ = {
+			isa = PBXGroup;
+			children = (
+				FEB1000022F7600000000002 /* DailyPieChartWidget.swift */,
+				FEB1000032F7600000000003 /* Info.plist */,
+				FEB1000042F7600000000004 /* DailyPieChartWidget.entitlements */,
+			);
+			path = DailyPieChartWidget;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -119,17 +168,54 @@
 				FE59E0052F72D2470051159F /* Sources */,
 				FE59E0062F72D2470051159F /* Frameworks */,
 				FE59E0072F72D2470051159F /* Resources */,
+				FEB1030042F7600000000034 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				FEB1050012F7600000000051 /* PBXTargetDependency */,
 			);
 			name = DailyPieChart;
 			productName = DailyPieChart;
 			productReference = FE59E0092F72D2470051159F /* DailyPieChart.app */;
 			productType = "com.apple.product-type.application";
 		};
+		FEB1040012F7600000000041 /* DailyPieChartWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FEB1040022F7600000000042 /* Build configuration list for PBXNativeTarget "DailyPieChartWidgetExtension" */;
+			buildPhases = (
+				FEB1030012F7600000000031 /* Sources */,
+				FEB1030022F7600000000032 /* Frameworks */,
+				FEB1030032F7600000000033 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DailyPieChartWidgetExtension;
+			productName = DailyPieChartWidgetExtension;
+			productReference = FEB1000012F7600000000001 /* DailyPieChartWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
+
+/* Begin PBXTargetDependency section */
+		FEB1050012F7600000000051 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FEB1040012F7600000000041 /* DailyPieChartWidgetExtension */;
+			targetProxy = FEB1050022F7600000000052 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXContainerItemProxy section */
+		FEB1050022F7600000000052 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FE59E0012F72D2470051159F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FEB1040012F7600000000041;
+			remoteInfo = DailyPieChartWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXProject section */
 		FE59E0012F72D2470051159F /* Project object */ = {
@@ -140,6 +226,9 @@
 				LastUpgradeCheck = 1420;
 				TargetAttributes = {
 					FE59E0082F72D2470051159F = {
+						CreatedOnToolsVersion = 14.2;
+					};
+					FEB1040012F7600000000041 = {
 						CreatedOnToolsVersion = 14.2;
 					};
 				};
@@ -159,6 +248,7 @@
 			projectRoot = "";
 			targets = (
 				FE59E0082F72D2470051159F /* DailyPieChart */,
+				FEB1040012F7600000000041 /* DailyPieChartWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -171,6 +261,14 @@
 				FE59E0142F72D2490051159F /* Preview Assets.xcassets in Resources */,
 				FE59E0112F72D2490051159F /* Assets.xcassets in Resources */,
 				FEA1000062F7500000000006 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FEB1030032F7600000000033 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FEB1010062F7600000000016 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -195,6 +293,19 @@
 				FE59E02C2F72D5D50051159F /* PersonListView.swift in Sources */,
 				FEA1000022F7500000000002 /* L10n.swift in Sources */,
 				FEA1000082F7500000000008 /* ShareCard.swift in Sources */,
+				FEB1010072F7600000000017 /* SharedStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FEB1030012F7600000000031 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FEB1010012F7600000000011 /* DailyPieChartWidget.swift in Sources */,
+				FEB1010022F7600000000012 /* Models.swift in Sources */,
+				FEB1010032F7600000000013 /* PieChartView.swift in Sources */,
+				FEB1010042F7600000000014 /* L10n.swift in Sources */,
+				FEB1010052F7600000000015 /* SharedStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -332,6 +443,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DailyPieChart/DailyPieChart.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DailyPieChart/Preview Content\"";
@@ -361,6 +473,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DailyPieChart/DailyPieChart.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"DailyPieChart/Preview Content\"";
@@ -385,6 +498,56 @@
 			};
 			name = Release;
 		};
+		FEB1040032F7600000000043 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = DailyPieChartWidget/DailyPieChartWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y5RBKYD4FY;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DailyPieChartWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DailyPieChart;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.PandaGiken.DailyPieChart.Widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FEB1040042F7600000000044 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = DailyPieChartWidget/DailyPieChartWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y5RBKYD4FY;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DailyPieChartWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DailyPieChart;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.PandaGiken.DailyPieChart.Widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -402,6 +565,15 @@
 			buildConfigurations = (
 				FE59E01D2F72D2490051159F /* Debug */,
 				FE59E01E2F72D2490051159F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FEB1040022F7600000000042 /* Build configuration list for PBXNativeTarget "DailyPieChartWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FEB1040032F7600000000043 /* Debug */,
+				FEB1040042F7600000000044 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

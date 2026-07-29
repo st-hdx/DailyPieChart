@@ -1,10 +1,11 @@
 import SwiftUI
+import WidgetKit
 
 struct MyScheduleView: View {
     @Binding var selectedTab: ContentView.Tab
     @EnvironmentObject var store: StoreManager
-    @AppStorage("allSchedules") private var schedulesData: Data = Data()
-    @AppStorage("activeScheduleId") private var activeScheduleId: String = ""
+    @AppStorage(AppGroup.schedulesKey, store: AppGroup.defaults) private var schedulesData: Data = Data()
+    @AppStorage(AppGroup.activeScheduleIdKey, store: AppGroup.defaults) private var activeScheduleId: String = ""
 
     @State private var schedules: [Schedule] = []
     @State private var showAddBlockSheet = false
@@ -394,6 +395,7 @@ struct MyScheduleView: View {
     func saveSchedules() {
         if let data = try? JSONEncoder().encode(schedules) {
             schedulesData = data
+            WidgetCenter.shared.reloadAllTimelines()
         }
     }
 }

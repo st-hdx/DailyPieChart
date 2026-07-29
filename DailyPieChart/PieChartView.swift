@@ -7,6 +7,8 @@ struct ClockChartView: View {
     /// ImageRenderer で書き出す際は onAppear が走らず progress が 0 のままになり
     /// 真っ白な画像になってしまうため、アニメーションを切れるようにしている。
     var animated: Bool = true
+    /// 0..<24 で「今」を指す針を出す。ウィジェットで現在地を示すのに使う。
+    var nowHour: Double? = nil
     @State private var progress: Double = 0
 
     private var effectiveProgress: Double { animated ? progress : 1 }
@@ -68,6 +70,9 @@ struct ClockChartView: View {
             backgroundRing(cx: cx, cy: cy, outerR: outerR, innerR: innerR)
             slicesLayer(cx: cx, cy: cy, outerR: outerR, innerR: innerR)
             tickMarksLayer(cx: cx, cy: cy, outerR: outerR, innerR: innerR)
+            if let nowHour {
+                nowMarker(hour: nowHour, cx: cx, cy: cy, outerR: outerR, innerR: innerR)
+            }
             if showHourLabels {
                 hourLabelsLayer(cx: cx, cy: cy, labelR: hourLabelR, s: s)
                 VStack(spacing: 1) {
@@ -128,6 +133,25 @@ struct ClockChartView: View {
                 .stroke(Color(red: 0.50, green: 0.40, blue: 0.28).opacity(isMajor ? 0.45 : 0.20),
                         lineWidth: isMajor ? 1.5 : 0.7)
             }
+        }
+    }
+
+    private func nowMarker(hour: Double, cx: CGFloat, cy: CGFloat, outerR: CGFloat, innerR: CGFloat) -> some View {
+        let angle = CGFloat(hour) / 24.0 * 2.0 * .pi - .pi / 2.0
+        let tipR = outerR * 1.06
+        return ZStack {
+            Path { path in
+                path.move(to: CGPoint(x: cx + innerR * 0.92 * cos(angle),
+                                      y: cy + innerR * 0.92 * sin(angle)))
+                path.addLine(to: CGPoint(x: cx + tipR * cos(angle),
+                                         y: cy + tipR * sin(angle)))
+            }
+            .stroke(Theme.textWarm, style: StrokeStyle(lineWidth: 2, lineCap: .round))
+
+            Circle()
+                .fill(Theme.textWarm)
+                .frame(width: 6, height: 6)
+                .position(x: cx + tipR * cos(angle), y: cy + tipR * sin(angle))
         }
     }
 

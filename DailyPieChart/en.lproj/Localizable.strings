@@ -93,6 +93,13 @@
 "onboarding.blank"         = "Start from scratch";
 "onboarding.pick_template" = "Choose a template";
 
+/* ===== Widget ===== */
+"widget.display_name" = "My Day";
+"widget.description"  = "See how your day is laid out, right on your Home Screen.";
+"widget.no_data"      = "No schedule yet";
+"widget.no_data_hint" = "Create one in the app";
+"widget.remaining"    = "%@ left";
+
 /* ===== Starter templates ===== */
 "template.weekday.name" = "Weekday";
 "template.remote.name"  = "Remote work";

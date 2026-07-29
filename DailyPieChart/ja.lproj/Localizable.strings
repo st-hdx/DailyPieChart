@@ -93,6 +93,13 @@
 "onboarding.blank"         = "ゼロから作る";
 "onboarding.pick_template" = "テンプレートを選ぶ";
 
+/* ===== Widget ===== */
+"widget.display_name" = "今日の円グラフ";
+"widget.description"  = "自分の一日をホーム画面に表示します。";
+"widget.no_data"      = "スケジュール未設定";
+"widget.no_data_hint" = "アプリで作成してください";
+"widget.remaining"    = "あと%@";
+
 /* ===== Starter templates ===== */
 "template.weekday.name" = "平日";
 "template.remote.name"  = "リモートワーク";

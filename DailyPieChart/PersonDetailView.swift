@@ -1,9 +1,10 @@
 import SwiftUI
+import WidgetKit
 
 struct PersonDetailView: View {
     let person: Person
-    @AppStorage("allSchedules") private var schedulesData: Data = Data()
-    @AppStorage("activeScheduleId") private var activeScheduleId: String = ""
+    @AppStorage(AppGroup.schedulesKey, store: AppGroup.defaults) private var schedulesData: Data = Data()
+    @AppStorage(AppGroup.activeScheduleIdKey, store: AppGroup.defaults) private var activeScheduleId: String = ""
     @State private var showCopied = false
 
     var activeScheduleName: String {
@@ -140,6 +141,7 @@ struct PersonDetailView: View {
 
         if let data = try? JSONEncoder().encode(schedules) {
             schedulesData = data
+            WidgetCenter.shared.reloadAllTimelines()
         }
         showCopied = true
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
