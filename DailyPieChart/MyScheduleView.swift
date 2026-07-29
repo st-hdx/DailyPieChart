@@ -80,6 +80,7 @@ struct MyScheduleView: View {
                             Text("\(timeBlocks.count)/24")
                                 .font(.caption.weight(.semibold))
                                 .foregroundColor(timeBlocks.count >= 24 ? Theme.accent2 : .secondary)
+                                .fixedSize()
                             ShareChartButton(
                                 title: activeScheduleName,
                                 subtitle: formatHours(totalHours),
@@ -323,6 +324,8 @@ struct MyScheduleView: View {
             }
         }
         .environment(\.editMode, $editMode)
+        .scrollContentBackground(.hidden)
+        .background(Theme.background)
     }
 
     private func blockRow(_ block: TimeBlock) -> some View {
