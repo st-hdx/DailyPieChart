@@ -1,0 +1,168 @@
+/* ===== Common ===== */
+"common.save"    = "保存";
+"common.cancel"  = "キャンセル";
+"common.create"  = "作成";
+"common.done"    = "完了";
+"common.delete"  = "削除";
+"common.rename"  = "名前を変更";
+
+/* ===== Formats ===== */
+"format.hours"         = "%d時間";
+"format.minutes"       = "%d分";
+"format.hours_minutes" = "%1$d時間%2$d分";
+"format.time_range"    = "%1$@〜%2$@";
+
+/* ===== Tabs ===== */
+"tab.persons"     = "偉人";
+"tab.my_schedule" = "マイスケジュール";
+
+/* ===== Person list ===== */
+"person_list.title"        = "偉人たちの一日";
+"person_list.tagline1"     = "偉人たちの習慣から";
+"person_list.tagline2"     = "自分の一日を設計しよう";
+"person_list.unlock_count" = "残り%d人をアンロック";
+"person_list.upgrade"      = "Pro にアップグレード";
+
+/* ===== Person detail ===== */
+"person_detail.era"              = "時代";
+"person_detail.copied"           = "コピーしました！";
+"person_detail.copy_to_schedule" = "スケジュールにコピー";
+"person_detail.copy_to_named"    = "%@にコピー";
+
+/* ===== My schedule ===== */
+"my_schedule.title"             = "マイスケジュール";
+"my_schedule.reorder"           = "並び替え";
+"my_schedule.total"             = "合計時間";
+"my_schedule.activities"        = "活動一覧";
+"my_schedule.no_schedules_title" = "スケジュールがありません";
+"my_schedule.no_schedules_body"  = "まずスケジュールを作成しましょう";
+"my_schedule.create_schedule"    = "スケジュールを作成";
+"my_schedule.no_blocks_title"    = "活動がありません";
+"my_schedule.no_blocks_body"     = "偉人タブからコピーするか\n「+」ボタンで追加してください";
+
+/* ===== Schedule ===== */
+"schedule.default_name"     = "マイスケジュール";
+"add_schedule.title"        = "スケジュールを追加";
+"add_schedule.name_label"   = "スケジュール名";
+"add_schedule.name_placeholder" = "例：平日、週末、休日";
+"rename.title"              = "名前を変更";
+"rename.new_name"           = "新しい名前";
+"rename.placeholder"        = "スケジュール名";
+
+/* ===== Edit block ===== */
+"edit_block.title_add"        = "活動を追加";
+"edit_block.title_edit"       = "活動を編集";
+"edit_block.name_label"       = "活動名";
+"edit_block.name_placeholder" = "例：睡眠、仕事、運動";
+"edit_block.hours_label"      = "時間";
+"edit_block.color_label"      = "カラー";
+"edit_block.remaining"        = "残り";
+"edit_block.over"             = "%@オーバー";
+"edit_block.default_name"     = "活動";
+
+/* ===== Paywall ===== */
+"paywall.subtitle"         = "偉人の習慣をもっと深く学び\n自分だけのスケジュールを作ろう";
+"paywall.feature1.title"    = "全偉人データを閲覧";
+"paywall.feature1.subtitle" = "無料版%1$d人 → 全%2$d人に拡張";
+"paywall.feature2.title"    = "スケジュールを無制限に作成";
+"paywall.feature2.subtitle" = "平日・週末・旅行中など使い分け自由";
+"paywall.feature3.title"    = "今後追加される偉人も利用可能";
+"paywall.feature3.subtitle" = "アップデートで随時追加予定";
+"paywall.retry"            = "再試行する";
+"paywall.buy"              = "買い切り %@ で解放する";
+"paywall.restore"          = "購入を復元する";
+"paywall.note"             = "一度購入すれば永久に利用できます。\nサブスクリプションではありません。";
+
+/* ===== Store errors ===== */
+"error.product_not_found"  = "商品情報が見つかりませんでした";
+"error.product_load_failed" = "商品情報の取得に失敗しました";
+"error.purchase_failed"    = "購入に失敗しました";
+"error.restore_failed"     = "購入の復元に失敗しました";
+
+/* ===== Chart ===== */
+"chart.hour_unit" = "HOUR";
+
+/* ===== Persons ===== */
+"person.darwin.name"     = "チャールズ・ダーウィン";
+"person.darwin.bio"      = "進化論を提唱したイギリスの自然科学者。規則正しい生活リズムを維持しながら研究を続けた。";
+"person.beethoven.name"  = "ルートヴィヒ・ヴァン・ベートーヴェン";
+"person.beethoven.bio"   = "ドイツの作曲家。朝から作曲に没頭し、コーヒーへのこだわりでも知られる。";
+"person.kafka.name"      = "フランツ・カフカ";
+"person.kafka.bio"       = "チェコの小説家。保険会社に勤めながら、深夜に執筆するという生活を送った。";
+"person.franklin.name"   = "ベンジャミン・フランクリン";
+"person.franklin.bio"    = "アメリカ建国の父の一人。発明家・政治家・著述家でもあり、自己管理を徹底した。";
+"person.angelou.name"    = "マヤ・アンジェロウ";
+"person.angelou.bio"     = "アメリカの詩人・活動家。ホテルに部屋を借りて執筆に集中するという独特のスタイルを持つ。";
+"person.kant.name"       = "イマヌエル・カント";
+"person.kant.bio"        = "ドイツの哲学者。毎日まったく同じ時刻に起床・散歩・就寝し、街の人々が時計代わりにしたほど規則正しい生活を送った。";
+"person.churchill.name"  = "ウィンストン・チャーチル";
+"person.churchill.bio"   = "イギリスの首相。午前中はベッドの中で執筆・書類処理をこなし、午後には必ず昼寝をとることで長時間の集中力を維持した。";
+"person.curie.name"      = "マリー・キュリー";
+"person.curie.bio"       = "ポーランド生まれの物理学者・化学者。ノーベル賞を2度受賞した史上初の人物。研究室に長時間こもり、放射線研究に人生を捧げた。";
+"person.tchaikovsky.name" = "ピョートル・チャイコフスキー";
+"person.tchaikovsky.bio"  = "ロシアの作曲家。毎日2時間の散歩を欠かさず、「散歩をやめたら死ぬ」と語ったほど歩くことを創作の源にした。";
+"person.davinci.name"    = "レオナルド・ダ・ヴィンチ";
+"person.davinci.bio"     = "イタリアの芸術家・科学者。多相睡眠（短い仮眠を繰り返す）を実践し、絵画・解剖学・工学など多分野で革新的な業績を残した。";
+
+/* ===== Activities ===== */
+"activity.sleep"                = "睡眠";
+"activity.sleep_polyphasic"     = "睡眠（多相）";
+"activity.nap"                  = "仮眠";
+"activity.afternoon_nap"        = "昼寝";
+"activity.walk"                 = "散歩";
+"activity.walk_required"        = "散歩（必須）";
+"activity.morning_walk"         = "朝の散歩";
+"activity.afternoon_walk"       = "午後の散歩";
+"activity.evening_walk"         = "夜の散歩";
+"activity.walk_nature"          = "散歩・自然観察";
+"activity.exercise"             = "運動";
+"activity.research_writing"     = "研究・執筆";
+"activity.research_morning"     = "研究（午前）";
+"activity.research_afternoon"   = "研究（午後）";
+"activity.anatomy_science"      = "解剖・科学研究";
+"activity.paper_writing"        = "論文執筆・読書";
+"activity.writing_night"        = "執筆（深夜）";
+"activity.writing_hotel"        = "執筆（ホテル）";
+"activity.writing_thinking"     = "執筆・思索";
+"activity.writing_in_bed"       = "ベッドで執筆・書類処理";
+"activity.composing_morning"    = "作曲（午前）";
+"activity.composing_afternoon"  = "作曲（午後）";
+"activity.painting_morning"     = "制作・絵画（午前）";
+"activity.painting_afternoon"   = "制作（午後）";
+"activity.sketch_reading"       = "スケッチ・読書";
+"activity.lecture"              = "講義";
+"activity.work_morning"         = "仕事（午前）";
+"activity.work_afternoon"       = "仕事（午後）";
+"activity.work_insurance"       = "仕事（保険会社）";
+"activity.work_late_night"      = "深夜の仕事";
+"activity.breakfast_coffee"     = "朝食・コーヒー";
+"activity.breakfast_prep"       = "朝食・準備";
+"activity.breakfast_commute"    = "朝食・出勤準備";
+"activity.breakfast_reading"    = "朝食・読書";
+"activity.breakfast_newspaper"  = "朝食・新聞";
+"activity.morning_planning"     = "朝の準備・計画";
+"activity.wake_tea_thinking"    = "起床・お茶・思索準備";
+"activity.wake_tea_reading"     = "起床・お茶・読書";
+"activity.lunch"                = "昼食";
+"activity.lunch_break"          = "昼食・休憩";
+"activity.lunch_walk"           = "昼食・散歩";
+"activity.lunch_family"         = "昼食・家族の時間";
+"activity.lunch_reading"        = "昼食・読書";
+"activity.lunch_social"         = "昼食・交流";
+"activity.lunch_long"           = "昼食（長い）";
+"activity.lunch_simple"         = "昼食（簡素）";
+"activity.dinner"               = "夕食";
+"activity.dinner_family"        = "夕食・家族";
+"activity.dinner_social"        = "夕食・交流";
+"activity.dinner_society"       = "夕食・社交";
+"activity.reading"              = "読書";
+"activity.reading_letters"      = "読書・手紙";
+"activity.reading_social"       = "読書・交流";
+"activity.reading_input"        = "読書・インプット";
+"activity.reading_bedtime"      = "読書・就寝準備";
+"activity.music_conversation"   = "音楽・会話";
+"activity.family_friends"       = "家族・友人との時間";
+"activity.students_social"      = "弟子・交流";
+"activity.daily_review"         = "一日の振り返り";
+"activity.bedtime_prep"         = "就寝準備";
+"activity.bedtime_snack"        = "就寝準備・軽食";

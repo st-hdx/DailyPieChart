@@ -68,14 +68,14 @@ struct ClockChartView: View {
                     Text("24")
                         .font(.system(size: s * 0.10, weight: .bold, design: .rounded))
                         .foregroundColor(Theme.textWarm.opacity(0.72))
-                    Text("HOUR")
+                    Text("chart.hour_unit")
                         .font(.system(size: s * 0.038, weight: .semibold, design: .rounded))
                         .foregroundColor(Theme.textWarm.opacity(0.42))
                 }
                 .position(x: cx, y: cy)
             }
             if showActivityLabels {
-                activityLabelsLayer(cx: cx, cy: cy, outerR: outerR, s: s)
+                activityLabelsLayer(cx: cx, cy: cy, outerR: outerR, s: s, width: geo.size.width)
             }
         }
     }
@@ -144,12 +144,12 @@ struct ClockChartView: View {
         }
     }
 
-    private func activityLabelsLayer(cx: CGFloat, cy: CGFloat, outerR: CGFloat, s: CGFloat) -> some View {
+    private func activityLabelsLayer(cx: CGFloat, cy: CGFloat, outerR: CGFloat, s: CGFloat, width: CGFloat) -> some View {
         ZStack {
             ForEach(Array(activityMidpoints.enumerated()), id: \.offset) { _, item in
                 if item.hours >= 1.0 {
                     activityLabelItem(angle: item.angle, name: item.name,
-                                      cx: cx, cy: cy, outerR: outerR, s: s)
+                                      cx: cx, cy: cy, outerR: outerR, s: s, width: width)
                 }
             }
         }
@@ -158,24 +158,32 @@ struct ClockChartView: View {
     @ViewBuilder
     private func activityLabelItem(angle: CGFloat, name: String,
                                    cx: CGFloat, cy: CGFloat,
-                                   outerR: CGFloat, s: CGFloat) -> some View {
+                                   outerR: CGFloat, s: CGFloat,
+                                   width: CGFloat) -> some View {
         // 引き出し線
         Path { path in
             path.move(to: CGPoint(x: cx + outerR * 1.04 * cos(angle),
                                   y: cy + outerR * 1.04 * sin(angle)))
-            path.addLine(to: CGPoint(x: cx + outerR * 1.35 * cos(angle),
-                                     y: cy + outerR * 1.35 * sin(angle)))
+            path.addLine(to: CGPoint(x: cx + outerR * 1.32 * cos(angle),
+                                     y: cy + outerR * 1.32 * sin(angle)))
         }
         .stroke(Theme.textWarm.opacity(0.25), lineWidth: 0.8)
 
-        // ラベル
+        // ラベル。英語は日本語より長くなるため、ラベル枠が画面外に出ないよう X を内側に寄せる。
+        let labelWidth = outerR * 0.85
+        let rawX = cx + outerR * 1.42 * cos(angle)
+        let minX = labelWidth / 2
+        let maxX = width - labelWidth / 2
+
         Text(name)
             .font(.system(size: max(s * 0.038, 9), weight: .medium))
             .foregroundColor(Theme.textWarm.opacity(0.80))
-            .lineLimit(1)
-            .frame(maxWidth: outerR * 0.9)
-            .position(x: cx + outerR * 1.48 * cos(angle),
-                      y: cy + outerR * 1.48 * sin(angle))
+            .lineLimit(2)
+            .multilineTextAlignment(.center)
+            .minimumScaleFactor(0.75)
+            .frame(maxWidth: labelWidth)
+            .position(x: min(max(rawX, minX), max(minX, maxX)),
+                      y: cy + outerR * 1.42 * sin(angle))
     }
 }
 
@@ -216,6 +224,7 @@ struct PieChartView: View {
                 Text(block.name)
                     .font(.caption.weight(.medium))
                     .lineLimit(1)
+                    .minimumScaleFactor(0.8)
                 Text(formatTimeRange(start: startHour, duration: block.hours))
                     .font(.caption2)
                     .foregroundColor(.secondary)
@@ -239,6 +248,6 @@ struct PieChartView: View {
             let min = Int((h - Double(Int(h))) * 60)
             return String(format: "%d:%02d", hour, min)
         }
-        return "\(fmt(start))〜\(fmt(start + duration))"
+        return L("format.time_range", fmt(start), fmt(start + duration))
     }
 }

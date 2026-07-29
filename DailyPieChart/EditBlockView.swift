@@ -26,30 +26,35 @@ struct EditBlockView: View {
 
     var selectedColor: Color { blockColors[colorIndex % blockColors.count] }
 
+    /// 三項演算子のままだと String オーバーロードに解決されうるため、型を明示する。
+    var titleKey: LocalizedStringKey {
+        existingBlock == nil ? "edit_block.title_add" : "edit_block.title_edit"
+    }
+
     var body: some View {
         NavigationView {
             ScrollView {
                 VStack(spacing: 24) {
 
                     // Name
-                    fieldSection(label: "活動名", icon: "pencil") {
-                        TextField("例：睡眠、仕事、運動", text: $name)
+                    fieldSection(label: "edit_block.name_label", icon: "pencil") {
+                        TextField("edit_block.name_placeholder", text: $name)
                             .font(.body)
                     }
 
                     // Hours
-                    fieldSection(label: "時間", icon: "clock") {
+                    fieldSection(label: "edit_block.hours_label", icon: "clock") {
                         VStack(spacing: 0) {
                             Stepper(formatHours(hours), value: $hours, in: 0.5...max(0.5, maxHours), step: 0.5)
                             Divider()
                                 .background(Color.white.opacity(0.08))
                                 .padding(.vertical, 10)
                             HStack {
-                                Text("残り")
+                                Text("edit_block.remaining")
                                     .foregroundColor(.secondary)
                                 Spacer()
                                 if isOverLimit {
-                                    Label("\(formatHours(abs(remaining)))オーバー", systemImage: "exclamationmark.triangle.fill")
+                                    Label(L("edit_block.over", formatHours(abs(remaining))), systemImage: "exclamationmark.triangle.fill")
                                         .foregroundColor(.red)
                                         .font(.subheadline)
                                 } else {
@@ -62,7 +67,7 @@ struct EditBlockView: View {
                     }
 
                     // Color
-                    fieldSection(label: "カラー", icon: "paintpalette") {
+                    fieldSection(label: "edit_block.color_label", icon: "paintpalette") {
                         LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 5), spacing: 16) {
                             ForEach(0..<blockColors.count, id: \.self) { index in
                                 colorSwatch(index: index)
@@ -72,7 +77,7 @@ struct EditBlockView: View {
 
                     // Save button
                     Button(action: save) {
-                        Text("保存")
+                        Text("common.save")
                             .font(.body.weight(.bold))
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 16)
@@ -96,11 +101,11 @@ struct EditBlockView: View {
                 .padding(.vertical, 24)
             }
             .background(Theme.background.ignoresSafeArea())
-            .navigationTitle(existingBlock == nil ? "活動を追加" : "活動を編集")
+            .navigationTitle(titleKey)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("キャンセル") { dismiss() }
+                    Button("common.cancel") { dismiss() }
                         .foregroundColor(.secondary)
                 }
             }
@@ -109,7 +114,7 @@ struct EditBlockView: View {
 
     @ViewBuilder
     private func fieldSection<Content: View>(
-        label: String,
+        label: LocalizedStringKey,
         icon: String,
         @ViewBuilder content: () -> Content
     ) -> some View {
@@ -154,19 +159,10 @@ struct EditBlockView: View {
 
     private func save() {
         var block = existingBlock ?? TimeBlock(name: "", hours: 1, colorIndex: 0)
-        block.name = name.isEmpty ? "活動" : name
+        block.name = name.isEmpty ? L("edit_block.default_name") : name
         block.hours = hours
         block.colorIndex = colorIndex
         onSave(block)
         dismiss()
-    }
-
-    func formatHours(_ hours: Double) -> String {
-        let totalMinutes = lround(hours * 60)
-        let h = totalMinutes / 60
-        let m = totalMinutes % 60
-        if m == 0 { return "\(h)時間" }
-        if h == 0 { return "\(m)分" }
-        return "\(h)時間\(m)分"
     }
 }

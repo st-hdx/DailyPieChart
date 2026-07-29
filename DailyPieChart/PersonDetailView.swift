@@ -9,11 +9,11 @@ struct PersonDetailView: View {
     var activeScheduleName: String {
         let schedules = (try? JSONDecoder().decode([Schedule].self, from: schedulesData)) ?? []
         let name = schedules.first(where: { $0.id.uuidString == activeScheduleId })?.name
-        return name.map { "\($0)にコピー" } ?? "スケジュールにコピー"
+        return name.map { L("person_detail.copy_to_named", $0) } ?? L("person_detail.copy_to_schedule")
     }
 
     var copyButtonLabel: String {
-        showCopied ? "コピーしました！" : activeScheduleName
+        showCopied ? L("person_detail.copied") : activeScheduleName
     }
 
     var accentColor: Color {
@@ -35,7 +35,7 @@ struct PersonDetailView: View {
                             )
                             .frame(width: 3, height: 40)
                         VStack(alignment: .leading, spacing: 2) {
-                            Text("時代")
+                            Text("person_detail.era")
                                 .font(.caption2.weight(.medium))
                                 .foregroundColor(.secondary)
                             Text(person.era)
@@ -119,7 +119,7 @@ struct PersonDetailView: View {
 
         if schedules.isEmpty {
             // スケジュールがなければ自動作成
-            let newSchedule = Schedule(name: "マイスケジュール", timeBlocks: person.timeBlocks)
+            let newSchedule = Schedule(name: L("schedule.default_name"), timeBlocks: person.timeBlocks)
             schedules.append(newSchedule)
             activeScheduleId = newSchedule.id.uuidString
         } else if let idx = schedules.firstIndex(where: { $0.id.uuidString == activeScheduleId }) {

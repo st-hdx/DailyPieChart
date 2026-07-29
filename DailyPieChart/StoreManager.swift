@@ -36,10 +36,10 @@ class StoreManager: ObservableObject {
             let fetched = try await Product.products(for: [Self.proProductID])
             proProduct = fetched.first
             if proProduct == nil {
-                errorMessage = "商品情報が見つかりませんでした"
+                errorMessage = L("error.product_not_found")
             }
         } catch {
-            errorMessage = "商品情報の取得に失敗しました"
+            errorMessage = L("error.product_load_failed")
         }
     }
 
@@ -64,7 +64,7 @@ class StoreManager: ObservableObject {
                 break
             }
         } catch {
-            errorMessage = "購入に失敗しました"
+            errorMessage = L("error.purchase_failed")
         }
     }
 
@@ -77,7 +77,7 @@ class StoreManager: ObservableObject {
             try await AppStore.sync()
             await refreshPurchaseStatus()
         } catch {
-            errorMessage = "購入の復元に失敗しました"
+            errorMessage = L("error.restore_failed")
         }
     }
 

@@ -56,7 +56,7 @@ struct PaywallView: View {
                 .font(.title2.bold())
                 .foregroundColor(Theme.textWarm)
 
-            Text("偉人の習慣をもっと深く学び\n自分だけのスケジュールを作ろう")
+            Text("paywall.subtitle")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
@@ -73,20 +73,20 @@ struct PaywallView: View {
             featureRow(
                 icon: "person.3.fill",
                 color: Color(red: 0.22, green: 0.42, blue: 0.85),
-                title: "全偉人データを閲覧",
-                subtitle: "無料版3人 → 全\(samplePersons.count)人に拡張"
+                title: L("paywall.feature1.title"),
+                subtitle: L("paywall.feature1.subtitle", StoreManager.freePersonLimit, samplePersons.count)
             )
             featureRow(
                 icon: "calendar.badge.plus",
                 color: Theme.accent1,
-                title: "スケジュールを無制限に作成",
-                subtitle: "平日・週末・旅行中など使い分け自由"
+                title: L("paywall.feature2.title"),
+                subtitle: L("paywall.feature2.subtitle")
             )
             featureRow(
                 icon: "sparkles",
                 color: Color(red: 0.60, green: 0.28, blue: 0.70),
-                title: "今後追加される偉人も利用可能",
-                subtitle: "アップデートで随時追加予定"
+                title: L("paywall.feature3.title"),
+                subtitle: L("paywall.feature3.subtitle")
             )
         }
         .padding(.horizontal)
@@ -140,10 +140,10 @@ struct PaywallView: View {
                     if store.isLoading {
                         ProgressView().tint(.white)
                     } else if store.proProduct == nil {
-                        Label("再試行する", systemImage: "arrow.clockwise")
+                        Label("paywall.retry", systemImage: "arrow.clockwise")
                             .font(.body.weight(.bold))
                     } else {
-                        Text("買い切り \(priceLabel) で解放する")
+                        Text(L("paywall.buy", priceLabel))
                             .font(.body.weight(.bold))
                     }
                 }
@@ -160,7 +160,7 @@ struct PaywallView: View {
             Button {
                 Task { await store.restorePurchases() }
             } label: {
-                Text("購入を復元する")
+                Text("paywall.restore")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
@@ -173,7 +173,7 @@ struct PaywallView: View {
                     .multilineTextAlignment(.center)
             }
 
-            Text("一度購入すれば永久に利用できます。\nサブスクリプションではありません。")
+            Text("paywall.note")
                 .font(.caption2)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)

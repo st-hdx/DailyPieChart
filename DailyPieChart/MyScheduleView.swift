@@ -29,6 +29,11 @@ struct MyScheduleView: View {
         activeIndex.map { schedules[$0].timeBlocks } ?? []
     }
 
+    /// 三項演算子のままだと String オーバーロードに解決されうるため、型を明示する。
+    var reorderButtonKey: LocalizedStringKey {
+        editMode.isEditing ? "common.done" : "my_schedule.reorder"
+    }
+
     var totalHours: Double { timeBlocks.reduce(0) { $0 + $1.hours } }
     var isExact24: Bool { abs(totalHours - 24) < 0.01 }
 
@@ -53,11 +58,11 @@ struct MyScheduleView: View {
                 }
             }
             .background(Theme.background)
-            .navigationTitle("マイスケジュール")
+            .navigationTitle("my_schedule.title")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     if !timeBlocks.isEmpty {
-                        Button(editMode.isEditing ? "完了" : "並び替え") {
+                        Button(reorderButtonKey) {
                             withAnimation { editMode = editMode.isEditing ? .inactive : .active }
                         }
                     }
@@ -167,15 +172,15 @@ struct MyScheduleView: View {
                     .foregroundStyle(Theme.accentGradient)
             }
             VStack(spacing: 6) {
-                Text("スケジュールがありません")
+                Text("my_schedule.no_schedules_title")
                     .font(.headline)
                     .foregroundColor(Theme.textWarm)
-                Text("まずスケジュールを作成しましょう")
+                Text("my_schedule.no_schedules_body")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
             Button { if canAddSchedule { showAddScheduleSheet = true } else { showPaywall = true } } label: {
-                Label("スケジュールを作成", systemImage: "plus.circle.fill")
+                Label("my_schedule.create_schedule", systemImage: "plus.circle.fill")
                     .font(.body.weight(.semibold))
                     .padding(.horizontal, 24)
                     .padding(.vertical, 12)
@@ -203,10 +208,10 @@ struct MyScheduleView: View {
                     .foregroundStyle(Theme.accentGradient)
             }
             VStack(spacing: 6) {
-                Text("活動がありません")
+                Text("my_schedule.no_blocks_title")
                     .font(.headline)
                     .foregroundColor(Theme.textWarm)
-                Text("偉人タブからコピーするか\n「+」ボタンで追加してください")
+                Text("my_schedule.no_blocks_body")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
                     .multilineTextAlignment(.center)
@@ -225,7 +230,7 @@ struct MyScheduleView: View {
                     .listRowBackground(Color.clear)
 
                 HStack {
-                    Text("合計時間")
+                    Text("my_schedule.total")
                         .foregroundColor(.secondary)
                     Spacer()
                     Text(formatHours(totalHours))
@@ -238,7 +243,7 @@ struct MyScheduleView: View {
                 }
             }
 
-            Section("活動一覧") {
+            Section("my_schedule.activities") {
                 ForEach(timeBlocks) { block in
                     blockRow(block)
                         .contentShape(Rectangle())
@@ -328,15 +333,6 @@ struct MyScheduleView: View {
             schedulesData = data
         }
     }
-
-    func formatHours(_ hours: Double) -> String {
-        let totalMinutes = lround(hours * 60)
-        let h = totalMinutes / 60
-        let m = totalMinutes % 60
-        if m == 0 { return "\(h)時間" }
-        if h == 0 { return "\(m)分" }
-        return "\(h)時間\(m)分"
-    }
 }
 
 // MARK: - Add Schedule Sheet
@@ -350,10 +346,10 @@ struct AddScheduleSheet: View {
         NavigationView {
             VStack(spacing: 24) {
                 VStack(alignment: .leading, spacing: 10) {
-                    Label("スケジュール名", systemImage: "calendar")
+                    Label("add_schedule.name_label", systemImage: "calendar")
                         .font(.caption.weight(.semibold))
                         .foregroundColor(.secondary)
-                    TextField("例：平日、週末、休日", text: $name)
+                    TextField("add_schedule.name_placeholder", text: $name)
                         .font(.body)
                         .padding()
                         .background(Theme.card)
@@ -366,7 +362,7 @@ struct AddScheduleSheet: View {
                     onSave(name.trimmingCharacters(in: .whitespaces))
                     dismiss()
                 } label: {
-                    Text("作成")
+                    Text("common.create")
                         .font(.body.weight(.bold))
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
@@ -382,11 +378,11 @@ struct AddScheduleSheet: View {
             }
             .padding(.vertical, 24)
             .background(Theme.background.ignoresSafeArea())
-            .navigationTitle("スケジュールを追加")
+            .navigationTitle("add_schedule.title")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("キャンセル") { dismiss() }.foregroundColor(.secondary)
+                    Button("common.cancel") { dismiss() }.foregroundColor(.secondary)
                 }
             }
         }
@@ -431,11 +427,11 @@ struct SchedulePillView: View {
             .onTapGesture(perform: onTap)
             .contextMenu {
                 Button { onRename() } label: {
-                    Label("名前を変更", systemImage: "pencil")
+                    Label("common.rename", systemImage: "pencil")
                 }
                 if canDelete {
                     Button(role: .destructive) { onDelete() } label: {
-                        Label("削除", systemImage: "trash")
+                        Label("common.delete", systemImage: "trash")
                     }
                 }
             }
@@ -453,10 +449,10 @@ struct RenameScheduleSheet: View {
         NavigationView {
             VStack(spacing: 24) {
                 VStack(alignment: .leading, spacing: 10) {
-                    Label("新しい名前", systemImage: "pencil")
+                    Label("rename.new_name", systemImage: "pencil")
                         .font(.caption.weight(.semibold))
                         .foregroundColor(.secondary)
-                    TextField("スケジュール名", text: $name)
+                    TextField("rename.placeholder", text: $name)
                         .font(.body)
                         .padding()
                         .background(Theme.card)
@@ -469,7 +465,7 @@ struct RenameScheduleSheet: View {
                     onSave()
                     dismiss()
                 } label: {
-                    Text("保存")
+                    Text("common.save")
                         .font(.body.weight(.bold))
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
@@ -485,11 +481,11 @@ struct RenameScheduleSheet: View {
             }
             .padding(.vertical, 24)
             .background(Theme.background.ignoresSafeArea())
-            .navigationTitle("名前を変更")
+            .navigationTitle("rename.title")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("キャンセル") { dismiss() }.foregroundColor(.secondary)
+                    Button("common.cancel") { dismiss() }.foregroundColor(.secondary)
                 }
             }
         }

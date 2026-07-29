@@ -1,0 +1,169 @@
+/* ===== Common ===== */
+"common.save"    = "Save";
+"common.cancel"  = "Cancel";
+"common.create"  = "Create";
+"common.done"    = "Done";
+"common.delete"  = "Delete";
+"common.rename"  = "Rename";
+
+/* ===== Formats ===== */
+"format.hours"         = "%dh";
+"format.minutes"       = "%dm";
+"format.hours_minutes" = "%1$dh %2$dm";
+"format.time_range"    = "%1$@ – %2$@";
+
+/* ===== Tabs ===== */
+"tab.persons"     = "Icons";
+"tab.my_schedule" = "My Day";
+
+/* ===== Person list ===== */
+"person_list.title"        = "Daily Routines";
+"person_list.tagline1"     = "How history’s greatest minds";
+"person_list.tagline2"     = "structured their 24 hours";
+"person_list.unlock_count" = "Unlock %d more routines";
+"person_list.upgrade"      = "Upgrade to Pro";
+
+/* ===== Person detail ===== */
+"person_detail.era"              = "Era";
+"person_detail.copied"           = "Copied!";
+"person_detail.copy_to_schedule" = "Copy to my schedule";
+"person_detail.copy_to_named"    = "Copy to %@";
+
+/* ===== My schedule ===== */
+"my_schedule.title"             = "My Day";
+"my_schedule.reorder"           = "Reorder";
+"my_schedule.total"             = "Total";
+"my_schedule.activities"        = "Activities";
+"my_schedule.no_schedules_title" = "No schedules yet";
+"my_schedule.no_schedules_body"  = "Create your first schedule to get started";
+"my_schedule.create_schedule"    = "Create a schedule";
+"my_schedule.no_blocks_title"    = "No activities yet";
+"my_schedule.no_blocks_body"     = "Copy one from the Icons tab,\nor tap “+” to add your own";
+
+/* ===== Schedule ===== */
+"schedule.default_name"     = "My Day";
+"add_schedule.title"        = "New Schedule";
+"add_schedule.name_label"   = "Schedule name";
+"add_schedule.name_placeholder" = "e.g. Weekday, Weekend, Vacation";
+"rename.title"              = "Rename";
+"rename.new_name"           = "New name";
+"rename.placeholder"        = "Schedule name";
+
+/* ===== Edit block ===== */
+"edit_block.title_add"        = "Add Activity";
+"edit_block.title_edit"       = "Edit Activity";
+"edit_block.name_label"       = "Activity";
+"edit_block.name_placeholder" = "e.g. Sleep, Work, Exercise";
+"edit_block.hours_label"      = "Duration";
+"edit_block.color_label"      = "Color";
+"edit_block.remaining"        = "Remaining";
+"edit_block.over"             = "%@ over";
+"edit_block.default_name"     = "Activity";
+
+/* ===== Paywall ===== */
+"paywall.subtitle"         = "Explore how great minds built their days\nand design your own";
+"paywall.feature1.title"    = "Every routine unlocked";
+"paywall.feature1.subtitle" = "%1$d free → all %2$d figures";
+"paywall.feature2.title"    = "Unlimited schedules";
+"paywall.feature2.subtitle" = "Weekday, weekend, travel — keep them all";
+"paywall.feature3.title"    = "Future additions included";
+"paywall.feature3.subtitle" = "New figures added in updates";
+"paywall.retry"            = "Try again";
+"paywall.buy"              = "Unlock forever — %@";
+"paywall.restore"          = "Restore purchase";
+"paywall.note"             = "One-time purchase, yours forever.\nNot a subscription.";
+
+/* ===== Store errors ===== */
+"error.product_not_found"  = "Product information not found";
+"error.product_load_failed" = "Couldn’t load product information";
+"error.purchase_failed"    = "Purchase failed";
+"error.restore_failed"     = "Couldn’t restore your purchase";
+
+/* ===== Chart ===== */
+"chart.hour_unit" = "HOUR";
+
+/* ===== Persons ===== */
+"person.darwin.name"     = "Charles Darwin";
+"person.darwin.bio"      = "The English naturalist behind the theory of evolution. He kept an unusually strict daily rhythm throughout his research career.";
+"person.beethoven.name"  = "Ludwig van Beethoven";
+"person.beethoven.bio"   = "The German composer who threw himself into composing every morning — and famously counted out exactly 60 coffee beans per cup.";
+"person.kafka.name"      = "Franz Kafka";
+"person.kafka.bio"       = "The Czech novelist who held a day job at an insurance office and wrote in the small hours of the night.";
+"person.franklin.name"   = "Benjamin Franklin";
+"person.franklin.bio"    = "A Founding Father of the United States — inventor, statesman and writer — who governed his days by a rigorous personal schedule.";
+"person.angelou.name"    = "Maya Angelou";
+"person.angelou.bio"     = "The American poet and activist who rented a bare hotel room to write in, arriving at dawn and working until early afternoon.";
+"person.kant.name"       = "Immanuel Kant";
+"person.kant.bio"        = "The German philosopher so punctual in rising, walking and sleeping that neighbours were said to set their clocks by him.";
+"person.churchill.name"  = "Winston Churchill";
+"person.churchill.bio"   = "The British prime minister who worked from bed all morning and never skipped his afternoon nap, sustaining focus deep into the night.";
+"person.curie.name"      = "Marie Curie";
+"person.curie.bio"       = "The Polish-born physicist and chemist, and the first person to win two Nobel Prizes. She spent long days in the laboratory studying radioactivity.";
+"person.tchaikovsky.name" = "Pyotr Tchaikovsky";
+"person.tchaikovsky.bio"  = "The Russian composer who walked exactly two hours every day, convinced that his creative life depended on it.";
+"person.davinci.name"    = "Leonardo da Vinci";
+"person.davinci.bio"     = "The Italian artist and scientist said to have practised polyphasic sleep, working across painting, anatomy and engineering alike.";
+
+/* ===== Activities ===== */
+/* チャート上に描画されるため、英語は短く保つ（目安 18 文字以内）。 */
+"activity.sleep"                = "Sleep";
+"activity.sleep_polyphasic"     = "Sleep (polyphasic)";
+"activity.nap"                  = "Nap";
+"activity.afternoon_nap"        = "Afternoon nap";
+"activity.walk"                 = "Walk";
+"activity.walk_required"        = "Daily walk";
+"activity.morning_walk"         = "Morning walk";
+"activity.afternoon_walk"       = "Afternoon walk";
+"activity.evening_walk"         = "Evening walk";
+"activity.walk_nature"          = "Nature walk";
+"activity.exercise"             = "Exercise";
+"activity.research_writing"     = "Research & writing";
+"activity.research_morning"     = "Research (a.m.)";
+"activity.research_afternoon"   = "Research (p.m.)";
+"activity.anatomy_science"      = "Anatomy & science";
+"activity.paper_writing"        = "Papers & reading";
+"activity.writing_night"        = "Night writing";
+"activity.writing_hotel"        = "Writing (hotel)";
+"activity.writing_thinking"     = "Writing & thought";
+"activity.writing_in_bed"       = "Writing in bed";
+"activity.composing_morning"    = "Composing (a.m.)";
+"activity.composing_afternoon"  = "Composing (p.m.)";
+"activity.painting_morning"     = "Painting (a.m.)";
+"activity.painting_afternoon"   = "Painting (p.m.)";
+"activity.sketch_reading"       = "Sketching";
+"activity.lecture"              = "Lecturing";
+"activity.work_morning"         = "Work (a.m.)";
+"activity.work_afternoon"       = "Work (p.m.)";
+"activity.work_insurance"       = "Office work";
+"activity.work_late_night"      = "Late-night work";
+"activity.breakfast_coffee"     = "Breakfast & coffee";
+"activity.breakfast_prep"       = "Breakfast & prep";
+"activity.breakfast_commute"    = "Morning routine";
+"activity.breakfast_reading"    = "Breakfast & books";
+"activity.breakfast_newspaper"  = "Breakfast & news";
+"activity.morning_planning"     = "Morning planning";
+"activity.wake_tea_thinking"    = "Tea & reflection";
+"activity.wake_tea_reading"     = "Tea & reading";
+"activity.lunch"                = "Lunch";
+"activity.lunch_break"          = "Lunch & rest";
+"activity.lunch_walk"           = "Lunch & walk";
+"activity.lunch_family"         = "Lunch with family";
+"activity.lunch_reading"        = "Lunch & reading";
+"activity.lunch_social"         = "Lunch & company";
+"activity.lunch_long"           = "Lunch (long)";
+"activity.lunch_simple"         = "Lunch (simple)";
+"activity.dinner"               = "Dinner";
+"activity.dinner_family"        = "Dinner with family";
+"activity.dinner_social"        = "Dinner & company";
+"activity.dinner_society"       = "Dinner & society";
+"activity.reading"              = "Reading";
+"activity.reading_letters"      = "Reading & letters";
+"activity.reading_social"       = "Reading & company";
+"activity.reading_input"        = "Reading & research";
+"activity.reading_bedtime"      = "Evening reading";
+"activity.music_conversation"   = "Music & talk";
+"activity.family_friends"       = "Family & friends";
+"activity.students_social"      = "Students";
+"activity.daily_review"         = "Evening review";
+"activity.bedtime_prep"         = "Winding down";
+"activity.bedtime_snack"        = "Supper & bed";

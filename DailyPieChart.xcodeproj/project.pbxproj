@@ -21,6 +21,8 @@
 		FE59E02A2F72D5D50051159F /* PersonDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE59E0232F72D5D40051159F /* PersonDetailView.swift */; };
 		FE59E02B2F72D5D50051159F /* EditBlockView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE59E0242F72D5D40051159F /* EditBlockView.swift */; };
 		FE59E02C2F72D5D50051159F /* PersonListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE59E0252F72D5D40051159F /* PersonListView.swift */; };
+		FEA1000022F7500000000002 /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEA1000012F7500000000001 /* L10n.swift */; };
+		FEA1000062F7500000000006 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FEA1000052F7500000000005 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +42,9 @@
 		FE59E0232F72D5D40051159F /* PersonDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonDetailView.swift; sourceTree = "<group>"; };
 		FE59E0242F72D5D40051159F /* EditBlockView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditBlockView.swift; sourceTree = "<group>"; };
 		FE59E0252F72D5D40051159F /* PersonListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonListView.swift; sourceTree = "<group>"; };
+		FEA1000012F7500000000001 /* L10n.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
+		FEA1000032F7500000000003 /* ja */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		FEA1000042F7500000000004 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,8 +86,10 @@
 				FE59E0252F72D5D40051159F /* PersonListView.swift */,
 				FE59E0222F72D5D30051159F /* PieChartView.swift */,
 				FE59E01F2F72D5D20051159F /* SampleData.swift */,
+				FEA1000012F7500000000001 /* L10n.swift */,
 				FE59E00C2F72D2470051159F /* DailyPieChartApp.swift */,
 				FE59E00E2F72D2470051159F /* ContentView.swift */,
+				FEA1000052F7500000000005 /* Localizable.strings */,
 				FE3351462F741EDC001D8937 /* DailyPieChart.storekit */,
 				FE59E0102F72D2490051159F /* Assets.xcassets */,
 				FE59E0172F72D2490051159F /* DailyPieChart.xcdatamodeld */,
@@ -160,6 +167,7 @@
 			files = (
 				FE59E0142F72D2490051159F /* Preview Assets.xcassets in Resources */,
 				FE59E0112F72D2490051159F /* Assets.xcassets in Resources */,
+				FEA1000062F7500000000006 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -182,10 +190,23 @@
 				FE59E02A2F72D5D50051159F /* PersonDetailView.swift in Sources */,
 				FE59E0272F72D5D50051159F /* Models.swift in Sources */,
 				FE59E02C2F72D5D50051159F /* PersonListView.swift in Sources */,
+				FEA1000022F7500000000002 /* L10n.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		FEA1000052F7500000000005 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FEA1000032F7500000000003 /* ja */,
+				FEA1000042F7500000000004 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		FE59E01A2F72D2490051159F /* Debug */ = {

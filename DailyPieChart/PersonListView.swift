@@ -10,10 +10,10 @@ struct PersonListView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("偉人たちの習慣から")
+                        Text("person_list.tagline1")
                             .font(.subheadline.weight(.semibold))
                             .foregroundStyle(Theme.accentGradient)
-                        Text("自分の一日を設計しよう")
+                        Text("person_list.tagline2")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
@@ -45,7 +45,7 @@ struct PersonListView: View {
                 .padding(.vertical)
             }
             .background(Theme.background)
-            .navigationTitle("偉人たちの一日")
+            .navigationTitle("person_list.title")
         }
         .sheet(isPresented: $showPaywall) {
             PaywallView().environmentObject(store)
@@ -59,10 +59,10 @@ struct PersonListView: View {
                     .font(.body.weight(.semibold))
                     .foregroundStyle(Theme.accentGradient)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("残り\(samplePersons.count - StoreManager.freePersonLimit)人をアンロック")
+                    Text(L("person_list.unlock_count", samplePersons.count - StoreManager.freePersonLimit))
                         .font(.subheadline.weight(.semibold))
                         .foregroundColor(Theme.textWarm)
-                    Text("Pro にアップグレード")
+                    Text("person_list.upgrade")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }
