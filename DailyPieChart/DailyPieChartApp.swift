@@ -10,7 +10,13 @@ struct DailyPieChartApp: App {
         // テーマの背景色で不透明にする。
         let tabBar = UITabBarAppearance()
         tabBar.configureWithOpaqueBackground()
-        tabBar.backgroundColor = UIColor(Theme.background)
+        // UIColor(Color) は生成時のトレイトで固定されるため、ダークモードに
+        // 追従するよう動的な UIColor をここで組み立てる。
+        tabBar.backgroundColor = UIColor { traits in
+            traits.userInterfaceStyle == .dark
+                ? UIColor(red: 0.09, green: 0.10, blue: 0.16, alpha: 1)
+                : UIColor(red: 0.99, green: 0.96, blue: 0.85, alpha: 1)
+        }
         UITabBar.appearance().standardAppearance = tabBar
         UITabBar.appearance().scrollEdgeAppearance = tabBar
     }

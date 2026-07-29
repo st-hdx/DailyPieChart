@@ -1,17 +1,45 @@
 import SwiftUI
+import UIKit
+
+/// ライト／ダークで解決が変わる色。色アセットにするとウィジェット拡張側にも
+/// アセットカタログを持たせる必要があるため、コード側で動的に解決する。
+private func adaptive(
+    light: (r: Double, g: Double, b: Double, a: Double),
+    dark: (r: Double, g: Double, b: Double, a: Double)
+) -> Color {
+    Color(UIColor { traits in
+        let c = traits.userInterfaceStyle == .dark ? dark : light
+        return UIColor(red: c.r, green: c.g, blue: c.b, alpha: c.a)
+    })
+}
 
 // MARK: - Theme
 enum Theme {
-    static let background   = Color(red: 0.99, green: 0.96, blue: 0.85)   // pale yellow
-    static let card         = Color(red: 1.00, green: 0.99, blue: 0.93)   // cream white
-    static let cardBorder   = Color(red: 0.82, green: 0.75, blue: 0.58).opacity(0.45)
-    static let cardShadow   = Color(red: 0.70, green: 0.58, blue: 0.35)
-    static let ringBg       = Color(red: 0.91, green: 0.87, blue: 0.76)   // warm tan
-    static let accent1      = Color(red: 0.88, green: 0.55, blue: 0.12)   // amber
-    static let accent2      = Color(red: 0.82, green: 0.32, blue: 0.42)   // rose
-    static let textWarm     = Color(red: 0.25, green: 0.18, blue: 0.10)
+    /// ダーク側は共有カードの「ミッドナイト」テーマと同じ系統に揃えている。
+    static let background = adaptive(
+        light: (0.99, 0.96, 0.85, 1),
+        dark:  (0.09, 0.10, 0.16, 1))
+    static let card = adaptive(
+        light: (1.00, 0.99, 0.93, 1),
+        dark:  (0.15, 0.16, 0.24, 1))
+    static let cardBorder = adaptive(
+        light: (0.82, 0.75, 0.58, 0.45),
+        dark:  (1.00, 1.00, 1.00, 0.12))
+    static let cardShadow = adaptive(
+        light: (0.70, 0.58, 0.35, 1),
+        dark:  (0.00, 0.00, 0.00, 1))
+    static let ringBg = adaptive(
+        light: (0.91, 0.87, 0.76, 1),
+        dark:  (0.24, 0.25, 0.34, 1))
+    static let textWarm = adaptive(
+        light: (0.25, 0.18, 0.10, 1),
+        dark:  (0.95, 0.95, 0.98, 1))
+
+    /// アクセントは共有カードの書き出しにも使うため、両モードで同じ色にする。
+    static let accent1 = Color(red: 0.88, green: 0.55, blue: 0.12)   // amber
+    static let accent2 = Color(red: 0.82, green: 0.32, blue: 0.42)   // rose
     static let accentGradient = LinearGradient(
-        colors: [Color(red: 0.88, green: 0.55, blue: 0.12), Color(red: 0.82, green: 0.32, blue: 0.42)],
+        colors: [accent1, accent2],
         startPoint: .leading, endPoint: .trailing
     )
 }

@@ -21,6 +21,5 @@ struct ContentView: View {
                 .tag(Tab.mySchedule)
         }
         .environmentObject(store)
-        .preferredColorScheme(.light)
     }
 }

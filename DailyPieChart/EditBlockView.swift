@@ -47,7 +47,7 @@ struct EditBlockView: View {
                         VStack(spacing: 0) {
                             Stepper(formatHours(hours), value: $hours, in: 0.5...max(0.5, maxHours), step: 0.5)
                             Divider()
-                                .background(Color.white.opacity(0.08))
+                                .background(Theme.cardBorder)
                                 .padding(.vertical, 10)
                             HStack {
                                 Text("edit_block.remaining")
@@ -83,7 +83,7 @@ struct EditBlockView: View {
                             .padding(.vertical, 16)
                             .background {
                                 if isOverLimit {
-                                    Color.black.opacity(0.06)
+                                    Theme.cardBorder
                                 } else {
                                     Theme.accentGradient
                                 }

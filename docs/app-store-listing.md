@@ -64,6 +64,9 @@ SNSに貼るのも、友人に送るのもワンタップです。
 平日と休日、仕事の日と旅行の日。
 生活パターンごとにスケジュールを分けて持てます。
 
+■ ダークモード対応
+夜は目にやさしい配色に自動で切り替わります。
+
 ―――
 Pro（買い切り）
 ・収録されている偉人をすべて閲覧
@@ -128,6 +131,9 @@ Export your day as a card image and post it anywhere in one tap.
 ■ Keep several days side by side
 Weekday and weekend, office and travel — keep a separate
 schedule for each pattern of your life.
+
+■ Dark Mode
+Switches to an easier-on-the-eyes palette at night.
 
 ―――
 Pro (one-time purchase)
