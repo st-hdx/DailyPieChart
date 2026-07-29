@@ -148,6 +148,15 @@ Now in English. New: a Home Screen widget, and one-tap sharing of your day as an
 
 ## 反映時の注意
 
+- **iPad のスクリーンショットを撮り直すこと**。これまで iPad では NavigationView が
+  スプリットビューになり画面が真っ白だった（＝配信されていたのに何も表示されて
+  いなかった）。NavigationStack に置き換えて表示されるようになったので、
+  App Store Connect の iPad 枠も現状に合わせて更新する。
+- **アプリアイコンを差し替えた**。旧アイコンは白い単色の弧で、アプリの正体
+  （色分けされた24時間の円グラフ）が伝わらずスクショとも一致していなかった。
+  候補の比較は `screenshots/icon_candidates/compare.png`、生成は
+  `tools/make-app-icon.swift`。配分や色を変えたくなったらそこを編集して
+  `swift tools/make-app-icon.swift <出力先>` で作り直せる。
 - **`05_pro.png` の価格表示は要確認**。シミュレータの StoreKit テスト環境が
   US ストアフロントで解決するため、日本語版でも `$1.99` と表示された状態で
   書き出されている。日本語の掲載物としては誤りなので、

@@ -176,7 +176,7 @@ struct ShareCardSheet: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 0) {
                 // 実ビューを scaleEffect で縮めるとレイアウトサイズが変わらず
                 // クリップされるため、書き出した画像をそのまま出す（＝WYSIWYG）。

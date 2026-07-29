@@ -47,7 +47,7 @@ struct MyScheduleView: View {
     // MARK: - Body
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 0) {
                 if !schedules.isEmpty {
                     schedulePicker
@@ -411,7 +411,7 @@ struct AddScheduleSheet: View {
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 24) {
                 VStack(alignment: .leading, spacing: 10) {
                     Label("add_schedule.name_label", systemImage: "calendar")
@@ -464,7 +464,7 @@ struct TemplatePickerSheet: View {
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ScrollView {
                 VStack(spacing: 14) {
                     ForEach(starterTemplates) { template in
@@ -575,7 +575,7 @@ struct RenameScheduleSheet: View {
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 24) {
                 VStack(alignment: .leading, spacing: 10) {
                     Label("rename.new_name", systemImage: "pencil")
