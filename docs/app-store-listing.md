@@ -132,8 +132,10 @@ Your whole day as one chart
 ### Keywords (100 chars, comma-separated, no spaces)
 
 ```
-timemanagement,dailyroutine,schedule,timeblocking,habit,piechart,24hours,timetracker,planner,visualize,productivity
+timemanagement,dailyroutine,timeblocking,schedule,habit,piechart,24hours,planner,timetracker
 ```
+
+（92文字。`visualize` と `productivity` を入れると上限100文字を超える）
 
 ### Description
 
