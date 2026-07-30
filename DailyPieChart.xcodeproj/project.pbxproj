@@ -13,7 +13,6 @@
 		FE59E00F2F72D2470051159F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE59E00E2F72D2470051159F /* ContentView.swift */; };
 		FE59E0112F72D2490051159F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FE59E0102F72D2490051159F /* Assets.xcassets */; };
 		FE59E0142F72D2490051159F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FE59E0132F72D2490051159F /* Preview Assets.xcassets */; };
-		FE59E0192F72D2490051159F /* DailyPieChart.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = FE59E0172F72D2490051159F /* DailyPieChart.xcdatamodeld */; };
 		FE59E0262F72D5D50051159F /* SampleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE59E01F2F72D5D20051159F /* SampleData.swift */; };
 		FE59E0272F72D5D50051159F /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE59E0202F72D5D30051159F /* Models.swift */; };
 		FE59E0282F72D5D50051159F /* MyScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE59E0212F72D5D30051159F /* MyScheduleView.swift */; };
@@ -32,6 +31,8 @@
 		FEB1010062F7600000000016 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FEA1000052F7500000000005 /* Localizable.strings */; };
 		FEB1010072F7600000000017 /* SharedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEB1000062F7600000000006 /* SharedStore.swift */; };
 		FEB1010082F7600000000018 /* DailyPieChartWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FEB1000012F7600000000001 /* DailyPieChartWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FEC1000022F7700000000002 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = FEC1000012F7700000000001 /* PrivacyInfo.xcprivacy */; };
+		FEC1000032F7700000000003 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = FEC1000012F7700000000001 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,7 +44,6 @@
 		FE59E00E2F72D2470051159F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		FE59E0102F72D2490051159F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FE59E0132F72D2490051159F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		FE59E0182F72D2490051159F /* DailyPieChart.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DailyPieChart.xcdatamodel; sourceTree = "<group>"; };
 		FE59E01F2F72D5D20051159F /* SampleData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SampleData.swift; sourceTree = "<group>"; };
 		FE59E0202F72D5D30051159F /* Models.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		FE59E0212F72D5D30051159F /* MyScheduleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyScheduleView.swift; sourceTree = "<group>"; };
@@ -61,6 +61,7 @@
 		FEB1000042F7600000000004 /* DailyPieChartWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DailyPieChartWidget.entitlements; sourceTree = "<group>"; };
 		FEB1000052F7600000000005 /* DailyPieChart.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DailyPieChart.entitlements; sourceTree = "<group>"; };
 		FEB1000062F7600000000006 /* SharedStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedStore.swift; sourceTree = "<group>"; };
+		FEC1000012F7700000000001 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,12 +130,12 @@
 				FEA1000072F7500000000007 /* ShareCard.swift */,
 				FEB1000062F7600000000006 /* SharedStore.swift */,
 				FEB1000052F7600000000005 /* DailyPieChart.entitlements */,
+				FEC1000012F7700000000001 /* PrivacyInfo.xcprivacy */,
 				FE59E00C2F72D2470051159F /* DailyPieChartApp.swift */,
 				FE59E00E2F72D2470051159F /* ContentView.swift */,
 				FEA1000052F7500000000005 /* Localizable.strings */,
 				FE3351462F741EDC001D8937 /* DailyPieChart.storekit */,
 				FE59E0102F72D2490051159F /* Assets.xcassets */,
-				FE59E0172F72D2490051159F /* DailyPieChart.xcdatamodeld */,
 				FE59E0122F72D2490051159F /* Preview Content */,
 			);
 			path = DailyPieChart;
@@ -261,6 +262,7 @@
 				FE59E0142F72D2490051159F /* Preview Assets.xcassets in Resources */,
 				FE59E0112F72D2490051159F /* Assets.xcassets in Resources */,
 				FEA1000062F7500000000006 /* Localizable.strings in Resources */,
+				FEC1000022F7700000000002 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,6 +271,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FEB1010062F7600000000016 /* Localizable.strings in Resources */,
+				FEC1000032F7700000000003 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,7 +284,6 @@
 			files = (
 				FE59E0292F72D5D50051159F /* PieChartView.swift in Sources */,
 				FE3351452F741C11001D8937 /* PaywallView.swift in Sources */,
-				FE59E0192F72D2490051159F /* DailyPieChart.xcdatamodeld in Sources */,
 				FE59E00F2F72D2470051159F /* ContentView.swift in Sources */,
 				FE3351432F741BF9001D8937 /* StoreManager.swift in Sources */,
 				FE59E00D2F72D2470051159F /* DailyPieChartApp.swift in Sources */,
@@ -579,19 +581,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCVersionGroup section */
-		FE59E0172F72D2490051159F /* DailyPieChart.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				FE59E0182F72D2490051159F /* DailyPieChart.xcdatamodel */,
-			);
-			currentVersion = FE59E0182F72D2490051159F /* DailyPieChart.xcdatamodel */;
-			path = DailyPieChart.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = FE59E0012F72D2470051159F /* Project object */;
 }
