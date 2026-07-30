@@ -1,2 +1,14 @@
 .DS_Store
 xcuserdata/
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/screenshots.html
+fastlane/test_output
+# App Store Connect API キー・証明書は絶対にコミットしない
+*.p8
+*.p12
+*.mobileprovision
+.env
+.env.*

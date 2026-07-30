@@ -1,0 +1,23 @@
+# App Store Connect のブラウザ画面で毎回同じ項目を手入力しなくて済むように、
+# メタデータとスクリーンショットはリポジトリ（fastlane/metadata, fastlane/screenshots）
+# を正として管理する。実行は:
+#
+#   bundle exec fastlane deliver --skip_binary_upload
+#
+# ビルド（バイナリ）はここでは一切触らない。Xcode か Xcode Cloud で別途アップロードし、
+# App Store Connect の画面でこのバージョンに紐付けること。
+
+app_version("1.2")
+
+# 既存のスクリーンショット・メタデータをこのリポジトリの内容で上書きする。
+# 逆に ASC 側の変更をここへ持ち帰る動作ではないので、ASC の画面で直接いじった
+# 内容があるならこのリポジトリ側に転記してから実行すること。
+overwrite_screenshots(true)
+skip_binary_upload(true)
+skip_app_version_update(false)
+
+# 提出まではせず、内容の反映だけ行う。「審査へ提出」は必ず人が押す。
+submit_for_review(false)
+automatic_release(false)
+
+force(true) # HTML のプレビュー確認をスキップし、確認プロンプトなしで反映する

@@ -1,0 +1,20 @@
+■ Now available in English
+The whole app, including every historical routine.
+
+■ Home Screen widget
+Keep your day on your Home Screen and see where you are in it at a glance.
+
+■ Share your day as an image
+Export your chart as a card image. Pro adds four colour themes.
+
+■ Start from a template
+Weekday, Remote work and Student templates — no more starting from an empty screen.
+
+■ Dark Mode
+
+■ Free routines increased from 3 to 5
+
+■ Fixed a bug where the app showed a blank screen on iPad
+Sorry about that.
+
+Also improved layout at larger text sizes and VoiceOver support.

@@ -1,7 +1,11 @@
 # App Store 掲載情報
 
-App Store Connect に貼り付ける用の原稿。**バイナリ更新なしで反映できる**ので、
-アプリのアップデート審査を待たずに先に差し替えてよい。
+App Store Connect の入力は **fastlane（`fastlane update_metadata`）で反映する**。
+手順は [fastlane/README.md](../fastlane/README.md) を参照。このファイルの原稿は
+その fastlane 設定（`fastlane/metadata/`）の内容と同じもので、差分を見るときや
+ASC の画面で目視確認するときのリファレンスとして残してある。
+**バイナリ更新なしで反映できる**ので、アプリのアップデート審査を待たずに
+先に差し替えてよい。
 
 ## v1.2 提出前チェックリスト
 
@@ -11,11 +15,20 @@ App Store Connect に貼り付ける用の原稿。**バイナリ更新なしで
       `group.com.PandaGiken.DailyPieChart` を作り、`com.PandaGiken.DailyPieChart` と
       `com.PandaGiken.DailyPieChart.Widget` の両方に紐付ける。
       これが無いとウィジェットにデータが出ない（本体は従来どおり動く）
+- [ ] **fastlane でメタデータとスクショを反映する** —
+      `bundle exec fastlane update_metadata`（[fastlane/README.md](../fastlane/README.md)）。
+      ASC バージョン 1.2 はすでに作成済み。App Store Connect の画面上での
+      手入力は、入力欄にフォーカスが入らず断念した
+- [ ] **「アプリ情報」を更新する** — 名前・サブタイトル・セカンダリカテゴリ・
+      年齢制限指定のソーシャルメディア設問（期限 2026年9月7日）。
+      `deliver` はバージョン単位の情報しか扱わないため、ここは ASC の画面で
+      手作業になる
 - [ ] **ウィジェットをホーム画面に置いて確認** — シミュレータを操作できず未検証
 - [ ] **課金フローをサンドボックスで通す** — 購入・復元。
       共有カードのテーマ解放が `store.isPro` に紐付いているため要確認
 - [ ] **VoiceOver で円グラフの読み上げを確認** — 実装済みだが未検証
-- [ ] **`05_pro.png` の価格表示** — 日本語版が `$1.99` になっている（後述）
+- [ ] **`05_pro.png` の価格表示** — 日本語版が `$1.99` になっている（後述）。
+      日本語版のスクショは暫定的に4枚構成にしてある
 - [ ] Xcode 26 でプロジェクトを開き、手編集した `project.pbxproj` の
       ファイル参照とウィジェットターゲットが正しく見えているか目視
 

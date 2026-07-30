@@ -1,0 +1,8 @@
+app_identifier("com.PandaGiken.DailyPieChart")
+
+# このリポジトリは public なので、Apple ID のメールアドレスは埋め込まず
+# 環境変数から読む。実行前に export FASTLANE_APPLE_ID="..." しておくこと。
+# API キー認証（fastlane/README.md 参照）を使う場合、この値は警告メッセージの
+# 表示程度にしか使われない。
+apple_id(ENV["FASTLANE_APPLE_ID"])
+itc_team_id(ENV["FASTLANE_ITC_TEAM_ID"]) if ENV["FASTLANE_ITC_TEAM_ID"] # 複数チームに所属している場合のみ必要
