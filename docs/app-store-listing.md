@@ -3,7 +3,7 @@
 App Store Connect に貼り付ける用の原稿。**バイナリ更新なしで反映できる**ので、
 アプリのアップデート審査を待たずに先に差し替えてよい。
 
-## v1.1 提出前チェックリスト
+## v1.2 提出前チェックリスト
 
 コード側で確認できることは済ませてあるが、以下は実機・実環境でないと確認できない。
 
@@ -185,7 +185,7 @@ Now in English. New: a Home Screen widget, and one-tap sharing of your day as an
 
 ---
 
-## リリースノート（v1.1 の「このバージョンの新機能」）
+## リリースノート（v1.2 の「このバージョンの新機能」）
 
 ### 日本語
 
@@ -238,7 +238,7 @@ Sorry about that.
 Also improved layout at larger text sizes and VoiceOver support.
 ```
 
-**バージョン**: `MARKETING_VERSION` を 1.1、`CURRENT_PROJECT_VERSION` を 2 に更新済み。
+**バージョン**: `MARKETING_VERSION` を 1.2、`CURRENT_PROJECT_VERSION` を 11 に更新済み。
 本体とウィジェット拡張の両方に同じ値が入っている（ズレると提出時に弾かれる）。
 
 ---
