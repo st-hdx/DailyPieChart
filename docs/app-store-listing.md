@@ -3,8 +3,19 @@
 App Store Connect に貼り付ける用の原稿。**バイナリ更新なしで反映できる**ので、
 アプリのアップデート審査を待たずに先に差し替えてよい。
 
-スクリーンショットは `screenshots/appstore_ja/` と `screenshots/appstore_en/` に
-1290×2796（6.7インチ）で生成済み。
+スクリーンショットは生成済み。
+
+| 端末 | 解像度 | 日本語 | 英語 |
+|---|---|---|---|
+| iPhone 6.7インチ | 1290×2796 | `screenshots/appstore_ja/` | `screenshots/appstore_en/` |
+| iPad Pro 12.9インチ | 2048×2732 | `screenshots/appstore_ipad_ja/` | `screenshots/appstore_ipad_en/` |
+
+作り直すときは素材（`list.png` / `detail.png` / `schedule.png` / `paywall.png` /
+`sharecard.png`）を集めたディレクトリを用意して:
+
+```
+swift tools/make-screenshots.swift <素材> <出力先> <ja|en> <iphone67|ipad129>
+```
 
 ---
 
@@ -154,10 +165,11 @@ Now in English. New: a Home Screen widget, and one-tap sharing of your day as an
 
 ## 反映時の注意
 
-- **iPad のスクリーンショットを撮り直すこと**。これまで iPad では NavigationView が
-  スプリットビューになり画面が真っ白だった（＝配信されていたのに何も表示されて
-  いなかった）。NavigationStack に置き換えて表示されるようになったので、
-  App Store Connect の iPad 枠も現状に合わせて更新する。
+- **iPad 枠のスクリーンショットも差し替えること**。これまで iPad では
+  NavigationView がスプリットビューになり画面が真っ白だった（＝配信されていたのに
+  何も表示されていなかった）。修正後の画面で
+  `screenshots/appstore_ipad_ja/` `screenshots/appstore_ipad_en/` に
+  2048×2732（12.9インチ iPad Pro）で用意済み。
 - **アプリアイコンを差し替えた**。旧アイコンは白い単色の弧で、アプリの正体
   （色分けされた24時間の円グラフ）が伝わらずスクショとも一致していなかった。
   候補の比較は `screenshots/icon_candidates/compare.png`、生成は
