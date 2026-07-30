@@ -163,6 +163,64 @@ Now in English. New: a Home Screen widget, and one-tap sharing of your day as an
 
 ---
 
+## リリースノート（v1.1 の「このバージョンの新機能」）
+
+### 日本語
+
+```
+■ 英語に対応しました
+アプリ全体と偉人データを英語化しました。
+
+■ ホーム画面ウィジェット
+一日の円グラフをホーム画面に置けます。今どの時間帯にいるのかが一目で分かります。
+
+■ 一日を1枚の画像でシェア
+作った円グラフをカード画像として書き出せるようになりました。
+Pro ではカードの配色を4種類から選べます。
+
+■ テンプレートから始められます
+平日・リモートワーク・学生のテンプレートを追加。空の画面から作り始める必要はありません。
+
+■ ダークモードに対応しました
+
+■ 無料で見られる偉人を3人から5人に増やしました
+
+■ iPad で画面が表示されない問題を修正しました
+ご不便をおかけしました。
+
+そのほか、文字を大きくしたときのレイアウトと、VoiceOver での読み上げを改善しています。
+```
+
+### English
+
+```
+■ Now available in English
+The whole app, including every historical routine.
+
+■ Home Screen widget
+Keep your day on your Home Screen and see where you are in it at a glance.
+
+■ Share your day as an image
+Export your chart as a card image. Pro adds four colour themes.
+
+■ Start from a template
+Weekday, Remote work and Student templates — no more starting from an empty screen.
+
+■ Dark Mode
+
+■ Free routines increased from 3 to 5
+
+■ Fixed a bug where the app showed a blank screen on iPad
+Sorry about that.
+
+Also improved layout at larger text sizes and VoiceOver support.
+```
+
+**バージョン**: `MARKETING_VERSION` を 1.1、`CURRENT_PROJECT_VERSION` を 2 に更新済み。
+本体とウィジェット拡張の両方に同じ値が入っている（ズレると提出時に弾かれる）。
+
+---
+
 ## 反映時の注意
 
 - **iPad 枠のスクリーンショットも差し替えること**。これまで iPad では
