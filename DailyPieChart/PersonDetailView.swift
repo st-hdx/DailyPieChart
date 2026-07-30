@@ -3,6 +3,7 @@ import WidgetKit
 
 struct PersonDetailView: View {
     let person: Person
+    @EnvironmentObject var store: StoreManager
     @AppStorage(AppGroup.schedulesKey, store: AppGroup.defaults) private var schedulesData: Data = Data()
     @AppStorage(AppGroup.activeScheduleIdKey, store: AppGroup.defaults) private var activeScheduleId: String = ""
     @State private var showCopied = false
@@ -116,6 +117,7 @@ struct PersonDetailView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 ShareChartButton(
+                    store: store,
                     title: person.name,
                     subtitle: person.era,
                     timeBlocks: person.timeBlocks
@@ -141,6 +143,7 @@ struct PersonDetailView: View {
 
         if let data = try? JSONEncoder().encode(schedules) {
             schedulesData = data
+            AppGroup.mirrorToStandard(data, activeId: activeScheduleId)
             WidgetCenter.shared.reloadAllTimelines()
         }
         showCopied = true

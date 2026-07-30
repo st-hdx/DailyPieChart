@@ -163,7 +163,9 @@ struct ShareCardSheet: View {
     let subtitle: String
     let timeBlocks: [TimeBlock]
 
-    @EnvironmentObject var store: StoreManager
+    /// ツールバーやシートは環境オブジェクトを引き継がないことがあるため、
+    /// 環境経由ではなく明示的に受け取る。
+    @ObservedObject var store: StoreManager
     @Environment(\.dismiss) var dismiss
     @AppStorage("shareCardThemeId") private var themeId: String = ShareCardTheme.cream.id
     @State private var rendered: Image?
@@ -296,11 +298,12 @@ struct ShareCardSheet: View {
 // MARK: - Toolbar button
 
 struct ShareChartButton: View {
+    /// ツールバー内に置かれるため、環境オブジェクトに頼らず明示的に受け取る。
+    @ObservedObject var store: StoreManager
     let title: String
     let subtitle: String
     let timeBlocks: [TimeBlock]
 
-    @EnvironmentObject var store: StoreManager
     @State private var showSheet = false
 
     var body: some View {
@@ -309,8 +312,8 @@ struct ShareChartButton: View {
         }
         .disabled(timeBlocks.isEmpty)
         .sheet(isPresented: $showSheet) {
-            ShareCardSheet(title: title, subtitle: subtitle, timeBlocks: timeBlocks)
-                .environmentObject(store)
+            ShareCardSheet(title: title, subtitle: subtitle,
+                           timeBlocks: timeBlocks, store: store)
         }
     }
 }

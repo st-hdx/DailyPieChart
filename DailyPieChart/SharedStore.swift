@@ -29,11 +29,28 @@ enum AppGroup {
         }
     }
 
+    /// App Group の entitlement が無い間は suiteName がアプリ内のローカル領域を指す。
+    /// 後から App Group を有効にすると参照先のファイルが変わってしまうため、
+    /// standard 側にも控えを残しておき、切り替わっても復元できるようにする。
+    static func mirrorToStandard(_ data: Data, activeId: String) {
+        guard isSharedContainerAvailable else { return }
+        UserDefaults.standard.set(data, forKey: schedulesKey)
+        UserDefaults.standard.set(activeId, forKey: activeScheduleIdKey)
+    }
+
     // MARK: - Read
 
+    private static func decode(_ data: Data?) -> [Schedule]? {
+        guard let data else { return nil }
+        return try? JSONDecoder().decode([Schedule].self, from: data)
+    }
+
     static func loadSchedules() -> [Schedule] {
-        guard let data = defaults.data(forKey: schedulesKey) else { return [] }
-        return (try? JSONDecoder().decode([Schedule].self, from: data)) ?? []
+        if let schedules = decode(defaults.data(forKey: schedulesKey)), !schedules.isEmpty {
+            return schedules
+        }
+        // 共有コンテナが空なら控えを見る。
+        return decode(UserDefaults.standard.data(forKey: schedulesKey)) ?? []
     }
 
     /// ウィジェットが表示する対象。アクティブなものが特定できなければ先頭を使う。

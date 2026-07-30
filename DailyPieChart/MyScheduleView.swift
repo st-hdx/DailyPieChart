@@ -46,6 +46,12 @@ struct MyScheduleView: View {
     var totalHours: Double { timeBlocks.reduce(0) { $0 + $1.hours } }
     var isExact24: Bool { abs(totalHours - 24) < 0.01 }
 
+    /// 24時間ぶん埋まっている状態で追加シートを開いても、
+    /// 保存ボタンが常に無効な行き止まりになるだけなので開かせない。
+    var canAddBlock: Bool {
+        activeIndex != nil && timeBlocks.count < 24 && totalHours < 24 - 0.001
+    }
+
     // MARK: - Body
 
     var body: some View {
@@ -84,6 +90,7 @@ struct MyScheduleView: View {
                                 .foregroundColor(timeBlocks.count >= 24 ? Theme.accent2 : .secondary)
                                 .fixedSize()
                             ShareChartButton(
+                                store: store,
                                 title: activeScheduleName,
                                 subtitle: formatHours(totalHours),
                                 timeBlocks: timeBlocks
@@ -92,7 +99,7 @@ struct MyScheduleView: View {
                         Button { showAddBlockSheet = true } label: {
                             Image(systemName: "plus")
                         }
-                        .disabled(activeIndex == nil || timeBlocks.count >= 24)
+                        .disabled(!canAddBlock)
                     }
                 }
             }
@@ -396,8 +403,9 @@ struct MyScheduleView: View {
     }
 
     func loadSchedules() {
-        guard let decoded = try? JSONDecoder().decode([Schedule].self, from: schedulesData) else { return }
-        schedules = decoded
+        // 共有コンテナが空だったときに控えから復元できるよう、読み出しは
+        // AppGroup 側に一本化してある。
+        schedules = AppGroup.loadSchedules()
         if !schedules.contains(where: { $0.id.uuidString == activeScheduleId }) {
             activeScheduleId = schedules.first?.id.uuidString ?? ""
         }
@@ -417,6 +425,7 @@ struct MyScheduleView: View {
     func saveSchedules() {
         if let data = try? JSONEncoder().encode(schedules) {
             schedulesData = data
+            AppGroup.mirrorToStandard(data, activeId: activeScheduleId)
             WidgetCenter.shared.reloadAllTimelines()
         }
     }
