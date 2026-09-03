@@ -1,7 +1,19 @@
 {
   "permissions": {
     "allow": [
-      "Bash(/usr/bin/python3 -c \"import struct, zlib, math; print\\(''OK''\\)\")"
+      "Bash(/usr/bin/python3 -c \"import struct, zlib, math; print\\(''OK''\\)\")",
+      "Bash(xcodebuild -version)",
+      "Bash(xcodebuild -list -project DailyPieChart.xcodeproj)",
+      "Bash(xcrun simctl *)",
+      "Bash(sw_vers)",
+      "Bash(xcode-select -p)",
+      "Read(//Applications/**)",
+      "Bash(xcodebuild -showsdks)",
+      "Bash(sysctl -n machdep.cpu.brand_string)",
+      "Bash(system_profiler SPHardwareDataType)",
+      "WebSearch",
+      "Bash(xcodebuild -project DailyPieChart.xcodeproj -scheme DailyPieChart -sdk iphonesimulator -configuration Debug -destination 'generic/platform=iOS Simulator' build CODE_SIGNING_ALLOWED=NO)",
+      "Bash(python3 -)"
     ]
   }
 }

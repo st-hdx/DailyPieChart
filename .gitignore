@@ -12,3 +12,9 @@ fastlane/test_output
 *.mobileprovision
 .env
 .env.*
+
+# fastlane の依存関係(Ruby vendor bundle)。環境依存で大きいためコミットしない
+vendor/
+# スクリーンショット生成の中間ファイル。正式版は fastlane/screenshots/ 配下
+screenshots/appstore/
+screenshots/original/

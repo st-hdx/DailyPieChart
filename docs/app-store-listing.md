@@ -11,18 +11,21 @@ ASC の画面で目視確認するときのリファレンスとして残して�
 
 コード側で確認できることは済ませてあるが、以下は実機・実環境でないと確認できない。
 
-- [ ] **App Group を作成する** — Apple Developer ポータルで
-      `group.com.PandaGiken.DailyPieChart` を作り、`com.PandaGiken.DailyPieChart` と
-      `com.PandaGiken.DailyPieChart.Widget` の両方に紐付ける。
-      これが無いとウィジェットにデータが出ない（本体は従来どおり動く）
-- [ ] **fastlane でメタデータとスクショを反映する** —
-      `bundle exec fastlane update_metadata`（[fastlane/README.md](../fastlane/README.md)）。
-      ASC バージョン 1.2 はすでに作成済み。App Store Connect の画面上での
-      手入力は、入力欄にフォーカスが入らず断念した
-- [ ] **「アプリ情報」を更新する** — 名前・サブタイトル・セカンダリカテゴリ・
-      年齢制限指定のソーシャルメディア設問（期限 2026年9月7日）。
-      `deliver` はバージョン単位の情報しか扱わないため、ここは ASC の画面で
-      手作業になる
+- [x] **App Group を作成する** — `group.com.PandaGiken.DailyPieChart` 作成済み、
+      `com.PandaGiken.DailyPieChart` と `com.PandaGiken.DailyPieChart.Widget` の
+      両方の App ID に紐付いていることを Developer Portal で確認済み（2026-07-31）
+- [x] **ASC のメタデータを反映する** — ブラウザ操作で反映済み（2026-07-31）。
+      名前・サブタイトル・キーワード・説明文・新機能・プロモーションテキストを
+      日本語 / 英語（en-US ロケールを新規追加）両方で保存。以前は「入力欄に
+      フォーカスが入らず断念した」と記録されていたが、今回は問題なく入力できた。
+      `bundle exec fastlane update_metadata` はこの Mac のシステム Ruby（2.6.10 /
+      Bundler 1.17.2）でネイティブ拡張のビルドが失敗し実行不可だった
+      （`ruby/config.h` が見つからない。Xcode 14.2 の SDK 構成に起因、
+      [[project-build-environment]] と同種の制約）。ビルド端末で実行する場合は
+      そちらの Ruby 環境を使うこと
+- [x] **「アプリ情報」を更新する** — 名前・サブタイトル・セカンダリカテゴリ
+      （ライフスタイル）・年齢制限指定のソーシャルメディア設問、いずれも
+      ASC で更新・保存済み（2026-07-31、期限 2026年9月7日より前）
 - [ ] **ウィジェットをホーム画面に置いて確認** — シミュレータを操作できず未検証
 - [ ] **課金フローをサンドボックスで通す** — 購入・復元。
       共有カードのテーマ解放が `store.isPro` に紐付いているため要確認
