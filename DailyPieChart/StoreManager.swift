@@ -81,6 +81,7 @@ class StoreManager: ObservableObject {
 
     func purchase() async {
         guard let product = proProduct else { return }
+        Analytics.shared.track(AnalyticsEvent.paywallTapped)
         isLoading = true
         errorMessage = nil
         defer { isLoading = false }
@@ -92,17 +93,22 @@ class StoreManager: ObservableObject {
                 let tx = try checkVerified(verification)
                 await refreshPurchaseStatus()
                 await tx.finish()
+                Analytics.shared.track(AnalyticsEvent.purchaseSucceeded)
             case .userCancelled, .pending:
-                break
+                // やめたと失敗は分けて数える。一緒にすると、値段の問題なのか
+                // 迷いなのか、あとから区別できない。
+                Analytics.shared.track(AnalyticsEvent.purchaseCancelled)
             @unknown default:
                 break
             }
         } catch {
+            Analytics.shared.track(AnalyticsEvent.purchaseFailed)
             errorMessage = L("error.purchase_failed")
         }
     }
 
     func restorePurchases() async {
+        Analytics.shared.track(AnalyticsEvent.restoreTapped)
         isLoading = true
         errorMessage = nil
         defer { isLoading = false }

@@ -228,7 +228,12 @@ struct ShareCardSheet: View {
                 ForEach(ShareCardTheme.all) { theme in
                     let locked = theme.isPro && !store.isPro
                     Button {
-                        if locked { showPaywall = true } else { themeId = theme.id }
+                        if locked {
+                            Analytics.shared.track(AnalyticsEvent.paywallShown, ["trigger": "share_theme"])
+                            showPaywall = true
+                        } else {
+                            themeId = theme.id
+                        }
                     } label: {
                         VStack(spacing: 5) {
                             ZStack {
@@ -261,6 +266,8 @@ struct ShareCardSheet: View {
     @ViewBuilder
     private var shareButton: some View {
         if let rendered {
+            // ShareLinkは共有シートの結果を返さないので、押した時点で数える。
+            // 実際に投稿したかまでは分からないが、書き出しまで来た人数は分かる。
             ShareLink(
                 item: rendered,
                 preview: SharePreview(L("share.preview_title", title), image: rendered)
@@ -274,6 +281,9 @@ struct ShareCardSheet: View {
                     .cornerRadius(16)
                     .shadow(color: Theme.accent1.opacity(0.35), radius: 10, x: 0, y: 4)
             }
+            .simultaneousGesture(TapGesture().onEnded {
+                Analytics.shared.track(AnalyticsEvent.scheduleShared)
+            })
         } else {
             ProgressView()
                 .frame(maxWidth: .infinity)

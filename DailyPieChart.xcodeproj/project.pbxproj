@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FE3351512F741BF9001D8937 /* AnalyticsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3351502F741BF9001D8937 /* AnalyticsService.swift */; };
 		FE3351432F741BF9001D8937 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3351422F741BF9001D8937 /* StoreManager.swift */; };
 		FE3351452F741C11001D8937 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3351442F741C11001D8937 /* PaywallView.swift */; };
 		FE59E00D2F72D2470051159F /* DailyPieChartApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE59E00C2F72D2470051159F /* DailyPieChartApp.swift */; };
@@ -36,6 +37,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FE3351502F741BF9001D8937 /* AnalyticsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalyticsService.swift; sourceTree = "<group>"; };
 		FE3351422F741BF9001D8937 /* StoreManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
 		FE3351442F741C11001D8937 /* PaywallView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 		FE3351462F741EDC001D8937 /* DailyPieChart.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = DailyPieChart.storekit; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				FE3351442F741C11001D8937 /* PaywallView.swift */,
+				FE3351502F741BF9001D8937 /* AnalyticsService.swift */,
 				FE3351422F741BF9001D8937 /* StoreManager.swift */,
 				FE59E0242F72D5D40051159F /* EditBlockView.swift */,
 				FE59E0202F72D5D30051159F /* Models.swift */,
@@ -285,6 +288,7 @@
 				FE59E0292F72D5D50051159F /* PieChartView.swift in Sources */,
 				FE3351452F741C11001D8937 /* PaywallView.swift in Sources */,
 				FE59E00F2F72D2470051159F /* ContentView.swift in Sources */,
+				FE3351512F741BF9001D8937 /* AnalyticsService.swift in Sources */,
 				FE3351432F741BF9001D8937 /* StoreManager.swift in Sources */,
 				FE59E00D2F72D2470051159F /* DailyPieChartApp.swift in Sources */,
 				FE59E02B2F72D5D50051159F /* EditBlockView.swift in Sources */,
@@ -461,7 +465,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.PandaGiken.DailyPieChart;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -491,7 +495,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.PandaGiken.DailyPieChart;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -515,7 +519,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.PandaGiken.DailyPieChart.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -540,7 +544,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.PandaGiken.DailyPieChart.Widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

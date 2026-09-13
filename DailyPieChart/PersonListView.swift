@@ -30,7 +30,10 @@ struct PersonListView: View {
                         ForEach(Array(samplePersons.enumerated()), id: \.element.id) { index, person in
                             let isLocked = !store.isPro && index >= StoreManager.freePersonLimit
                             if isLocked {
-                                Button { showPaywall = true } label: {
+                                Button {
+                                    Analytics.shared.track(AnalyticsEvent.paywallShown, ["trigger": "locked_person"])
+                                    showPaywall = true
+                                } label: {
                                     LockedPersonCard(person: person)
                                 }
                                 .buttonStyle(PlainButtonStyle())
@@ -60,7 +63,10 @@ struct PersonListView: View {
     }
 
     private var proTeaser: some View {
-        Button { showPaywall = true } label: {
+        Button {
+            Analytics.shared.track(AnalyticsEvent.paywallShown, ["trigger": "pro_teaser"])
+            showPaywall = true
+        } label: {
             HStack(spacing: 12) {
                 Image(systemName: "lock.open.fill")
                     .font(.body.weight(.semibold))

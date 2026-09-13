@@ -172,7 +172,14 @@ struct MyScheduleView: View {
 
                 // Add schedule button
                 Button {
-                    if canAddSchedule { showAddScheduleSheet = true } else { showPaywall = true }
+                    if canAddSchedule {
+                        showAddScheduleSheet = true
+                    } else {
+                        // 上限に当たった回数と、そこから購入画面を見た回数は別に数える。
+                        Analytics.shared.track(AnalyticsEvent.freeLimitHit)
+                        Analytics.shared.track(AnalyticsEvent.paywallShown, ["trigger": "add_schedule"])
+                        showPaywall = true
+                    }
                 } label: {
                     // 円形の小さなコントロールなので、文字サイズ設定に追従させると
                     // 枠に収まらず楕円に潰れる。ここは固定サイズにする。
@@ -381,6 +388,7 @@ struct MyScheduleView: View {
     private func openEdit(for block: TimeBlock) { editingBlock = block }
 
     private func addSchedule(name: String) {
+        Analytics.shared.track(AnalyticsEvent.scheduleAdded, ["source": "blank"])
         let s = Schedule(name: name, timeBlocks: [])
         schedules.append(s)
         activeScheduleId = s.id.uuidString
@@ -388,6 +396,7 @@ struct MyScheduleView: View {
     }
 
     private func addSchedule(from template: ScheduleTemplate) {
+        Analytics.shared.track(AnalyticsEvent.scheduleAdded, ["source": "template"])
         let s = Schedule(name: template.name, timeBlocks: template.timeBlocks)
         schedules.append(s)
         activeScheduleId = s.id.uuidString

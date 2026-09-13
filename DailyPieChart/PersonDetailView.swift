@@ -113,6 +113,7 @@ struct PersonDetailView: View {
         }
         .background(Theme.background)
         .navigationTitle(person.name)
+        .onAppear { Analytics.shared.track(AnalyticsEvent.personViewed) }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
