@@ -39,7 +39,12 @@ class StoreManager: ObservableObject {
     // 無料枠が3人だと一覧の半分がロックで埋まり、体験する前に出し渋りの印象が出る。
     // 課金理由は偉人の追加ではなく複数スケジュールと共有カードのテーマ側に置く。
     static let freePersonLimit    = 5
-    static let freeScheduleLimit  = 1
+    // スケジュールが1件だけだと、2件目を作ろうとした瞬間に壁が出る。
+    // このアプリの価値は「平日と週末を切り替えて持てる」ことなので、
+    // それを体験する前に課金を求める形になっていた。計測でも、実ユーザー2人が
+    // 日をまたいで無料枠に当たり続けながら購入ボタンに一度も触れていない。
+    // 2件持てれば切り替えが成立し、3件目の壁では価値を知った状態になる。
+    static let freeScheduleLimit  = 2
 
     @Published var isPro: Bool = false
     @Published var proProduct: Product? = nil
