@@ -38,6 +38,45 @@ struct MyScheduleView: View {
         activeIndex.map { schedules[$0].name } ?? L("schedule.default_name")
     }
 
+    /// 1日の始まり。区画はここを起点に並ぶ。
+    var startHour: Double {
+        activeIndex.map { schedules[$0].startHour } ?? 0
+    }
+
+    /// 開始時刻をDatePickerで扱うための入れ物。今日の日付の「その時刻」を作る。
+    var startTimeBinding: Binding<Date> {
+        Binding(
+            get: {
+                let cal = Calendar.current
+                let h = Int(startHour)
+                let m = Int((startHour - Double(h)) * 60)
+                return cal.date(bySettingHour: h, minute: m, second: 0, of: Date()) ?? Date()
+            },
+            set: { newValue in
+                guard let i = activeIndex else { return }
+                let c = Calendar.current.dateComponents([.hour, .minute], from: newValue)
+                // 10分刻みに丸める。区画の長さと単位を揃えないと、半端な時刻だけが残る。
+                let total = (c.hour ?? 0) * 60 + (c.minute ?? 0)
+                let snapped = (total / 10) * 10
+                schedules[i].startHour = Double(snapped) / 60.0
+                saveSchedules()
+                Analytics.shared.track(AnalyticsEvent.startHourChanged)
+            }
+        )
+    }
+
+    /// 「いま」を 0..<24 の小数で返す。
+    private func nowHourValue(_ date: Date) -> Double {
+        let c = Calendar.current.dateComponents([.hour, .minute], from: date)
+        return Double(c.hour ?? 0) + Double(c.minute ?? 0) / 60.0
+    }
+
+    /// 「いま」が入っている区画の名前。バッファならnil。
+    private func currentBlockName(_ date: Date) -> String? {
+        guard let i = activeIndex else { return nil }
+        return schedules[i].block(at: nowHourValue(date))?.name
+    }
+
     /// 三項演算子のままだと String オーバーロードに解決されうるため、型を明示する。
     var reorderButtonKey: LocalizedStringKey {
         editMode.isEditing ? "common.done" : "my_schedule.reorder"
@@ -304,7 +343,15 @@ struct MyScheduleView: View {
     private var contentList: some View {
         List {
             Section {
-                PieChartView(timeBlocks: timeBlocks)
+                // 針を進めるために1分ごとに引き直す。
+                TimelineView(.periodic(from: .now, by: 60)) { context in
+                    PieChartView(
+                        timeBlocks: timeBlocks,
+                        startHour: startHour,
+                        nowHour: nowHourValue(context.date),
+                        currentBlockName: currentBlockName(context.date)
+                    )
+                }
                     .padding(.vertical, 8)
                     .listRowInsets(EdgeInsets())
                     .listRowBackground(Color.clear)
@@ -321,6 +368,14 @@ struct MyScheduleView: View {
                             .foregroundColor(Color(red: 0.28, green: 0.62, blue: 0.40))
                     }
                 }
+            }
+
+            Section(footer: Text("schedule.start_hour_footer")) {
+                DatePicker("schedule.start_hour",
+                           selection: startTimeBinding,
+                           displayedComponents: .hourAndMinute)
+                    .accessibilityIdentifier("picker_start_hour")
+                    .disabled(activeIndex == nil)
             }
 
             Section("my_schedule.activities") {
@@ -444,6 +499,8 @@ struct MyScheduleView: View {
 
 struct AddScheduleSheet: View {
     @State private var name = ""
+    /// 日本語入力の最初の変換が落ちないよう、表示時にフォーカスを確定させる。
+    @FocusState private var nameFocused: Bool
     var onSave: (String) -> Void
     @Environment(\.dismiss) var dismiss
 
@@ -456,6 +513,7 @@ struct AddScheduleSheet: View {
                         .foregroundColor(.secondary)
                     TextField("add_schedule.name_placeholder", text: $name)
                         .font(.body)
+                        .focused($nameFocused)
                         .padding()
                         .background(Theme.card)
                         .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(Theme.cardBorder, lineWidth: 1))
@@ -483,6 +541,10 @@ struct AddScheduleSheet: View {
             }
             .padding(.vertical, 24)
             .background(Theme.background.ignoresSafeArea())
+            .task {
+                try? await Task.sleep(nanoseconds: 350_000_000)
+                nameFocused = true
+            }
             .navigationTitle("add_schedule.title")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -610,6 +672,8 @@ struct RenameScheduleSheet: View {
     @Binding var name: String
     var onSave: () -> Void
     @Environment(\.dismiss) var dismiss
+    /// 日本語入力の最初の変換が落ちないよう、表示時にフォーカスを確定させる。
+    @FocusState private var nameFocused: Bool
 
     var body: some View {
         NavigationStack {
@@ -620,6 +684,7 @@ struct RenameScheduleSheet: View {
                         .foregroundColor(.secondary)
                     TextField("rename.placeholder", text: $name)
                         .font(.body)
+                        .focused($nameFocused)
                         .padding()
                         .background(Theme.card)
                         .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(Theme.cardBorder, lineWidth: 1))
@@ -647,6 +712,10 @@ struct RenameScheduleSheet: View {
             }
             .padding(.vertical, 24)
             .background(Theme.background.ignoresSafeArea())
+            .task {
+                try? await Task.sleep(nanoseconds: 350_000_000)
+                nameFocused = true
+            }
             .navigationTitle("rename.title")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {

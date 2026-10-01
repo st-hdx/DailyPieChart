@@ -208,3 +208,10 @@
 "activity.club"                 = "部活・サークル";
 "activity.study"                = "勉強";
 "activity.free_time"            = "自由時間";
+
+/* 開始時刻・バッファ・現在地 */
+"chart.now_in" = "いまは「%@」の時間";
+"chart.now_buffer" = "いまはバッファの時間";
+"chart.buffer_name" = "バッファ";
+"schedule.start_hour" = "1日の始まり";
+"schedule.start_hour_footer" = "ここを起点に予定が並びます。埋まっていない時間はバッファとして灰色で表示されます。";

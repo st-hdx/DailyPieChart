@@ -62,29 +62,34 @@ enum AppGroup {
 }
 
 extension Schedule {
-    /// 時刻を 0:00 起点の累積時間とみなして、その瞬間にあたる活動を返す。
+    /// その時刻にあたる活動。開始時刻(`startHour`)を起点に数えるので、
+    /// 区画で埋まっていない時間(バッファ)に入っていれば nil を返す。
+    ///
+    /// 以前は 0:00 起点で数えたうえ、どこにも当たらなければ最後の区画を返していた。
+    /// 開始時刻とバッファを入れた今は、それだと「バッファ中なのに最後の活動が出続ける」
+    /// ことになるため、時間の判定は Models 側の実装に一本化する。
     func block(at date: Date, calendar: Calendar = .current) -> TimeBlock? {
-        let comps = calendar.dateComponents([.hour, .minute], from: date)
-        let hourOfDay = Double(comps.hour ?? 0) + Double(comps.minute ?? 0) / 60.0
-
-        var elapsed = 0.0
-        for block in timeBlocks {
-            elapsed += block.hours
-            if hourOfDay < elapsed { return block }
-        }
-        return timeBlocks.last
+        block(at: Self.hourOfDay(date, calendar: calendar))
     }
 
-    /// その活動が終わるまでの残り時間（時間単位）。
+    /// いまの活動が終わるまでの残り時間。バッファ中はバッファが明ける(=翌日の開始時刻)までを返す。
     func remainingHours(at date: Date, calendar: Calendar = .current) -> Double? {
-        let comps = calendar.dateComponents([.hour, .minute], from: date)
-        let hourOfDay = Double(comps.hour ?? 0) + Double(comps.minute ?? 0) / 60.0
+        let hourOfDay = Self.hourOfDay(date, calendar: calendar)
+        var elapsed = hourOfDay - startHour
+        if elapsed < 0 { elapsed += 24 }
 
-        var elapsed = 0.0
+        var cursor = 0.0
         for block in timeBlocks {
-            elapsed += block.hours
-            if hourOfDay < elapsed { return elapsed - hourOfDay }
+            cursor += block.hours
+            if elapsed < cursor { return cursor - elapsed }
         }
-        return nil
+        // バッファ中。次に予定が始まるのは 24 時間地点(翌日の開始時刻)。
+        guard elapsed < 24 else { return nil }
+        return 24 - elapsed
+    }
+
+    static func hourOfDay(_ date: Date, calendar: Calendar = .current) -> Double {
+        let comps = calendar.dateComponents([.hour, .minute], from: date)
+        return Double(comps.hour ?? 0) + Double(comps.minute ?? 0) / 60.0
     }
 }

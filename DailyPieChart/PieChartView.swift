@@ -9,6 +9,10 @@ struct ClockChartView: View {
     var animated: Bool = true
     /// 0..<24 で「今」を指す針を出す。ウィジェットで現在地を示すのに使う。
     var nowHour: Double? = nil
+    /// 1日の始まり。区画はここを起点に並ぶ。
+    var startHour: Double = 0
+    /// 埋まっていない時間をバッファとして出すか
+    var showsBuffer: Bool = true
     /// 共有カードのテーマで差し替えるため、スライス以外の色を外から渡せるようにする。
     var labelColor: Color = Theme.textWarm
     var ringColor: Color = Theme.ringBg
@@ -19,7 +23,7 @@ struct ClockChartView: View {
     var sliceData: [(start: Angle, end: Angle, block: TimeBlock)] {
         let gap = 0.4
         var result: [(Angle, Angle, TimeBlock)] = []
-        var currentHours = 0.0
+        var currentHours = startHour
         for block in timeBlocks {
             let startDeg = currentHours / 24.0 * 360.0 - 90.0
             let endDeg = (currentHours + block.hours) / 24.0 * 360.0 - 90.0
@@ -33,7 +37,7 @@ struct ClockChartView: View {
     var activityMidpoints: [(angle: CGFloat, name: String, hours: Double)] {
         let pi = CGFloat.pi
         var result: [(CGFloat, String, Double)] = []
-        var currentHours = 0.0
+        var currentHours = startHour
         for block in timeBlocks {
             let startDeg = currentHours / 24.0 * 360.0 - 90.0
             let endDeg = (currentHours + block.hours) / 24.0 * 360.0 - 90.0
@@ -74,7 +78,8 @@ struct ClockChartView: View {
 
     @ViewBuilder
     private func clockContent(geo: GeometryProxy) -> some View {
-        let margin: CGFloat = showActivityLabels ? 52 : 0
+        // 短い区画のラベルを外側(reach 1.72)に逃がすぶん、余白を広げる。
+        let margin: CGFloat = showActivityLabels ? 74 : 0
         let s = min(geo.size.width, geo.size.height) - margin * 2
         let cx = geo.size.width / 2
         let cy = geo.size.height / 2
@@ -118,8 +123,29 @@ struct ClockChartView: View {
         .fill(ringColor)
     }
 
+    /// 埋まっていない時間。最後の区画の終わりから、翌日の開始時刻までを灰色で塗る。
+    private var bufferArc: (start: Angle, end: Angle)? {
+        let filled = timeBlocks.reduce(0) { $0 + $1.hours }
+        let remaining = 24.0 - filled
+        guard showsBuffer, remaining > 0.01 else { return nil }
+        let gap = 0.4
+        let startDeg = (startHour + filled) / 24.0 * 360.0 - 90.0
+        let endDeg = (startHour + 24.0) / 24.0 * 360.0 - 90.0
+        return (.degrees(startDeg + gap), .degrees(endDeg - gap))
+    }
+
     private func slicesLayer(cx: CGFloat, cy: CGFloat, outerR: CGFloat, innerR: CGFloat) -> some View {
         ZStack {
+            if let arc = bufferArc {
+                Path { path in
+                    path.addArc(center: CGPoint(x: cx, y: cy), radius: outerR,
+                                startAngle: arc.start, endAngle: arc.end, clockwise: false)
+                    path.addArc(center: CGPoint(x: cx, y: cy), radius: innerR,
+                                startAngle: arc.end, endAngle: arc.start, clockwise: true)
+                    path.closeSubpath()
+                }
+                .fill(Theme.bufferFill)
+            }
             ForEach(Array(sliceData.enumerated()), id: \.offset) { _, slice in
                 Path { path in
                     path.addArc(center: CGPoint(x: cx, y: cy), radius: outerR,
@@ -192,11 +218,14 @@ struct ClockChartView: View {
 
     private func activityLabelsLayer(cx: CGFloat, cy: CGFloat, outerR: CGFloat, s: CGFloat, width: CGFloat) -> some View {
         ZStack {
-            ForEach(Array(activityMidpoints.enumerated()), id: \.offset) { _, item in
-                if item.hours >= 1.0 {
-                    activityLabelItem(angle: item.angle, name: item.name,
-                                      cx: cx, cy: cy, outerR: outerR, s: s, width: width)
-                }
+            ForEach(Array(activityMidpoints.enumerated()), id: \.offset) { index, item in
+                // 短い区画にもラベルを出す。ただし隣り合うと重なるので、
+                // 1時間未満のものは引き出し線の長さを1つおきに変えて段違いにする。
+                let isShort = item.hours < 1.0
+                let reach: CGFloat = (isShort && index % 2 == 1) ? 1.72 : 1.42
+                activityLabelItem(angle: item.angle, name: item.name,
+                                  cx: cx, cy: cy, outerR: outerR, s: s, width: width,
+                                  reach: reach, isShort: isShort)
             }
         }
     }
@@ -205,36 +234,44 @@ struct ClockChartView: View {
     private func activityLabelItem(angle: CGFloat, name: String,
                                    cx: CGFloat, cy: CGFloat,
                                    outerR: CGFloat, s: CGFloat,
-                                   width: CGFloat) -> some View {
+                                   width: CGFloat,
+                                   reach: CGFloat = 1.42,
+                                   isShort: Bool = false) -> some View {
         // 引き出し線
         Path { path in
             path.move(to: CGPoint(x: cx + outerR * 1.04 * cos(angle),
                                   y: cy + outerR * 1.04 * sin(angle)))
-            path.addLine(to: CGPoint(x: cx + outerR * 1.32 * cos(angle),
-                                     y: cy + outerR * 1.32 * sin(angle)))
+            path.addLine(to: CGPoint(x: cx + outerR * (reach - 0.10) * cos(angle),
+                                     y: cy + outerR * (reach - 0.10) * sin(angle)))
         }
         .stroke(labelColor.opacity(0.25), lineWidth: 0.8)
 
         // ラベル。英語は日本語より長くなるため、ラベル枠が画面外に出ないよう X を内側に寄せる。
         let labelWidth = outerR * 0.85
-        let rawX = cx + outerR * 1.42 * cos(angle)
+        let rawX = cx + outerR * reach * cos(angle)
         let minX = labelWidth / 2
         let maxX = width - labelWidth / 2
 
         Text(name)
-            .font(.system(size: max(s * 0.038, 9), weight: .medium))
+            .font(.system(size: max(s * (isShort ? 0.033 : 0.038), 8), weight: .medium))
             .foregroundColor(labelColor.opacity(0.80))
             .lineLimit(2)
             .multilineTextAlignment(.center)
             .minimumScaleFactor(0.75)
             .frame(maxWidth: labelWidth)
             .position(x: min(max(rawX, minX), max(minX, maxX)),
-                      y: cy + outerR * 1.42 * sin(angle))
+                      y: cy + outerR * reach * sin(angle))
     }
 }
 
 struct PieChartView: View {
     let timeBlocks: [TimeBlock]
+    /// 1日の始まり
+    var startHour: Double = 0
+    /// 0..<24 の「いま」。渡すと針と「いまは○○」の行が出る。
+    var nowHour: Double? = nil
+    /// 「いま」が入っている区画の名前。バッファならnil。
+    var currentBlockName: String? = nil
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     /// 大きい文字設定では2列だと活動名も時刻も入りきらないので1列にする。
@@ -246,7 +283,7 @@ struct PieChartView: View {
 
     var timeRanges: [(block: TimeBlock, startHour: Double)] {
         var result: [(TimeBlock, Double)] = []
-        var current = 0.0
+        var current = startHour
         for block in timeBlocks {
             result.append((block, current))
             current += block.hours
@@ -254,17 +291,67 @@ struct PieChartView: View {
         return result
     }
 
+    private var filledHours: Double { timeBlocks.reduce(0) { $0 + $1.hours } }
+    private var bufferHours: Double { max(0, 24.0 - filledHours) }
+
     var body: some View {
         VStack(spacing: 16) {
-            ClockChartView(timeBlocks: timeBlocks)
+            ClockChartView(timeBlocks: timeBlocks, nowHour: nowHour, startHour: startHour)
+
+            if nowHour != nil {
+                nowRow
+            }
 
             LazyVGrid(columns: legendColumns, spacing: 8) {
                 ForEach(timeRanges, id: \.block.id) { item in
                     legendItem(block: item.block, startHour: item.startHour)
                 }
+                if bufferHours > 0.01 {
+                    bufferLegendItem
+                }
             }
             .padding(.horizontal)
         }
+    }
+
+    /// いま何をしている時間なのか。円の針だけだと、目盛りを読まないと分からない。
+    private var nowRow: some View {
+        HStack(spacing: 8) {
+            Image(systemName: "location.fill")
+                .font(.caption2)
+                .foregroundColor(Theme.accent1)
+            Text(currentBlockName.map { L("chart.now_in", $0) } ?? L("chart.now_buffer"))
+                .font(.subheadline.weight(.semibold))
+                .foregroundColor(Theme.textWarm)
+            Spacer()
+        }
+        .padding(.horizontal, 20)
+    }
+
+    private var bufferLegendItem: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 6) {
+            Circle()
+                .fill(Theme.bufferFill)
+                .frame(width: 8, height: 8)
+                .alignmentGuide(.firstTextBaseline) { $0[.bottom] }
+            VStack(alignment: .leading, spacing: 1) {
+                Text("chart.buffer_name")
+                    .font(.caption.weight(.medium))
+                    .lineLimit(1)
+                Text(formatHours(bufferHours))
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+            }
+            Spacer()
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 7)
+        .background(Theme.card)
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .strokeBorder(Theme.cardBorder, lineWidth: 1)
+        )
+        .cornerRadius(10)
     }
 
     private func legendItem(block: TimeBlock, startHour: Double) -> some View {
@@ -300,8 +387,11 @@ struct PieChartView: View {
 
     func formatTimeRange(start: Double, duration: Double) -> String {
         func fmt(_ h: Double) -> String {
-            let hour = Int(h) % 24
-            let min = Int((h - Double(Int(h))) * 60)
+            // 分を切り捨てると、10分刻み(1/6時間)が2進数で割り切れないために
+            // 「10分」が「9分」として出る。分に直してから丸める。
+            let totalMinutes = lround(h * 60)
+            let hour = (totalMinutes / 60) % 24
+            let min = ((totalMinutes % 60) + 60) % 60
             return String(format: "%d:%02d", hour, min)
         }
         return L("format.time_range", fmt(start), fmt(start + duration))

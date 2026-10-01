@@ -77,7 +77,8 @@ struct DailyPieChartWidgetEntryView: View {
             showHourLabels: false,
             showActivityLabels: false,
             animated: false,
-            nowHour: nowHour
+            nowHour: nowHour,
+            startHour: schedule.startHour
         )
     }
 

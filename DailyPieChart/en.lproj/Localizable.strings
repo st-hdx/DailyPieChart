@@ -209,3 +209,10 @@
 "activity.club"                 = "Clubs & sports";
 "activity.study"                = "Studying";
 "activity.free_time"            = "Free time";
+
+/* 開始時刻・バッファ・現在地 */
+"chart.now_in" = "Right now: %@";
+"chart.now_buffer" = "Right now: buffer time";
+"chart.buffer_name" = "Buffer";
+"schedule.start_hour" = "Day starts at";
+"schedule.start_hour_footer" = "Blocks are laid out from here. Any time left over shows as grey buffer.";

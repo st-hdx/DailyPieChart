@@ -192,6 +192,8 @@ enum AnalyticsEvent {
     static let scheduleShared = "schedule_shared"            // 円グラフを画像にして共有した
     static let personViewed = "person_viewed"                // 偉人の1日を開いた
     static let freeLimitHit = "free_limit_hit"               // 無料枠に当たって追加できなかった
+    /// 1日の始まりを変えた。バッファ機能が使われているかを見る。
+    static let startHourChanged = "start_hour_changed"
     static let paywallShown = "paywall_shown"                // (trigger: add_schedule / locked_person / pro_teaser / share_theme)
     static let paywallTapped = "paywall_tapped"              // 購入ボタンを押した
     static let purchaseSucceeded = "purchase_succeeded"

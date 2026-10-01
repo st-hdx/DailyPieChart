@@ -7,18 +7,30 @@ struct EditBlockView: View {
     @Environment(\.dismiss) var dismiss
 
     @State private var name: String
-    @State private var hours: Double
+    /// 分で持つ。Double の時間に 1/6 を足し引きすると誤差が溜まって
+    /// 「9分」「11分」のような半端な値になるため、整数の分を正とする。
+    @State private var minutes: Int
     @State private var colorIndex: Int
+    /// 表示と同時にフォーカスを当てる。キーボードが出きる前に入力が始まると、
+    /// 日本語入力の最初の変換が取りこぼされることがあるため。
+    @FocusState private var nameFocused: Bool
 
     init(existingBlock: TimeBlock? = nil, currentTotal: Double = 0, onSave: @escaping (TimeBlock) -> Void) {
         self.existingBlock = existingBlock
         self.currentTotal = currentTotal
         self.onSave = onSave
         self._name = State(initialValue: existingBlock?.name ?? "")
-        self._hours = State(initialValue: existingBlock?.hours ?? 1.0)
+        self._minutes = State(initialValue: Self.snap(existingBlock?.hours ?? 1.0))
         self._colorIndex = State(initialValue: existingBlock?.colorIndex ?? 0)
     }
 
+    /// 10分刻みの最小単位
+    static let stepMinutes = 10
+    static func snap(_ hours: Double) -> Int {
+        max(stepMinutes, Int((hours * 60.0 / Double(stepMinutes)).rounded()) * stepMinutes)
+    }
+
+    var hours: Double { Double(minutes) / 60.0 }
     var otherHours: Double { currentTotal - (existingBlock?.hours ?? 0) }
     var maxHours: Double { max(0.5, 24.0 - otherHours) }
     var remaining: Double { 24.0 - otherHours - hours }
@@ -40,12 +52,16 @@ struct EditBlockView: View {
                     fieldSection(label: "edit_block.name_label", icon: "pencil") {
                         TextField("edit_block.name_placeholder", text: $name)
                             .font(.body)
+                            .focused($nameFocused)
                     }
 
                     // Hours
                     fieldSection(label: "edit_block.hours_label", icon: "clock") {
                         VStack(spacing: 0) {
-                            Stepper(formatHours(hours), value: $hours, in: 0.5...max(0.5, maxHours), step: 0.5)
+                            Stepper(formatHours(hours),
+                                    value: $minutes,
+                                    in: Self.stepMinutes...max(Self.stepMinutes, Int((maxHours * 60).rounded())),
+                                    step: Self.stepMinutes)
                             Divider()
                                 .background(Theme.cardBorder)
                                 .padding(.vertical, 10)
@@ -101,6 +117,11 @@ struct EditBlockView: View {
                 .padding(.vertical, 24)
             }
             .background(Theme.background.ignoresSafeArea())
+            .task {
+                // 直後に当てるとシートの表示アニメーションに食われるので、少しだけ待つ。
+                try? await Task.sleep(nanoseconds: 350_000_000)
+                nameFocused = true
+            }
             .navigationTitle(titleKey)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
