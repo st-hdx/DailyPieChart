@@ -216,3 +216,7 @@
 "chart.buffer_name" = "Buffer";
 "schedule.start_hour" = "Day starts at";
 "schedule.start_hour_footer" = "Blocks are laid out from here. Any time left over shows as grey buffer.";
+"chart.plus_buffer" = "+%@ buffer";
+"edit_block.buffer_label" = "Buffer after";
+"edit_block.buffer_footer" = "Time to leave before the next activity — moving, tidying up, switching gears.";
+"my_schedule.activity_total" = "%@ active · %@ buffer";

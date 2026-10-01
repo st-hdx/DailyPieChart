@@ -215,3 +215,7 @@
 "chart.buffer_name" = "バッファ";
 "schedule.start_hour" = "1日の始まり";
 "schedule.start_hour_footer" = "ここを起点に予定が並びます。埋まっていない時間はバッファとして灰色で表示されます。";
+"chart.plus_buffer" = "＋余白 %@";
+"edit_block.buffer_label" = "後ろの余白";
+"edit_block.buffer_footer" = "次の活動までに空ける時間。移動や片付けのぶんをここに入れます。";
+"my_schedule.activity_total" = "活動 %@ ／ 余白 %@";

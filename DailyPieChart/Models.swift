@@ -68,6 +68,28 @@ struct TimeBlock: Identifiable, Codable, Equatable {
     var name: String
     var hours: Double
     var colorIndex: Int
+
+    /// この活動の後ろに空ける余白（時間）。移動・片付け・切り替えのための時間。
+    /// 既存の保存データにこのキーは無いのでOptionalで受ける
+    /// (非Optionalで足すとデコードが丸ごと失敗し、保存済みの予定が消える)。
+    private var bufferAfterRaw: Double?
+
+    /// private な保存プロパティを足すと自動生成の初期化子も private になるため明示する。
+    init(id: UUID = UUID(), name: String, hours: Double, colorIndex: Int, bufferAfter: Double = 0) {
+        self.id = id
+        self.name = name
+        self.hours = hours
+        self.colorIndex = colorIndex
+        self.bufferAfterRaw = bufferAfter
+    }
+
+    var bufferAfter: Double {
+        get { max(0, bufferAfterRaw ?? 0) }
+        set { bufferAfterRaw = max(0, newValue) }
+    }
+
+    /// 活動そのものと、その後ろの余白を足した長さ。円を進める単位。
+    var span: Double { hours + bufferAfter }
 }
 
 struct Schedule: Identifiable, Codable {
@@ -94,25 +116,39 @@ struct Schedule: Identifiable, Codable {
         set { startHourRaw = min(max(newValue, 0), 23.9999) }
     }
 
-    /// 区画で埋まっている時間
-    var filledHours: Double {
+    /// 活動そのものの合計
+    var activityHours: Double {
         timeBlocks.reduce(0) { $0 + $1.hours }
     }
 
-    /// 埋まっていない時間。バッファとして灰色で出す。
-    var bufferHours: Double {
+    /// 活動の間に挟んだ余白の合計
+    var bufferBetweenHours: Double {
+        timeBlocks.reduce(0) { $0 + $1.bufferAfter }
+    }
+
+    /// 活動と余白を並べて埋まる長さ
+    var filledHours: Double {
+        timeBlocks.reduce(0) { $0 + $1.span }
+    }
+
+    /// 並べ終えたあとに余る時間。ここも灰色で出す。
+    var trailingBufferHours: Double {
         max(0, 24.0 - filledHours)
     }
 
-    /// `hour`(0..<24)がどの区画に入るか。どこにも入らなければバッファ。
+    /// 灰色で出る時間の合計（活動の間の余白＋末尾の余り）
+    var bufferHours: Double {
+        bufferBetweenHours + trailingBufferHours
+    }
+
+    /// `hour`(0..<24)がどの区画に入るか。余白に入っていれば nil。
     func block(at hour: Double) -> TimeBlock? {
-        // 開始時刻からの経過時間に直してから順に当てる
         var elapsed = hour - startHour
         if elapsed < 0 { elapsed += 24 }
         var cursor = 0.0
         for block in timeBlocks {
             if elapsed >= cursor && elapsed < cursor + block.hours { return block }
-            cursor += block.hours
+            cursor += block.span   // 余白のぶんも進める
         }
         return nil
     }

@@ -11,6 +11,8 @@ struct EditBlockView: View {
     /// 「9分」「11分」のような半端な値になるため、整数の分を正とする。
     @State private var minutes: Int
     @State private var colorIndex: Int
+    /// 後ろの余白も分で持つ（時間の Double で持つと10分刻みの誤差が溜まる）
+    @State private var bufferMinutes: Int
     /// 表示と同時にフォーカスを当てる。キーボードが出きる前に入力が始まると、
     /// 日本語入力の最初の変換が取りこぼされることがあるため。
     @FocusState private var nameFocused: Bool
@@ -22,6 +24,7 @@ struct EditBlockView: View {
         self._name = State(initialValue: existingBlock?.name ?? "")
         self._minutes = State(initialValue: Self.snap(existingBlock?.hours ?? 1.0))
         self._colorIndex = State(initialValue: existingBlock?.colorIndex ?? 0)
+        self._bufferMinutes = State(initialValue: Int(((existingBlock?.bufferAfter ?? 0) * 60).rounded()))
     }
 
     /// 10分刻みの最小単位
@@ -31,9 +34,11 @@ struct EditBlockView: View {
     }
 
     var hours: Double { Double(minutes) / 60.0 }
-    var otherHours: Double { currentTotal - (existingBlock?.hours ?? 0) }
-    var maxHours: Double { max(0.5, 24.0 - otherHours) }
-    var remaining: Double { 24.0 - otherHours - hours }
+    var bufferHours: Double { Double(bufferMinutes) / 60.0 }
+    /// この活動（と余白）を除いた他の合計
+    var otherHours: Double { currentTotal - (existingBlock?.span ?? 0) }
+    var maxHours: Double { max(0.5, 24.0 - otherHours - bufferHours) }
+    var remaining: Double { 24.0 - otherHours - hours - bufferHours }
     var isOverLimit: Bool { remaining < -0.001 }
 
     var selectedColor: Color { blockColors[colorIndex % blockColors.count] }
@@ -62,6 +67,7 @@ struct EditBlockView: View {
                                     value: $minutes,
                                     in: Self.stepMinutes...max(Self.stepMinutes, Int((maxHours * 60).rounded())),
                                     step: Self.stepMinutes)
+                                .accessibilityIdentifier("stepper_hours")
                             Divider()
                                 .background(Theme.cardBorder)
                                 .padding(.vertical, 10)
@@ -79,6 +85,20 @@ struct EditBlockView: View {
                                         .fontWeight(remaining < 0.001 ? .semibold : .regular)
                                 }
                             }
+                        }
+                    }
+
+                    // 後ろの余白
+                    fieldSection(label: "edit_block.buffer_label", icon: "arrow.right.to.line") {
+                        VStack(alignment: .leading, spacing: 8) {
+                            Stepper(formatHours(bufferHours),
+                                    value: $bufferMinutes,
+                                    in: 0...max(0, Int(((24.0 - otherHours - hours) * 60).rounded())),
+                                    step: Self.stepMinutes)
+                                .accessibilityIdentifier("stepper_buffer")
+                            Text("edit_block.buffer_footer")
+                                .font(.caption2)
+                                .foregroundColor(.secondary)
                         }
                     }
 
@@ -182,6 +202,7 @@ struct EditBlockView: View {
         var block = existingBlock ?? TimeBlock(name: "", hours: 1, colorIndex: 0)
         block.name = name.isEmpty ? L("edit_block.default_name") : name
         block.hours = hours
+        block.bufferAfter = bufferHours
         block.colorIndex = colorIndex
         onSave(block)
         dismiss()

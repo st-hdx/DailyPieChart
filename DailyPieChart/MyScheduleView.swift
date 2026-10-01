@@ -82,7 +82,13 @@ struct MyScheduleView: View {
         editMode.isEditing ? "common.done" : "my_schedule.reorder"
     }
 
-    var totalHours: Double { timeBlocks.reduce(0) { $0 + $1.hours } }
+    /// 活動と余白を並べて埋まる長さ。24時間ちょうどを目指す対象。
+    var totalHours: Double { timeBlocks.reduce(0) { $0 + $1.span } }
+    /// 活動そのものの合計（余白を除く）
+    var activityHours: Double { timeBlocks.reduce(0) { $0 + $1.hours } }
+    var bufferTotalHours: Double {
+        timeBlocks.reduce(0) { $0 + $1.bufferAfter } + max(0, 24 - totalHours)
+    }
     var isExact24: Bool { abs(totalHours - 24) < 0.01 }
 
     /// 24時間ぶん埋まっている状態で追加シートを開いても、
@@ -367,6 +373,14 @@ struct MyScheduleView: View {
                         Image(systemName: "checkmark.circle.fill")
                             .foregroundColor(Color(red: 0.28, green: 0.62, blue: 0.40))
                     }
+                }
+
+                // 合計だけだと、余白をどれだけ取っているかが見えない。
+                if bufferTotalHours > 0.001 {
+                    Text(L("my_schedule.activity_total",
+                           formatHours(activityHours), formatHours(bufferTotalHours)))
+                        .font(.caption)
+                        .foregroundColor(.secondary)
                 }
             }
 

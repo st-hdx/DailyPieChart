@@ -28,7 +28,8 @@ struct ClockChartView: View {
             let startDeg = currentHours / 24.0 * 360.0 - 90.0
             let endDeg = (currentHours + block.hours) / 24.0 * 360.0 - 90.0
             result.append((.degrees(startDeg + gap), .degrees(endDeg - gap), block))
-            currentHours += block.hours
+            // 余白のぶんも進める。進めないと次の活動が余白に重なる。
+            currentHours += block.span
         }
         return result
     }
@@ -43,7 +44,7 @@ struct ClockChartView: View {
             let endDeg = (currentHours + block.hours) / 24.0 * 360.0 - 90.0
             let midRad = CGFloat((startDeg + endDeg) / 2.0) * pi / 180.0
             result.append((midRad, block.name, block.hours))
-            currentHours += block.hours
+            currentHours += block.span
         }
         return result
     }
@@ -123,20 +124,36 @@ struct ClockChartView: View {
         .fill(ringColor)
     }
 
-    /// 埋まっていない時間。最後の区画の終わりから、翌日の開始時刻までを灰色で塗る。
-    private var bufferArc: (start: Angle, end: Angle)? {
-        let filled = timeBlocks.reduce(0) { $0 + $1.hours }
-        let remaining = 24.0 - filled
-        guard showsBuffer, remaining > 0.01 else { return nil }
+    /// 灰色で塗る区間。各活動の後ろの余白と、並べ終えたあとに余る時間。
+    private var bufferArcs: [(start: Angle, end: Angle)] {
+        guard showsBuffer else { return [] }
         let gap = 0.4
-        let startDeg = (startHour + filled) / 24.0 * 360.0 - 90.0
-        let endDeg = (startHour + 24.0) / 24.0 * 360.0 - 90.0
-        return (.degrees(startDeg + gap), .degrees(endDeg - gap))
+        var result: [(Angle, Angle)] = []
+        var cursor = startHour
+
+        for block in timeBlocks {
+            cursor += block.hours
+            if block.bufferAfter > 0.001 {
+                let startDeg = cursor / 24.0 * 360.0 - 90.0
+                let endDeg = (cursor + block.bufferAfter) / 24.0 * 360.0 - 90.0
+                result.append((.degrees(startDeg + gap), .degrees(endDeg - gap)))
+            }
+            cursor += block.bufferAfter
+        }
+
+        // 24時間に満たないぶん
+        let remaining = startHour + 24.0 - cursor
+        if remaining > 0.01 {
+            let startDeg = cursor / 24.0 * 360.0 - 90.0
+            let endDeg = (cursor + remaining) / 24.0 * 360.0 - 90.0
+            result.append((.degrees(startDeg + gap), .degrees(endDeg - gap)))
+        }
+        return result
     }
 
     private func slicesLayer(cx: CGFloat, cy: CGFloat, outerR: CGFloat, innerR: CGFloat) -> some View {
         ZStack {
-            if let arc = bufferArc {
+            ForEach(Array(bufferArcs.enumerated()), id: \.offset) { _, arc in
                 Path { path in
                     path.addArc(center: CGPoint(x: cx, y: cy), radius: outerR,
                                 startAngle: arc.start, endAngle: arc.end, clockwise: false)
@@ -286,13 +303,16 @@ struct PieChartView: View {
         var current = startHour
         for block in timeBlocks {
             result.append((block, current))
-            current += block.hours
+            current += block.span
         }
         return result
     }
 
-    private var filledHours: Double { timeBlocks.reduce(0) { $0 + $1.hours } }
-    private var bufferHours: Double { max(0, 24.0 - filledHours) }
+    private var filledHours: Double { timeBlocks.reduce(0) { $0 + $1.span } }
+    /// 灰色で出る時間の合計（活動の間の余白＋末尾の余り）
+    private var bufferHours: Double {
+        timeBlocks.reduce(0) { $0 + $1.bufferAfter } + max(0, 24.0 - filledHours)
+    }
 
     var body: some View {
         VStack(spacing: 16) {
@@ -371,6 +391,11 @@ struct PieChartView: View {
                 Text(formatTimeRange(start: startHour, duration: block.hours))
                     .font(.caption2)
                     .foregroundColor(.secondary)
+                if block.bufferAfter > 0.001 {
+                    Text(L("chart.plus_buffer", formatHours(block.bufferAfter)))
+                        .font(.caption2)
+                        .foregroundColor(.secondary.opacity(0.8))
+                }
             }
             Spacer()
         }
