@@ -13,7 +13,6 @@ struct EditBlockView: View {
     @State private var colorIndex: Int
     /// 後ろの余白も分で持つ（時間の Double で持つと10分刻みの誤差が溜まる）
     @State private var bufferMinutes: Int
-    @FocusState private var nameFocused: Bool
 
     init(existingBlock: TimeBlock? = nil, currentTotal: Double = 0, onSave: @escaping (TimeBlock) -> Void) {
         self.existingBlock = existingBlock
@@ -55,7 +54,6 @@ struct EditBlockView: View {
                     fieldSection(label: "edit_block.name_label", icon: "pencil") {
                         TextField("edit_block.name_placeholder", text: $name)
                             .font(.body)
-                            .focused($nameFocused)
                     }
 
                     // Hours
@@ -99,18 +97,11 @@ struct EditBlockView: View {
                 .padding(.vertical, 24)
             }
             .background(Theme.background.ignoresSafeArea())
-            .onAppear {
-                // 遅延させてフォーカスを当てると、ユーザーが変換を打ち始める
-                // タイミングと重なり、日本語入力中のマーク文字（変換候補）が
-                // 1文字目で確定されてしまう（「あ」のまま変換できず確定する）。
-                // 表示と同時に素直に当てる。
-                nameFocused = true
-            }
             .navigationTitle(titleKey)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("common.cancel") { closeKeyboardThenDismiss() }
+                    Button("common.cancel") { dismiss() }
                         .foregroundColor(.secondary)
                 }
             }
@@ -149,18 +140,7 @@ struct EditBlockView: View {
         block.bufferAfter = bufferHours
         block.colorIndex = colorIndex
         onSave(block)
-        closeKeyboardThenDismiss()
-    }
-
-    /// フォーカスを持ったままシートを閉じると、日本語入力のセッションが
-    /// 終了されずに残り、次にこの画面を開いたとき最初の変換が確定して
-    /// しまう（2回目以降だけ再現する不具合の原因）。フォーカスを外して
-    /// キーボードの編集終了を一度処理させてから閉じる。
-    private func closeKeyboardThenDismiss() {
-        nameFocused = false
-        DispatchQueue.main.async {
-            dismiss()
-        }
+        dismiss()
     }
 }
 
