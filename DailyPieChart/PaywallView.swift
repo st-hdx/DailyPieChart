@@ -1,6 +1,10 @@
 import SwiftUI
 
 struct PaywallView: View {
+    /// どこから開いたか。表示のたびにこの画面自身がpaywall_shownを送る
+    /// （呼び出し側で数えると、入口を足すたびに書き忘れて計測が漏れる。
+    /// 実際にBloomJournalで漏れが起きた。2026-10-03 HANDOVER.md 0-P）。
+    let trigger: String
     @EnvironmentObject var store: StoreManager
     @Environment(\.dismiss) var dismiss
 
@@ -20,6 +24,7 @@ struct PaywallView: View {
             }
             .background(Theme.background)
             .onAppear {
+                Analytics.shared.track(AnalyticsEvent.paywallShown, ["trigger": trigger])
                 if store.proProduct == nil {
                     Task { await store.loadProducts() }
                 }

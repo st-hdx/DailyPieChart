@@ -183,7 +183,7 @@ struct MyScheduleView: View {
             .onChange(of: schedulesData) { _ in loadSchedules() }
             .onChange(of: isExact24) { _ in maybeAskForReview() }
             .sheet(isPresented: $showPaywall) {
-                PaywallView().environmentObject(store)
+                PaywallView(trigger: "add_schedule").environmentObject(store)
             }
         }
     }
@@ -222,7 +222,6 @@ struct MyScheduleView: View {
                     } else {
                         // 上限に当たった回数と、そこから購入画面を見た回数は別に数える。
                         Analytics.shared.track(AnalyticsEvent.freeLimitHit)
-                        Analytics.shared.track(AnalyticsEvent.paywallShown, ["trigger": "add_schedule"])
                         showPaywall = true
                     }
                 } label: {

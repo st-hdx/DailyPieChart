@@ -214,7 +214,7 @@ struct ShareCardSheet: View {
                 }
             }
             .sheet(isPresented: $showPaywall) {
-                PaywallView().environmentObject(store)
+                PaywallView(trigger: "share_theme").environmentObject(store)
             }
             .onAppear(perform: render)
             .onChange(of: themeId) { _ in render() }
@@ -229,7 +229,6 @@ struct ShareCardSheet: View {
                     let locked = theme.isPro && !store.isPro
                     Button {
                         if locked {
-                            Analytics.shared.track(AnalyticsEvent.paywallShown, ["trigger": "share_theme"])
                             showPaywall = true
                         } else {
                             themeId = theme.id

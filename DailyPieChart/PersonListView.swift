@@ -3,6 +3,7 @@ import SwiftUI
 struct PersonListView: View {
     @EnvironmentObject var store: StoreManager
     @State private var showPaywall = false
+    @State private var paywallTrigger = "locked_person"
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     /// 大きい文字設定では2列だと偉人の名前が省略されるので1列にする。
@@ -31,7 +32,7 @@ struct PersonListView: View {
                             let isLocked = !store.isPro && index >= StoreManager.freePersonLimit
                             if isLocked {
                                 Button {
-                                    Analytics.shared.track(AnalyticsEvent.paywallShown, ["trigger": "locked_person"])
+                                    paywallTrigger = "locked_person"
                                     showPaywall = true
                                 } label: {
                                     LockedPersonCard(person: person)
@@ -58,13 +59,13 @@ struct PersonListView: View {
             .navigationTitle("person_list.title")
         }
         .sheet(isPresented: $showPaywall) {
-            PaywallView().environmentObject(store)
+            PaywallView(trigger: paywallTrigger).environmentObject(store)
         }
     }
 
     private var proTeaser: some View {
         Button {
-            Analytics.shared.track(AnalyticsEvent.paywallShown, ["trigger": "pro_teaser"])
+            paywallTrigger = "pro_teaser"
             showPaywall = true
         } label: {
             HStack(spacing: 12) {
