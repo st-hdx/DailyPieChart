@@ -139,7 +139,11 @@ struct EditBlockView: View {
             .background(Theme.background.ignoresSafeArea())
             .task {
                 // 直後に当てるとシートの表示アニメーションに食われるので、少しだけ待つ。
-                try? await Task.sleep(nanoseconds: 350_000_000)
+                // この画面はScrollView+Stepper×2+色スウォッチのLazyVGridを抱えて他の2つの
+                // 入力シート（スケジュール追加・リネーム）より初期レイアウトが重く、350msでは
+                // 機種やタイミングによってまだ確定し切っておらず、日本語入力の最初の変換が
+                // 取りこぼされることがある。余裕を持たせる。
+                try? await Task.sleep(nanoseconds: 600_000_000)
                 nameFocused = true
             }
             .navigationTitle(titleKey)
