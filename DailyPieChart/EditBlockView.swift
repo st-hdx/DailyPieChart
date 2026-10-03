@@ -9,6 +9,48 @@ func endEditingNow() {
     UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
 }
 
+/// SwiftUIのTextFieldは、このプロジェクトが対応するiOS16世代のSDKでは
+/// 日本語入力の変換中（マーク文字）の扱いに不具合があり、名前欄を開く
+/// たびに最初の変換が確定されてしまう現象が直らなかった。UIKitの
+/// UITextFieldを直接ラップして、同じ不具合が起きない経路に替える。
+struct NativeTextField: UIViewRepresentable {
+    @Binding var text: String
+    var placeholder: String
+
+    func makeUIView(context: Context) -> UITextField {
+        let field = UITextField()
+        field.delegate = context.coordinator
+        field.font = .preferredFont(forTextStyle: .body)
+        field.placeholder = placeholder
+        field.borderStyle = .none
+        field.clearButtonMode = .whileEditing
+        field.addTarget(context.coordinator, action: #selector(Coordinator.textChanged), for: .editingChanged)
+        field.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        return field
+    }
+
+    func updateUIView(_ uiView: UITextField, context: Context) {
+        if uiView.text != text {
+            uiView.text = text
+        }
+        uiView.placeholder = placeholder
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(text: $text)
+    }
+
+    final class Coordinator: NSObject, UITextFieldDelegate {
+        var text: Binding<String>
+        init(text: Binding<String>) {
+            self.text = text
+        }
+        @objc func textChanged(_ field: UITextField) {
+            text.wrappedValue = field.text ?? ""
+        }
+    }
+}
+
 struct EditBlockView: View {
     var existingBlock: TimeBlock? = nil
     var currentTotal: Double = 0
@@ -61,8 +103,8 @@ struct EditBlockView: View {
 
                     // Name
                     fieldSection(label: "edit_block.name_label", icon: "pencil") {
-                        TextField("edit_block.name_placeholder", text: $name)
-                            .font(.body)
+                        NativeTextField(text: $name, placeholder: L("edit_block.name_placeholder"))
+                            .frame(height: 22)
                     }
 
                     // Hours
