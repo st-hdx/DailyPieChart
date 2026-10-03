@@ -555,8 +555,10 @@ struct AddScheduleSheet: View {
             }
             .padding(.vertical, 24)
             .background(Theme.background.ignoresSafeArea())
-            .task {
-                try? await Task.sleep(nanoseconds: 350_000_000)
+            .onAppear {
+                // 遅延させてフォーカスを当てると、日本語入力中のマーク文字が
+                // 1文字目で確定されてしまうことがある（EditBlockViewで確認済み）。
+                // 表示と同時に素直に当てる。
                 nameFocused = true
             }
             .navigationTitle("add_schedule.title")
@@ -726,8 +728,10 @@ struct RenameScheduleSheet: View {
             }
             .padding(.vertical, 24)
             .background(Theme.background.ignoresSafeArea())
-            .task {
-                try? await Task.sleep(nanoseconds: 350_000_000)
+            .onAppear {
+                // 遅延させてフォーカスを当てると、日本語入力中のマーク文字が
+                // 1文字目で確定されてしまうことがある（EditBlockViewで確認済み）。
+                // 表示と同時に素直に当てる。
                 nameFocused = true
             }
             .navigationTitle("rename.title")

@@ -101,13 +101,11 @@ struct EditBlockView: View {
                 .padding(.vertical, 24)
             }
             .background(Theme.background.ignoresSafeArea())
-            .task {
-                // 直後に当てるとシートの表示アニメーションに食われるので、少しだけ待つ。
-                // この画面はScrollView+Stepper×2+色スウォッチのLazyVGridを抱えて他の2つの
-                // 入力シート（スケジュール追加・リネーム）より初期レイアウトが重く、350msでは
-                // 機種やタイミングによってまだ確定し切っておらず、日本語入力の最初の変換が
-                // 取りこぼされることがある。余裕を持たせる。
-                try? await Task.sleep(nanoseconds: 600_000_000)
+            .onAppear {
+                // 遅延させてフォーカスを当てると、ユーザーが変換を打ち始める
+                // タイミングと重なり、日本語入力中のマーク文字（変換候補）が
+                // 1文字目で確定されてしまう（「あ」のまま変換できず確定する）。
+                // 表示と同時に素直に当てる。
                 nameFocused = true
             }
             .navigationTitle(titleKey)
