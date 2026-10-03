@@ -1,4 +1,13 @@
 import SwiftUI
+import UIKit
+
+/// 編集中のTextFieldを強制的に終了させる。SwiftUIの@FocusStateを介した
+/// 終了は、Viewが破棄される前に実際のresignFirstResponder()呼び出しが
+/// 間に合わないことがある。UIKitへ直接要求することで、シートを閉じる前に
+/// 日本語入力のセッションを確実に終える。
+func endEditingNow() {
+    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+}
 
 struct EditBlockView: View {
     var existingBlock: TimeBlock? = nil
@@ -101,7 +110,7 @@ struct EditBlockView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("common.cancel") { dismiss() }
+                    Button("common.cancel") { endEditingNow(); dismiss() }
                         .foregroundColor(.secondary)
                 }
             }
@@ -140,6 +149,7 @@ struct EditBlockView: View {
         block.bufferAfter = bufferHours
         block.colorIndex = colorIndex
         onSave(block)
+        endEditingNow()
         dismiss()
     }
 }

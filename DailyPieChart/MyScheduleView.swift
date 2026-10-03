@@ -534,6 +534,7 @@ struct AddScheduleSheet: View {
 
                 Button {
                     onSave(name.trimmingCharacters(in: .whitespaces))
+                    endEditingNow()
                     dismiss()
                 } label: {
                     Text("common.create")
@@ -556,7 +557,7 @@ struct AddScheduleSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("common.cancel") { dismiss() }.foregroundColor(.secondary)
+                    Button("common.cancel") { endEditingNow(); dismiss() }.foregroundColor(.secondary)
                 }
             }
         }
@@ -698,6 +699,7 @@ struct RenameScheduleSheet: View {
 
                 Button {
                     onSave()
+                    endEditingNow()
                     dismiss()
                 } label: {
                     Text("common.save")
@@ -720,7 +722,7 @@ struct RenameScheduleSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("common.cancel") { dismiss() }.foregroundColor(.secondary)
+                    Button("common.cancel") { endEditingNow(); dismiss() }.foregroundColor(.secondary)
                 }
             }
         }
