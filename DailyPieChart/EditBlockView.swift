@@ -16,6 +16,10 @@ func endEditingNow() {
 struct NativeTextField: UIViewRepresentable {
     @Binding var text: String
     var placeholder: String
+    /// 表示と同時にキーボードを開く。SwiftUIの@FocusStateは経由せず、
+    /// UIKitのbecomeFirstResponder()を直接呼ぶ（不具合の原因は
+    /// SwiftUIのTextField自体にあり、フォーカスの当て方ではなかった）。
+    var autoFocus: Bool = false
 
     func makeUIView(context: Context) -> UITextField {
         let field = UITextField()
@@ -34,6 +38,12 @@ struct NativeTextField: UIViewRepresentable {
             uiView.text = text
         }
         uiView.placeholder = placeholder
+        if autoFocus, !context.coordinator.didAutoFocus {
+            context.coordinator.didAutoFocus = true
+            DispatchQueue.main.async {
+                uiView.becomeFirstResponder()
+            }
+        }
     }
 
     func makeCoordinator() -> Coordinator {
@@ -42,6 +52,7 @@ struct NativeTextField: UIViewRepresentable {
 
     final class Coordinator: NSObject, UITextFieldDelegate {
         var text: Binding<String>
+        var didAutoFocus = false
         init(text: Binding<String>) {
             self.text = text
         }
@@ -103,7 +114,7 @@ struct EditBlockView: View {
 
                     // Name
                     fieldSection(label: "edit_block.name_label", icon: "pencil") {
-                        NativeTextField(text: $name, placeholder: L("edit_block.name_placeholder"))
+                        NativeTextField(text: $name, placeholder: L("edit_block.name_placeholder"), autoFocus: true)
                             .frame(height: 22)
                     }
 
