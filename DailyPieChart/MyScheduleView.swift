@@ -513,7 +513,6 @@ struct MyScheduleView: View {
 
 struct AddScheduleSheet: View {
     @State private var name = ""
-    /// 日本語入力の最初の変換が落ちないよう、表示時にフォーカスを確定させる。
     @FocusState private var nameFocused: Bool
     var onSave: (String) -> Void
     @Environment(\.dismiss) var dismiss
@@ -537,7 +536,7 @@ struct AddScheduleSheet: View {
 
                 Button {
                     onSave(name.trimmingCharacters(in: .whitespaces))
-                    dismiss()
+                    closeKeyboardThenDismiss()
                 } label: {
                     Text("common.create")
                         .font(.body.weight(.bold))
@@ -565,9 +564,19 @@ struct AddScheduleSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("common.cancel") { dismiss() }.foregroundColor(.secondary)
+                    Button("common.cancel") { closeKeyboardThenDismiss() }.foregroundColor(.secondary)
                 }
             }
+        }
+    }
+
+    /// フォーカスを持ったままシートを閉じると日本語入力のセッションが
+    /// 終了されずに残り、次に開いたとき最初の変換が確定してしまう
+    /// （EditBlockViewで確認済み）。フォーカスを外してから閉じる。
+    private func closeKeyboardThenDismiss() {
+        nameFocused = false
+        DispatchQueue.main.async {
+            dismiss()
         }
     }
 }
@@ -688,7 +697,6 @@ struct RenameScheduleSheet: View {
     @Binding var name: String
     var onSave: () -> Void
     @Environment(\.dismiss) var dismiss
-    /// 日本語入力の最初の変換が落ちないよう、表示時にフォーカスを確定させる。
     @FocusState private var nameFocused: Bool
 
     var body: some View {
@@ -710,7 +718,7 @@ struct RenameScheduleSheet: View {
 
                 Button {
                     onSave()
-                    dismiss()
+                    closeKeyboardThenDismiss()
                 } label: {
                     Text("common.save")
                         .font(.body.weight(.bold))
@@ -738,9 +746,19 @@ struct RenameScheduleSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button("common.cancel") { dismiss() }.foregroundColor(.secondary)
+                    Button("common.cancel") { closeKeyboardThenDismiss() }.foregroundColor(.secondary)
                 }
             }
+        }
+    }
+
+    /// フォーカスを持ったままシートを閉じると日本語入力のセッションが
+    /// 終了されずに残り、次に開いたとき最初の変換が確定してしまう
+    /// （EditBlockViewで確認済み）。フォーカスを外してから閉じる。
+    private func closeKeyboardThenDismiss() {
+        nameFocused = false
+        DispatchQueue.main.async {
+            dismiss()
         }
     }
 }
