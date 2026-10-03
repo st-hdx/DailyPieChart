@@ -62,53 +62,17 @@ struct EditBlockView: View {
 
                     // Hours
                     fieldSection(label: "edit_block.hours_label", icon: "clock") {
-                        VStack(spacing: 0) {
-                            Stepper(formatHours(hours),
-                                    value: $minutes,
-                                    in: Self.stepMinutes...max(Self.stepMinutes, Int((maxHours * 60).rounded())),
-                                    step: Self.stepMinutes)
-                                .accessibilityIdentifier("stepper_hours")
-                            Divider()
-                                .background(Theme.cardBorder)
-                                .padding(.vertical, 10)
-                            HStack {
-                                Text("edit_block.remaining")
-                                    .foregroundColor(.secondary)
-                                Spacer()
-                                if isOverLimit {
-                                    Label(L("edit_block.over", formatHours(abs(remaining))), systemImage: "exclamationmark.triangle.fill")
-                                        .foregroundColor(.red)
-                                        .font(.subheadline)
-                                } else {
-                                    Text(formatHours(remaining))
-                                        .foregroundColor(remaining < 0.001 ? Color(red: 0.18, green: 0.85, blue: 0.65) : .secondary)
-                                        .fontWeight(remaining < 0.001 ? .semibold : .regular)
-                                }
-                            }
-                        }
+                        HoursSection(minutes: $minutes, otherHours: otherHours, bufferHours: bufferHours)
                     }
 
                     // 後ろの余白
                     fieldSection(label: "edit_block.buffer_label", icon: "arrow.right.to.line") {
-                        VStack(alignment: .leading, spacing: 8) {
-                            Stepper(formatHours(bufferHours),
-                                    value: $bufferMinutes,
-                                    in: 0...max(0, Int(((24.0 - otherHours - hours) * 60).rounded())),
-                                    step: Self.stepMinutes)
-                                .accessibilityIdentifier("stepper_buffer")
-                            Text("edit_block.buffer_footer")
-                                .font(.caption2)
-                                .foregroundColor(.secondary)
-                        }
+                        BufferSection(bufferMinutes: $bufferMinutes, otherHours: otherHours, hours: hours)
                     }
 
                     // Color
                     fieldSection(label: "edit_block.color_label", icon: "paintpalette") {
-                        LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 5), spacing: 16) {
-                            ForEach(0..<blockColors.count, id: \.self) { index in
-                                colorSwatch(index: index)
-                            }
-                        }
+                        ColorGridSection(colorIndex: $colorIndex)
                     }
 
                     // Save button
@@ -182,7 +146,94 @@ struct EditBlockView: View {
         }
     }
 
-    private func colorSwatch(index: Int) -> some View {
+    private func save() {
+        var block = existingBlock ?? TimeBlock(name: "", hours: 1, colorIndex: 0)
+        block.name = name.isEmpty ? L("edit_block.default_name") : name
+        block.hours = hours
+        block.bufferAfter = bufferHours
+        block.colorIndex = colorIndex
+        onSave(block)
+        dismiss()
+    }
+}
+
+/// 名前欄を切り出していないと、1文字打つたびにEditBlockViewのbody全体が
+/// 再評価され、このStepperも作り直しの対象になる。名前に無関係な入力を
+/// 名前の変更から隔離するための分割。
+private struct HoursSection: View {
+    @Binding var minutes: Int
+    let otherHours: Double
+    let bufferHours: Double
+
+    var hours: Double { Double(minutes) / 60.0 }
+    var maxHours: Double { max(0.5, 24.0 - otherHours - bufferHours) }
+    var remaining: Double { 24.0 - otherHours - hours - bufferHours }
+    var isOverLimit: Bool { remaining < -0.001 }
+
+    var body: some View {
+        VStack(spacing: 0) {
+            Stepper(formatHours(hours),
+                    value: $minutes,
+                    in: EditBlockView.stepMinutes...max(EditBlockView.stepMinutes, Int((maxHours * 60).rounded())),
+                    step: EditBlockView.stepMinutes)
+                .accessibilityIdentifier("stepper_hours")
+            Divider()
+                .background(Theme.cardBorder)
+                .padding(.vertical, 10)
+            HStack {
+                Text("edit_block.remaining")
+                    .foregroundColor(.secondary)
+                Spacer()
+                if isOverLimit {
+                    Label(L("edit_block.over", formatHours(abs(remaining))), systemImage: "exclamationmark.triangle.fill")
+                        .foregroundColor(.red)
+                        .font(.subheadline)
+                } else {
+                    Text(formatHours(remaining))
+                        .foregroundColor(remaining < 0.001 ? Color(red: 0.18, green: 0.85, blue: 0.65) : .secondary)
+                        .fontWeight(remaining < 0.001 ? .semibold : .regular)
+                }
+            }
+        }
+    }
+}
+
+/// 名前の変更から隔離するための分割（HoursSectionと同じ理由）。
+private struct BufferSection: View {
+    @Binding var bufferMinutes: Int
+    let otherHours: Double
+    let hours: Double
+
+    var bufferHours: Double { Double(bufferMinutes) / 60.0 }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Stepper(formatHours(bufferHours),
+                    value: $bufferMinutes,
+                    in: 0...max(0, Int(((24.0 - otherHours - hours) * 60).rounded())),
+                    step: EditBlockView.stepMinutes)
+                .accessibilityIdentifier("stepper_buffer")
+            Text("edit_block.buffer_footer")
+                .font(.caption2)
+                .foregroundColor(.secondary)
+        }
+    }
+}
+
+/// 名前の変更から隔離するための分割。影付きの円10個を毎打鍵ごとに
+/// 作り直すのがいちばん重く、これが最有力の切り出し対象。
+private struct ColorGridSection: View {
+    @Binding var colorIndex: Int
+
+    var body: some View {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 5), spacing: 16) {
+            ForEach(0..<blockColors.count, id: \.self) { index in
+                swatch(index: index)
+            }
+        }
+    }
+
+    private func swatch(index: Int) -> some View {
         let color = blockColors[index]
         let selected = colorIndex == index
         return ZStack {
@@ -200,15 +251,5 @@ struct EditBlockView: View {
             }
         }
         .onTapGesture { colorIndex = index }
-    }
-
-    private func save() {
-        var block = existingBlock ?? TimeBlock(name: "", hours: 1, colorIndex: 0)
-        block.name = name.isEmpty ? L("edit_block.default_name") : name
-        block.hours = hours
-        block.bufferAfter = bufferHours
-        block.colorIndex = colorIndex
-        onSave(block)
-        dismiss()
     }
 }
