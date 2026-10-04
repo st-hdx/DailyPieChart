@@ -80,7 +80,9 @@ struct ClockChartView: View {
     @ViewBuilder
     private func clockContent(geo: GeometryProxy) -> some View {
         // 短い区画のラベルを外側(reach 1.72)に逃がすぶん、余白を広げる。
-        let margin: CGFloat = showActivityLabels ? 74 : 0
+        // 活動一覧（下のリスト）に時刻を出すようにしたので、凡例グリッドは
+        // 廃止した。その分チャート自体を大きく見せられるよう余白を詰める。
+        let margin: CGFloat = showActivityLabels ? 50 : 0
         let s = min(geo.size.width, geo.size.height) - margin * 2
         let cx = geo.size.width / 2
         let cy = geo.size.height / 2
@@ -289,30 +291,6 @@ struct PieChartView: View {
     var nowHour: Double? = nil
     /// 「いま」が入っている区画の名前。バッファならnil。
     var currentBlockName: String? = nil
-    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-
-    /// 大きい文字設定では2列だと活動名も時刻も入りきらないので1列にする。
-    private var legendColumns: [GridItem] {
-        dynamicTypeSize.isAccessibilitySize
-            ? [GridItem(.flexible())]
-            : [GridItem(.flexible()), GridItem(.flexible())]
-    }
-
-    var timeRanges: [(block: TimeBlock, startHour: Double)] {
-        var result: [(TimeBlock, Double)] = []
-        var current = startHour
-        for block in timeBlocks {
-            result.append((block, current))
-            current += block.span
-        }
-        return result
-    }
-
-    private var filledHours: Double { timeBlocks.reduce(0) { $0 + $1.span } }
-    /// 灰色で出る時間の合計（活動の間の余白＋末尾の余り）
-    private var bufferHours: Double {
-        timeBlocks.reduce(0) { $0 + $1.bufferAfter } + max(0, 24.0 - filledHours)
-    }
 
     var body: some View {
         VStack(spacing: 16) {
@@ -321,16 +299,6 @@ struct PieChartView: View {
             if nowHour != nil {
                 nowRow
             }
-
-            LazyVGrid(columns: legendColumns, spacing: 8) {
-                ForEach(timeRanges, id: \.block.id) { item in
-                    legendItem(block: item.block, startHour: item.startHour)
-                }
-                if bufferHours > 0.01 {
-                    bufferLegendItem
-                }
-            }
-            .padding(.horizontal)
         }
     }
 
@@ -346,79 +314,5 @@ struct PieChartView: View {
             Spacer()
         }
         .padding(.horizontal, 20)
-    }
-
-    private var bufferLegendItem: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 6) {
-            Circle()
-                .fill(Theme.bufferFill)
-                .frame(width: 8, height: 8)
-                .alignmentGuide(.firstTextBaseline) { $0[.bottom] }
-            VStack(alignment: .leading, spacing: 1) {
-                Text("chart.buffer_name")
-                    .font(.caption.weight(.medium))
-                    .lineLimit(1)
-                Text(formatHours(bufferHours))
-                    .font(.caption2)
-                    .foregroundColor(.secondary)
-            }
-            Spacer()
-        }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 7)
-        .background(Theme.card)
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .strokeBorder(Theme.cardBorder, lineWidth: 1)
-        )
-        .cornerRadius(10)
-    }
-
-    private func legendItem(block: TimeBlock, startHour: Double) -> some View {
-        let color = blockColors[block.colorIndex % blockColors.count]
-        // 文字が大きいとテキストが縦に伸びるため、点は中央ではなく1行目に揃える。
-        return HStack(alignment: .firstTextBaseline, spacing: 6) {
-            Circle()
-                .fill(color)
-                .frame(width: 8, height: 8)
-                .shadow(color: color.opacity(0.7), radius: 3, x: 0, y: 0)
-                .alignmentGuide(.firstTextBaseline) { $0[.bottom] }
-            VStack(alignment: .leading, spacing: 1) {
-                Text(block.name)
-                    .font(.caption.weight(.medium))
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.8)
-                Text(formatTimeRange(start: startHour, duration: block.hours))
-                    .font(.caption2)
-                    .foregroundColor(.secondary)
-                if block.bufferAfter > 0.001 {
-                    Text(L("chart.plus_buffer", formatHours(block.bufferAfter)))
-                        .font(.caption2)
-                        .foregroundColor(.secondary.opacity(0.8))
-                }
-            }
-            Spacer()
-        }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 7)
-        .background(Theme.card)
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .strokeBorder(color.opacity(0.30), lineWidth: 1)
-        )
-        .cornerRadius(10)
-        .shadow(color: Theme.cardShadow.opacity(0.08), radius: 4, x: 0, y: 1)
-    }
-
-    func formatTimeRange(start: Double, duration: Double) -> String {
-        func fmt(_ h: Double) -> String {
-            // 分を切り捨てると、10分刻み(1/6時間)が2進数で割り切れないために
-            // 「10分」が「9分」として出る。分に直してから丸める。
-            let totalMinutes = lround(h * 60)
-            let hour = (totalMinutes / 60) % 24
-            let min = ((totalMinutes % 60) + 60) % 60
-            return String(format: "%d:%02d", hour, min)
-        }
-        return L("format.time_range", fmt(start), fmt(start + duration))
     }
 }

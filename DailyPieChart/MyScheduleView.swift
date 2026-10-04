@@ -34,6 +34,18 @@ struct MyScheduleView: View {
         activeIndex.map { schedules[$0].timeBlocks } ?? []
     }
 
+    /// 各活動の開始時刻。活動一覧の行に「6:00〜6:30」のような時刻を出すため、
+    /// startHourを起点に余白ぶんも進めながら積み上げる（チャートの計算と同じ）。
+    var blockStartHours: [TimeBlock.ID: Double] {
+        var result: [TimeBlock.ID: Double] = [:]
+        var cursor = startHour
+        for block in timeBlocks {
+            result[block.id] = cursor
+            cursor += block.span
+        }
+        return result
+    }
+
     var activeScheduleName: String {
         activeIndex.map { schedules[$0].name } ?? L("schedule.default_name")
     }
@@ -420,13 +432,19 @@ struct MyScheduleView: View {
 
     private func blockRow(_ block: TimeBlock) -> some View {
         let color = blockColors[block.colorIndex % blockColors.count]
+        let start = blockStartHours[block.id] ?? startHour
         return HStack(spacing: 12) {
             Circle()
                 .fill(color)
                 .frame(width: 10, height: 10)
                 .shadow(color: color.opacity(0.5), radius: 3, x: 0, y: 0)
-            Text(block.name)
-                .font(.body)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(block.name)
+                    .font(.body)
+                Text(formatTimeRange(start: start, duration: block.hours))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
             Spacer()
             Text(formatHours(block.hours))
                 .font(.caption.weight(.semibold))

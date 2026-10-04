@@ -21,3 +21,18 @@ func formatHours(_ hours: Double) -> String {
     if h == 0 { return L("format.minutes", m) }
     return L("format.hours_minutes", h, m)
 }
+
+/// 開始時刻と長さから「6:00〜6:30」のような範囲表示を作る。
+/// 以前は PieChartView の凡例グリッドにしか無かったが、マイスケジュールの
+/// 活動一覧にも同じ表示を出すため、共有の自由関数にした。
+func formatTimeRange(start: Double, duration: Double) -> String {
+    func fmt(_ h: Double) -> String {
+        // 分を切り捨てると、10分刻み(1/6時間)が2進数で割り切れないために
+        // 「10分」が「9分」として出る。分に直してから丸める。
+        let totalMinutes = lround(h * 60)
+        let hour = (totalMinutes / 60) % 24
+        let min = ((totalMinutes % 60) + 60) % 60
+        return String(format: "%d:%02d", hour, min)
+    }
+    return L("format.time_range", fmt(start), fmt(start + duration))
+}
