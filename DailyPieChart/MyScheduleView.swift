@@ -366,7 +366,8 @@ struct MyScheduleView: View {
                         timeBlocks: timeBlocks,
                         startHour: startHour,
                         nowHour: nowHourValue(context.date),
-                        currentBlockName: currentBlockName(context.date)
+                        currentBlockName: currentBlockName(context.date),
+                        showLegend: false
                     )
                 }
                     .padding(.vertical, 8)
