@@ -75,6 +75,7 @@
 "error.product_load_failed" = "Couldn’t load product information";
 "error.purchase_failed"    = "Purchase failed";
 "error.restore_failed"     = "Couldn’t restore your purchase";
+"error.purchase_blocked_by_restriction" = "The purchase sheet didn’t appear. Please check Settings → Screen Time → Content & Privacy Restrictions → iTunes & App Store Purchases, and make sure In-App Purchases are allowed.";
 
 /* ===== Chart ===== */
 "chart.hour_unit" = "HOUR";

@@ -91,6 +91,8 @@ class StoreManager: ObservableObject {
         errorMessage = nil
         defer { isLoading = false }
 
+        let startedAt = Date()
+
         do {
             let result = try await product.purchase()
             switch result {
@@ -103,6 +105,13 @@ class StoreManager: ObservableObject {
                 // やめたと失敗は分けて数える。一緒にすると、値段の問題なのか
                 // 迷いなのか、あとから区別できない。
                 Analytics.shared.track(AnalyticsEvent.purchaseCancelled)
+                // タップから1秒未満での即時キャンセルは、人間が確認シートを見て
+                // 判断した結果ではありえない(Face ID確認は数秒かかる)。実機検証で
+                // 購入自体は正常に成立することを確認済みなので、スクリーンタイム等の
+                // 端末側制限で確認シートが一度も出ないまま弾かれているケースと判断する。
+                if Date().timeIntervalSince(startedAt) < 1.0 {
+                    errorMessage = L("error.purchase_blocked_by_restriction")
+                }
             @unknown default:
                 break
             }

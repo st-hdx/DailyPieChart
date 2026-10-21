@@ -75,6 +75,7 @@
 "error.product_load_failed" = "商品情報の取得に失敗しました";
 "error.purchase_failed"    = "購入に失敗しました";
 "error.restore_failed"     = "購入の復元に失敗しました";
+"error.purchase_blocked_by_restriction" = "購入画面が表示されませんでした。「設定」→「スクリーンタイム」→「コンテンツとプライバシーの制限」→「iTunesおよびApp Storeでの購入」で、App内課金が許可されているかご確認ください。";
 
 /* ===== Chart ===== */
 "chart.hour_unit" = "HOUR";
