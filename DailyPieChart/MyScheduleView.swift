@@ -425,6 +425,23 @@ struct MyScheduleView: View {
                     }
                 }
             }
+
+            // システムの評価ダイアログ(maybeAskForReview)はAppleが出すかどうかを決めるため、
+            // 公開から半年で評価は日本3件・米国0件のまま。検索結果では星の数が真っ先に
+            // 目に入るので、自分で書きに行ける入口を一覧の末尾に置く。
+            Section {
+                Button {
+                    Analytics.shared.track(AnalyticsEvent.rateTapped)
+                    if let url = URL(string: "https://apps.apple.com/app/id6761185901?action=write-review") {
+                        UIApplication.shared.open(url)
+                    }
+                } label: {
+                    Label("my_schedule.rate_button", systemImage: "star")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
+                .listRowBackground(Color.clear)
+            }
         }
         .environment(\.editMode, $editMode)
         .scrollContentBackground(.hidden)

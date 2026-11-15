@@ -31,6 +31,7 @@
 
 /* ===== My schedule ===== */
 "my_schedule.title"             = "マイスケジュール";
+"my_schedule.rate_button"       = "App Storeで評価する";
 "my_schedule.reorder"           = "並び替え";
 "my_schedule.total"             = "合計時間";
 "my_schedule.activities"        = "活動一覧";

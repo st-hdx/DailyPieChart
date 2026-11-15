@@ -200,4 +200,5 @@ enum AnalyticsEvent {
     static let purchaseCancelled = "purchase_cancelled"
     static let purchaseFailed = "purchase_failed"
     static let restoreTapped = "restore_purchases_tapped"
+    static let rateTapped = "rate_tapped"                    // App Storeのレビュー入力を開いた
 }

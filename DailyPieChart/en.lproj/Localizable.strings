@@ -31,6 +31,7 @@
 
 /* ===== My schedule ===== */
 "my_schedule.title"             = "My Day";
+"my_schedule.rate_button"       = "Rate on the App Store";
 "my_schedule.reorder"           = "Reorder";
 "my_schedule.total"             = "Total";
 "my_schedule.activities"        = "Activities";
