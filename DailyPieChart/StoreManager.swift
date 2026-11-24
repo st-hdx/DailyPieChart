@@ -104,12 +104,16 @@ class StoreManager: ObservableObject {
             case .userCancelled, .pending:
                 // やめたと失敗は分けて数える。一緒にすると、値段の問題なのか
                 // 迷いなのか、あとから区別できない。
-                Analytics.shared.track(AnalyticsEvent.purchaseCancelled)
+                // 速すぎるキャンセルは件数を分けて数える。表示だけ出していたので、
+                // 端末制限で弾かれた人が何人いるのかが後から分からなかった。
+                let blocked = Date().timeIntervalSince(startedAt) < 1.0
+                Analytics.shared.track(AnalyticsEvent.purchaseCancelled,
+                                       ["blocked": blocked ? "true" : "false"])
                 // タップから1秒未満での即時キャンセルは、人間が確認シートを見て
                 // 判断した結果ではありえない(Face ID確認は数秒かかる)。実機検証で
                 // 購入自体は正常に成立することを確認済みなので、スクリーンタイム等の
                 // 端末側制限で確認シートが一度も出ないまま弾かれているケースと判断する。
-                if Date().timeIntervalSince(startedAt) < 1.0 {
+                if blocked {
                     errorMessage = L("error.purchase_blocked_by_restriction")
                 }
             @unknown default:
